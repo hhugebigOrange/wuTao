@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设备变动报表</title>
+    <link rel="stylesheet" href="../../../css/modules/laydate/default/laydate.css">
+    <link rel="stylesheet" href="../../../css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="../../../css/layui.css">
+    <script src="../../../js/jquery.js"></script>
+    <script src="../../../js/layui.js"></script>
+    <link rel="stylesheet" href="../../../css/body.css">
+</head>
+<body>
+<div class="title">
+    <span>设备变动报表</span><span class="particulars">报表管理>>设备管理报表>>设备变动报表</span>
+</div>
+<div class="abovebtn">
+    <form class="layui-form" action="">
+        <div class="layui-inline">
+            <label class="layui-form-label">服务区域</label>
+            <div class="layui-input-block">
+                <select name="type" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="0">区域1</option>
+                    <option value="1">区域2</option>
+                    <option value="2">区域3</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">客户名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-inline">
+            <label class="layui-form-label">日期范围</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" id="test6" type="text" placeholder=" - ">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-bg-gray" lay-filter="demo1" lay-submit="">查询</button>
+            </div>
+        </div>
+    </form>
+    <div class="btn">
+        <button class="layui-btn layui-bg-gray">清除</button>
+        <button class="layui-btn layui-bg-gray">查看所有</button>
+        <button class="layui-btn layui-bg-gray">导入</button>
+        <button class="layui-btn layui-bg-gray">导出</button>
+        <button class="layui-btn layui-bg-gray">批量删除</button>
+        <button class="layui-btn layui-bg-gray">新增</button>
+    </div>
+
+    <div class="labnum">
+        <label>MACD数量：<u>&nbsp&nbsp&nbsp&nbsp<span id="wasdue">123</span>&nbsp&nbsp&nbsp&nbsp</u></label>
+    </div>
+</div>
+<div class="tab">
+    <table id="demo" lay-filter="test"></table>
+</div>
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        //日期范围
+        laydate.render({
+            elem: "#test6",range: true
+        })
+    })
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#demo'
+            , height: 312
+            , cellMinWidth: 80
+            , url: '/demo/table/user/' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'id', title: 'NO', sort: true}
+                , {field: 'sex', title: '客户名称'}
+                , {field: 'username', title: '服务区域'}
+                , {field: 'jbbm', title: '设备名称'}
+                , {field: 'jbr', title: '机器编码'}
+                , {field: 'htbgr', title: '工单号码'}
+                , {field: 'htbm', title: '设备审批'}
+                , {field: 'httmc', title: '移动'}
+                , {field: 'khdwmc', title: '添加'}
+                , {field: 'qyrq', title: '变更'}
+                , {field: 'dqrq', title: '撤出'}
+                , {field: 'ldqts', title: '实施日期'}
+                , {field: 'qxy', title: '设备去向'}
+                , {field: 'htdqyj', title: '备注'}
+            ]]
+        });
+    });
+</script>
+</body>
+</html>

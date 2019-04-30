@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.CalendarMapper">
+	<resultMap id="BaseResultMap" type="com.xunwei.som.calendar.Calendars">
+		<result column="calendar" jdbcType="TIMESTAMP" property="calendar" />
+		<result column="sign" jdbcType="INTEGER" property="sign" />
+	</resultMap>
+	<insert id="insert" parameterType="com.xunwei.som.calendar.Calendars">
+		insert into calendar (calendar, sign)
+		values (#{calendar,jdbcType=TIMESTAMP}, #{sign,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xunwei.som.calendar.Calendars">
+		insert into calendar
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="calendar != null">
+				calendar,
+			</if>
+			<if test="sign != null">
+				sign,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="calendar != null">
+				#{calendar,jdbcType=TIMESTAMP},
+			</if>
+			<if test="sign != null">
+				#{sign,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectAllCalendar" resultMap="BaseResultMap">
+		select * from calendar
+	</select>
+
+
+</mapper>

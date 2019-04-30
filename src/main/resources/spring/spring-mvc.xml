@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:task="http://www.springframework.org/schema/task" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xsi:schemaLocation="   
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd 
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd 
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd 
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.3.xsd 
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+        http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.3.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+  		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+
+	<mvc:default-servlet-handler />
+
+	<mvc:annotation-driven />
+	<!-- 开始定时任务 -->
+	<task:annotation-driven />
+	<!-- 开启controller注解支持 -->
+	<context:component-scan base-package="com.xunwei.som.*">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+	<mvc:annotation-driven>
+		<mvc:message-converters>
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/html;charset=UTF-8</value>
+						<value>application/json</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+
+
+	<!-- 拦截器 -->
+	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/**" /> <mvc:exclude-mapping 
+		path="/login" /> <mvc:exclude-mapping path="/dologin" /> <mvc:exclude-mapping 
+		path="/serviceBoard" /> <bean class="com.xunwei.som.interceptor.LoginInterceptor"></bean> 
+		</mvc:interceptor> </mvc:interceptors> -->
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<bean class="com.xunwei.som.interceptor.CORSInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
+	<!-- <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine" />
+		<property name="characterEncoding" value="UTF-8" />
+	</bean>
+	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
+		<property name="templateResolver" ref="templateResolver" />
+
+	</bean>
+	<bean id="templateResolver"
+		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+		<property name="templateMode" value="LEGACYHTML5" />
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".html" />
+		<property name="templateMode" value="LEGACYHTML5" />
+		<property name="order" value="0"></property>
+		<property name="characterEncoding" value="UTF-8" />
+	</bean> -->
+
+
+	<!-- <bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".jsp" />
+		<property name="viewClass"
+			value="org.springframework.web.servlet.view.InternalResourceView" />
+		<property name="contentType" value="text/html;charset=UTF-8" />
+		<property name="order" value="0"></property>
+	</bean> -->
+	
+	 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+        <property name="prefix" value="/" />
+        <property name="suffix" value=".html" />
+        <property name="contentType" value="text/html;charset=UTF-8" />
+    </bean>
+
+	<!--国际化 -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basename">
+			<!-- 定义消息资源文件的相对路径 -->
+			<value>i18n.i18n</value>
+		</property>
+	</bean>
+
+	<bean id="localeResolver"
+		class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+		<property name="defaultLocale" value="en" />
+	</bean>
+
+	<!-- 配置多文件上传 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding">
+			<value>UTF-8</value>
+		</property>
+		<property name="maxUploadSize">
+			<!-- 上传文件大小限制为31M，31*1024*1024 -->
+			<value>32505856</value>
+		</property>
+		<property name="maxInMemorySize">
+			<value>4096</value>
+		</property>
+	</bean>
+
+	<!-- 基于Cookie的本地化解析器 <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver"> 
+		<property name="cookieMaxAge" value="604800"/> <property name="defaultLocale" 
+		value="zh_CN"/> <property name="cookieName" value="Language"></property> 
+		</bean> -->
+	<!-- excel导出 -->
+	<bean id="beanNameViewResolver"
+		class="org.springframework.web.servlet.view.BeanNameViewResolver"
+		p:order="0">
+	</bean>
+	<bean id="jeecgExcelView" class="org.jeecgframework.poi.excel.view.JeecgSingleExcelView" />
+	<bean id="jeecgTemplateExcelView"
+		class="org.jeecgframework.poi.excel.view.JeecgTemplateExcelView" />
+	<bean id="jeecgTemplateWordView" class="org.jeecgframework.poi.excel.view.JeecgTemplateWordView" />
+	<bean id="jeecgMapExcelView" class="org.jeecgframework.poi.excel.view.JeecgMapExcelView" />
+</beans>

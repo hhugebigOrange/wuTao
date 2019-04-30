@@ -1,0 +1,132 @@
+#login{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: url("../../static/images/loginbg.png");
+    background-size: 100% 100%;
+}
+.contents{
+    overflow: hidden;
+    height: 100%;
+}
+.left,.center,.right{
+    float: left;
+    height: 100%;
+}
+.left{
+    width: 53%;
+    margin: 0 auto;
+    position: relative;
+}
+.left>div:first-child{
+    width: 40%;
+    height: 20%;
+    text-align: center;
+    padding: 50px;
+}
+.left>div:last-child{
+    width: 80%;
+    height: 15%;
+    text-align: center;
+}
+.left>div>img:first-child{
+    width: 75%;
+}
+.left>div>img:last-child{
+    width: 100%;
+    margin-top: 20px;
+}
+.left p:first-child{
+    font-size: 5rem;
+    text-align: center;
+    color: #333;
+}
+.left p:last-child{
+    font-size: 4rem;
+    text-align: center;
+    color: #009a62;
+    margin-top: 20px;
+}
+.center img{
+    height: 100%;
+}
+.right{
+    width: 47%;
+    margin: 0 auto;
+    position: relative;
+}
+.right>div{
+    width: 55%;
+    height: 55%;
+    background-color: #fff;
+    box-shadow: 0px 0px 50px #666;
+    border-radius: 10px;
+}
+
+.right img{
+    width: 100%;
+}
+.right .login-main{
+    width: 90%;
+    height: 80%;
+    padding: 10% 5%;
+}
+.login-main p{
+    font-size: 3rem;
+    text-align: center;
+    color: #333;
+}
+.login-main>div{
+    width: 90%;
+    text-align: center;
+    margin: 0 auto;
+}
+.right .login-main .inp{
+    width: 100%;
+    height: 50px;
+    margin-top: 8%;
+}
+.right .login-main .inp input{
+    width: 80%;
+    height: 30px;
+    margin-left: 10px;
+    background-color: transparent !important;
+    border-style: none;
+    border-bottom: 1px solid #f5f5f5;
+    color: #555;
+    font-size: 20px;
+    vertical-align: bottom;
+}
+.username img{
+    width: 30px;
+}
+.pwd img{
+    width: 22px;
+}
+.login-btn{
+    width: 100%;
+    /* height: 50px;
+    line-height: 50px; */
+    text-align: center;
+    margin-top: 15%;
+}
+.login-btn button{
+    width: 90%;
+    height: 50px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 22px;
+    background: -webkit-linear-gradient(left, #009fe8 , #009953); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #009fe8 , #009953); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #009fe8 , #009953); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #009fe8 , #009953); /* 标准的语法（必须放在最后） */
+}
+.doubleCenter{
+    position: absolute;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}

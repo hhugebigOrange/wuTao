@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>客户评价页面</title>
+    <link rel="stylesheet" href="../../../css/layui.css">
+    <script src="../../../js/layui.js"></script>
+    <script src="../../../js/jquery.js"></script>
+    <style type="text/css">
+        body{width: 400px;}
+        #star{margin-left:135px; }
+    </style>
+    <link rel="stylesheet" href="../../../css/modules/layer/default/layer.css">
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 30px;">
+    <legend>客户评价</legend>
+</fieldset>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">工单号</label>
+        <div class="layui-input-block">
+            <input name="ordernum" class="layui-input" type="text" placeholder="" autocomplete="off" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div id="star" name="star"></div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <input name="evaluate" class="layui-input" type="text" placeholder="客户评价" autocomplete="off" lay-verify="required" style="height: 100px;">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="demo1" lay-submit="">立即提交</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use(['rate','form'], function() {
+        var rate = layui.rate;
+        //自定义文本
+        rate.render({
+            elem: '#star'
+            ,value: 3
+            ,text: true
+            ,setText: function(value){ //自定义文本的回调
+                var arrs = {
+                    '1': '极差'
+                    ,'2': '差'
+                    ,'3': '中等'
+                    ,'4': '好'
+                    ,'5': '极好'
+                };
+                this.span.text(arrs[value]|| ( value + "星"));
+            }
+        })
+        var form=layui.form;
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            layer.alert(JSON.stringify(data.field), {title: '最终的提交信息' })
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

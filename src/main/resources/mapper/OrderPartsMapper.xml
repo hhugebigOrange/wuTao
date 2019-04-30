@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.OrderPartsMapper">
+  <resultMap id="BaseResultMap" type="com.xunwei.som.pojo.OrderParts">
+    <id column="WO_NUMBER" jdbcType="VARCHAR" property="woNumber" />
+    <result column="WO_STATUS" jdbcType="VARCHAR" property="woStatus" />
+     <result column="REASON" jdbcType="VARCHAR" property="reason" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    WO_NUMBER, WO_STATUS
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_parts
+    where WO_NUMBER = #{woNumber,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from order_parts
+    where WO_NUMBER = #{woNumber,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.xunwei.som.pojo.OrderParts">
+    insert into order_parts (WO_NUMBER, WO_STATUS)
+    values (#{woNumber,jdbcType=VARCHAR}, #{woStatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xunwei.som.pojo.OrderParts">
+    insert into order_parts
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="woNumber != null">
+        WO_NUMBER,
+      </if>
+      <if test="woStatus != null">
+        WO_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="woNumber != null">
+        #{woNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="woStatus != null">
+        #{woStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunwei.som.pojo.OrderParts">
+    update order_parts
+    <set>
+      <if test="woStatus != null">
+        WO_STATUS = #{woStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="reason != null">
+        REASON = #{reason,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where WO_NUMBER = #{woNumber,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xunwei.som.pojo.OrderParts">
+    update order_parts
+    set WO_STATUS = #{woStatus,jdbcType=VARCHAR}
+    where WO_NUMBER = #{woNumber,jdbcType=VARCHAR}
+  </update>
+</mapper>

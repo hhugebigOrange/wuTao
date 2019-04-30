@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工单管理</title>
+    <script src="../../../js/layui.js"></script>
+    <link rel="stylesheet" href="../../../css/layui.css">
+    <script src="../../../js/jquery.js"></script>
+    <link rel="stylesheet" href="../../../css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="../../../css/modules/laydate/default/laydate.css">
+    <link rel="stylesheet" href="../../../css/body.css">
+    <style type="text/css">
+        .layui-inline{margin-bottom: 10px;}
+    </style>
+</head>
+<body>
+<div class="title">
+    <span>工单管理</span><span class="particulars">服务管理>>工单管理</span>
+</div>
+<div class="abovebtn">
+    <form class="layui-form" action="">
+        <div class="layui-inline">
+            <label class="layui-form-label">客户名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">机器编码：</label>
+            <div class="layui-input-block">
+                <input type="text" name="bianma" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">合同期限</label>
+            <div class="layui-input-inline">
+                <input name="date" class="layui-input" type="text" placeholder="yyyy-MM-dd" autocomplete="off" lay-verify="required" id="contractPeriod">
+            </div>
+        </div><br>
+        <div class="layui-inline">
+            <label class="layui-form-label">日期范围</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" id="test6" type="text" placeholder=" - ">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">工单类型</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="aihao">
+                    <option value="">请选择</option>
+                    <option value="1">事故类</option>
+                    <option value="2">事件类</option>
+                    <option value="3">需求类</option>
+                </select>
+            </div>
+        </div>
+    </form>
+    <div class="btn">
+        <button class="layui-btn layui-bg-gray" id="add">新增</button>
+        <button class="layui-btn layui-bg-gray">查看</button>
+        <button class="layui-btn layui-bg-gray">清除</button>
+        <button class="layui-btn layui-bg-gray">查看所有</button>
+        <button class="layui-btn layui-bg-gray" style="width: 130px;">导出不带图片</button>
+        <button class="layui-btn layui-bg-gray">批量删除</button>
+    </div>
+</div>
+<div class="tab">
+    <table id="demo" lay-filter="test"></table>
+</div>
+
+<script>
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        //合同期限
+        laydate.render({
+            elem:"#contractPeriod"
+        })
+        //日期范围
+        laydate.render({
+            elem: '#test6'
+            ,range: true
+        });
+    })
+
+
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+    layui.use('table', function(){
+        var table = layui.table;
+        table.render({
+            elem: '#demo'
+            ,height: 312
+            ,cellMinWidth: 80
+            ,url: '/demo/table/user/' //数据接口
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {field: 'id', title: 'NO', sort: true}
+                ,{field: 'username', title: '工单号码'}
+                ,{field: 'sex', title: '设备序列号'}
+                ,{field: 'city', title: '客户名称'}
+                ,{field: 'sign', title: '机器编码',}
+                ,{field: 'experience', title: '报修人'}
+                ,{field: 'score', title: '报修电话'}
+                ,{field: 'bxr', title: '客户地址'}
+                ,{field: 'bxdh', title: '故障类型'}
+                ,{field: 'bxdh', title: '工单状态'}
+                ,{field: 'bxdh', title: '处理措施'}
+                ,{field: 'bxdh', title: '保修日期'}
+                ,{field: 'wxjsrq', title: '维修结束日期'}
+                ,{field: 'bxdh', title: '停机时间'}
+                ,{field: 'bz', title: '备注'}
+            ]]
+        });
+    });
+    $('#add').on('click', function(){
+        //页面层
+        layer.open({
+            type:2,
+            title:false,
+            area: ['420px', '730px'], //宽高
+            shadeClose: true, //点击遮罩关闭
+            content:['add.html', 'no'] //这里content是一个URL，不让iframe出现滚动条
+        });
+    })
+</script>
+</body>
+</html>

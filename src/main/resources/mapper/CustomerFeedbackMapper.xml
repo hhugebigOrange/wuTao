@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.CustomerFeedbackMapper">
+  <resultMap id="BaseResultMap" type="com.xunwei.som.pojo.CustomerFeedback">
+    <result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
+    <result column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="CUST_PHONE" jdbcType="CHAR" property="custPhone" />
+    <result column="FEEDBACK_TIME" jdbcType="TIMESTAMP" property="feedbackTime" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+  </resultMap>
+  <insert id="insert" parameterType="com.xunwei.som.pojo.CustomerFeedback">
+    insert into customer_feedback (CUST_NAME, ID, CUST_PHONE, 
+      FEEDBACK_TIME)
+    values (#{custName,jdbcType=VARCHAR}, #{id,jdbcType=VARCHAR}, #{custPhone,jdbcType=CHAR}, 
+      #{feedbackTime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xunwei.som.pojo.CustomerFeedback">
+    insert into customer_feedback
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="custName != null">
+        CUST_NAME,
+      </if>
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="custPhone != null">
+        CUST_PHONE,
+      </if>
+      <if test="feedbackTime != null">
+        FEEDBACK_TIME,
+      </if>
+      <if test="content != null">
+        CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="custName != null">
+        #{custName,jdbcType=VARCHAR},
+      </if>
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="custPhone != null">
+        #{custPhone,jdbcType=CHAR},
+      </if>
+      <if test="feedbackTime != null">
+        #{feedbackTime,jdbcType=TIMESTAMP},
+      </if>
+       <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="selectAllFeedback" resultMap="BaseResultMap">
+   select * from customer_feedback order by FEEDBACK_TIME desc
+  </select>
+</mapper>

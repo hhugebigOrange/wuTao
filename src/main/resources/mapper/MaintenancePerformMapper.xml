@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.MaintenancePerformMapper">
+	<resultMap id="BaseResultMap" type="com.xunwei.som.pojo.MaintenancePerform">
+		<result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
+		<result column="COMP_NAME" jdbcType="VARCHAR" property="compName" />
+		<result column="CONTRACT_CODE" jdbcType="VARCHAR" property="contractCode" />
+		<result column="MACH_CODE" jdbcType="VARCHAR" property="machCode" />
+		<result column="COMPLETE_TIME" jdbcType="TIMESTAMP" property="completeTime" />
+		<result column="MAIN_FREQUENCY" jdbcType="VARCHAR" property="mainFrequency" />
+		<result column="MAINTENANCE_STATE" jdbcType="INTEGER" property="maintenanceState" />
+		<result column="BW_READER" jdbcType="VARCHAR" property="bwReader" />
+		<result column="CO_READER" jdbcType="VARCHAR" property="coReader" />
+		<result column="MATERIAL_MODEL" jdbcType="VARCHAR" property="materialModel" />
+		<result column="MATERIAL_NUMBER" jdbcType="INTEGER" property="materialNumber" />
+		<result column="RESPONSIBLE_ENGINEER" jdbcType="VARCHAR"
+			property="responsibleEngineer" />
+		<result column="RESPONSIBLE_ID" jdbcType="VARCHAR" property="responsibleId" />
+		<result column="RESERVE_ENGINNER" jdbcType="VARCHAR" property="reserveEnginner" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+	</resultMap>
+	<insert id="insert" parameterType="com.xunwei.som.pojo.MaintenancePerform">
+		insert into maintenance_perform (CUST_NAME, COMP_NAME, CONTRACT_CODE,
+		MACH_CODE, COMPLETE_TIME, MAIN_FREQUENCY,
+		MAINTENANCE_STATE, BW_READER, CO_READER,
+		MATERIAL_MODEL, MATERIAL_NUMBER, RESPONSIBLE_ENGINEER,
+		RESPONSIBLE_ID, RESERVE_ENGINNER, REMARK
+		)
+		values (#{custName,jdbcType=VARCHAR}, #{compName,jdbcType=VARCHAR},
+		#{contractCode,jdbcType=VARCHAR},
+		#{machCode,jdbcType=VARCHAR}, #{completeTime,jdbcType=TIMESTAMP},
+		#{mainFrequency,jdbcType=VARCHAR},
+		#{maintenanceState,jdbcType=INTEGER}, #{bwReader,jdbcType=VARCHAR},
+		#{coReader,jdbcType=VARCHAR},
+		#{materialModel,jdbcType=VARCHAR}, #{materialNumber,jdbcType=INTEGER},
+		#{responsibleEngineer,jdbcType=VARCHAR},
+		#{responsibleId,jdbcType=VARCHAR},
+		#{reserveEnginner,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.xunwei.som.pojo.MaintenancePerform">
+		insert into maintenance_perform
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="custName != null">
+				CUST_NAME,
+			</if>
+			<if test="compName != null">
+				COMP_NAME,
+			</if>
+			<if test="contractCode != null">
+				CONTRACT_CODE,
+			</if>
+			<if test="machCode != null">
+				MACH_CODE,
+			</if>
+			<if test="completeTime != null">
+				COMPLETE_TIME,
+			</if>
+			<if test="mainFrequency != null">
+				MAIN_FREQUENCY,
+			</if>
+			<if test="maintenanceState != null">
+				MAINTENANCE_STATE,
+			</if>
+			<if test="bwReader != null">
+				BW_READER,
+			</if>
+			<if test="coReader != null">
+				CO_READER,
+			</if>
+			<if test="materialModel != null">
+				MATERIAL_MODEL,
+			</if>
+			<if test="materialNumber != null">
+				MATERIAL_NUMBER,
+			</if>
+			<if test="responsibleEngineer != null">
+				RESPONSIBLE_ENGINEER,
+			</if>
+			<if test="responsibleId != null">
+				RESPONSIBLE_ID,
+			</if>
+			<if test="reserveEnginner != null">
+				RESERVE_ENGINNER,
+			</if>
+			<if test="remark != null">
+				REMARK,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="custName != null">
+				#{custName,jdbcType=VARCHAR},
+			</if>
+			<if test="compName != null">
+				#{compName,jdbcType=VARCHAR},
+			</if>
+			<if test="contractCode != null">
+				#{contractCode,jdbcType=VARCHAR},
+			</if>
+			<if test="machCode != null">
+				#{machCode,jdbcType=VARCHAR},
+			</if>
+			<if test="completeTime != null">
+				#{completeTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="mainFrequency != null">
+				#{mainFrequency,jdbcType=VARCHAR},
+			</if>
+			<if test="maintenanceState != null">
+				#{maintenanceState,jdbcType=INTEGER},
+			</if>
+			<if test="bwReader != null">
+				#{bwReader,jdbcType=VARCHAR},
+			</if>
+			<if test="coReader != null">
+				#{coReader,jdbcType=VARCHAR},
+			</if>
+			<if test="materialModel != null">
+				#{materialModel,jdbcType=VARCHAR},
+			</if>
+			<if test="materialNumber != null">
+				#{materialNumber,jdbcType=INTEGER},
+			</if>
+			<if test="responsibleEngineer != null">
+				#{responsibleEngineer,jdbcType=VARCHAR},
+			</if>
+			<if test="responsibleId != null">
+				#{responsibleId,jdbcType=VARCHAR},
+			</if>
+			<if test="reserveEnginner != null">
+				#{reserveEnginner,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				#{remark,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectByDynamic" resultMap="BaseResultMap">
+		select * from maintenance_perform
+		<where>
+			<if test="record.custName != null and record.custName!=''">
+				AND CUST_NAME=#{record.custName}
+			</if>
+			<if test="record.compName != null and record.compName!=''">
+				AND COMP_NAME=#{record.compName}
+			</if>
+			<if test="record.contractCode != null and record.contractCode!=''">
+				AND CONTRACT_CODE=#{record.contractCode}
+			</if>
+			<if test="record.machCode != null and record.machCode!=''">
+				AND MACH_CODE=#{record.machCode}
+			</if>
+			<if test="record.mainFrequency != null and record.mainFrequency!=''">
+				AND MAIN_FREQUENCY=#{record.mainFrequency}
+			</if>
+			<if test="record.maintenanceState != null and record.maintenanceState!=''">
+				AND MAINTENANCE_STATE=#{record.maintenanceState}
+			</if>
+			<if test="record.bwReader != null and record.bwReader!=''">
+				AND BW_READER=#{record.bwReader}
+			</if>
+			<if test="record.coReader != null and record.coReader!=''">
+				AND CO_READER=#{record.coReader}
+			</if>
+			<if test="record.materialModel != null and record.materialModel!=''">
+				AND MATERIAL_MODEL=#{record.materialModel}
+			</if>
+			<if test="record.materialNumber != null and record.materialNumber!=''">
+				AND MATERIAL_NUMBER=#{record.materialNumber}
+			</if>
+			<if test="record.responsibleEngineer != null and record.responsibleEngineer!=''">
+				AND RESPONSIBLE_ENGINEER=#{record.responsibleEngineer}
+			</if>
+			<if test="record.responsibleId != null">
+				AND RESPONSIBLE_ID=#{record.responsibleId}
+			</if>
+			<if test="record.reserveEnginner != null and record.reserveEnginner!=''">
+				AND RESERVE_ENGINNER=#{record.reserveEnginner}
+			</if>
+			<if test="record.remark != null">
+				AND REMARK=#{record.remark}
+			</if>
+			<if test="startDate!=null">
+			    AND COMPLETE_TIME &gt;=#{startDate}
+			</if>
+			<if test="endDate!=null">
+			    AND COMPLETE_TIME &lt;=#{endDate}
+			</if>
+		</where>
+	</select>
+
+
+
+</mapper>

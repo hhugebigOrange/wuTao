@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>故障分析</title>
+    <link rel="stylesheet" href="../../css/layui.css">
+    <script src="../../js/layui.js"></script>
+    <script src="../../js/jquery.js"></script>
+    <link rel="stylesheet" href="../../css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="../../css/body.css">
+</head>
+<body>
+<div class="title">
+    <span>故障分析</span><span class="particulars">服务管理>>故障分析</span>
+</div>
+<div class="abovebtn">
+    <form class="layui-form" action="">
+        <div class="layui-inline">
+            <label class="layui-form-label">服务评价：</label>
+            <div class="layui-input-block">
+                <select name="type" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="0">满意</option>
+                    <option value="1">一般</option>
+                    <option value="2">极差</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">日期范围</label>
+            <div class="layui-input-inline">
+                <input class="layui-input" id="test6" type="text" placeholder=" - ">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-bg-gray" lay-filter="demo1" lay-submit="">查询</button>
+            </div>
+        </div>
+    </form>
+    <div class="btn">
+        <button class="layui-btn layui-bg-gray">清除</button>
+        <button class="layui-btn layui-bg-gray">查看所有</button>
+        <button class="layui-btn layui-bg-gray">导出</button>
+    </div>
+</div>
+<div class="tab">
+    <table id="demo" lay-filter="test"></table>
+</div>
+
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        //日期范围
+        layui.use('laydate', function () {
+            var laydate = layui.laydate;
+
+        })
+
+
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#demo'
+                , height: 312
+                , cellMinWidth: 80
+                , url: '/demo/table/user/' //数据接口
+                , page: true //开启分页
+                , cols: [[ //表头
+                    {field: 'id', title: 'NO', sort: true}
+                    , {field: 'username', title: '工单号码'}
+                    , {field: 'sex', title: '客户名称'}
+                    , {field: 'city', title: '报修人'}
+                    , {field: 'sign', title: '报修电话',}
+                    , {field: 'experience', title: '维修工程师'}
+                    , {field: 'score', title: '服务区域'}
+                    , {field: 'bxr', title: '实际得分'}
+                    , {field: 'fwpj', title: '服务评价'}
+                    , {field: 'tsyjylr', title: '投诉与建议内容'}
+                    , {field: 'bz', title: '备注'}
+                ]]
+            });
+        });
+    })
+
+</script>
+</body>
+</html>

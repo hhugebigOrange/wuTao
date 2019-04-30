@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.AssessmentMapper">
+  <resultMap id="BaseResultMap" type="com.xunwei.som.pojo.Assessment">
+    <id column="assessment_name" jdbcType="VARCHAR" property="assessmentName" />
+    <result column="assessment_value" jdbcType="INTEGER" property="assessmentValue" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    assessment_name, assessment_value
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from assessment
+    where assessment_name = #{assessmentName,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from assessment
+    where assessment_name = #{assessmentName,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.xunwei.som.pojo.Assessment">
+    insert into assessment (assessment_name, assessment_value)
+    values (#{assessmentName,jdbcType=VARCHAR}, #{assessmentValue,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xunwei.som.pojo.Assessment">
+    insert into assessment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="assessmentName != null">
+        assessment_name,
+      </if>
+      <if test="assessmentValue != null">
+        assessment_value,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="assessmentName != null">
+        #{assessmentName,jdbcType=VARCHAR},
+      </if>
+      <if test="assessmentValue != null">
+        #{assessmentValue,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunwei.som.pojo.Assessment">
+    update assessment
+    <set>
+      <if test="assessmentValue != null">
+        assessment_value = #{assessmentValue,jdbcType=INTEGER},
+      </if>
+    </set>
+    where assessment_name = #{assessmentName,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xunwei.som.pojo.Assessment">
+    update assessment
+    set assessment_value = #{assessmentValue,jdbcType=INTEGER}
+    where assessment_name = #{assessmentName,jdbcType=VARCHAR}
+  </update>
+</mapper>

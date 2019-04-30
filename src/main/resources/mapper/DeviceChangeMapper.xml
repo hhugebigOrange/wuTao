@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.DeviceChangeMapper">
+  <resultMap id="BaseResultMap" type="com.xunwei.som.pojo.DeviceChange">
+    <result column="MACH_CODE" jdbcType="VARCHAR" property="machCode" />
+    <result column="CHANGE_TYPE" jdbcType="VARCHAR" property="changeType" />
+    <result column="SERVICE_AREA" jdbcType="VARCHAR" property="serviceArea" />
+    <result column="LOCATION" jdbcType="VARCHAR" property="location" />
+    <result column="DEPARTMENT" jdbcType="VARCHAR" property="department" />
+    <result column="SERVICE_LEVEL" jdbcType="INTEGER" property="serviceLevel" />
+    <result column="RESPONSIBLE_ENGINEER" jdbcType="VARCHAR" property="responsibleEngineer" />
+    <result column="RESPONSIBLE_ENGINEER_ID" jdbcType="VARCHAR" property="responsibleEngineerId" />
+    <result column="RESERVE_ENGINNER" jdbcType="VARCHAR" property="reserveEnginner" />
+    <result column="RESERVE_ENGINNER_ID" jdbcType="VARCHAR" property="reserveEnginnerId" />
+    <result column="BW_READER" jdbcType="VARCHAR" property="bwReader" />
+    <result column="COLOR_READER" jdbcType="VARCHAR" property="colorReader" />
+    <result column="INSTALLED_TIME" jdbcType="DATE" property="installedTime" />
+    <result column="SERCET" jdbcType="CHAR" property="sercet" />
+    <result column="SERCET_LEVEL" jdbcType="CHAR" property="sercetLevel" />
+    <result column="IP" jdbcType="VARCHAR" property="IP" />
+    <result column="CHANGE_TIME" jdbcType="TIMESTAMP" property="changeTime" />
+    <result column="CHANGE_MAN" jdbcType="VARCHAR" property="changeMan" />
+    <result column="CHANGE_MAN_ID" jdbcType="VARCHAR" property="changeManId" />
+  </resultMap>
+  <insert id="insert" parameterType="com.xunwei.som.pojo.DeviceChange">
+    insert into device_change (MACH_CODE, CHANGE_TYPE, SERVICE_AREA, 
+      LOCATION, DEPARTMENT, SERVICE_LEVEL, 
+      RESPONSIBLE_ENGINEER, RESPONSIBLE_ENGINEER_ID, 
+      RESERVE_ENGINNER, RESERVE_ENGINNER_ID, BW_READER, 
+      COLOR_READER, INSTALLED_TIME, SERCET, 
+      SERCET_LEVEL, CHANGE_TIME, CHANGE_MAN, 
+      CHANGE_MAN_ID)
+    values (#{machCode,jdbcType=VARCHAR}, #{changeType,jdbcType=VARCHAR}, #{serviceArea,jdbcType=VARCHAR}, 
+      #{location,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR}, #{serviceLevel,jdbcType=INTEGER}, 
+      #{responsibleEngineer,jdbcType=VARCHAR}, #{responsibleEngineerId,jdbcType=VARCHAR}, 
+      #{reserveEnginner,jdbcType=VARCHAR}, #{reserveEnginnerId,jdbcType=VARCHAR}, #{bwReader,jdbcType=VARCHAR}, 
+      #{colorReader,jdbcType=VARCHAR}, #{installedTime,jdbcType=DATE}, #{sercet,jdbcType=CHAR}, 
+      #{sercetLevel,jdbcType=CHAR}, #{changeTime,jdbcType=TIMESTAMP}, #{changeMan,jdbcType=VARCHAR}, 
+      #{changeManId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xunwei.som.pojo.DeviceChange">
+    insert into device_change
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="machCode != null">
+        MACH_CODE,
+      </if>
+      <if test="changeType != null">
+        CHANGE_TYPE,
+      </if>
+      <if test="serviceArea != null">
+        SERVICE_AREA,
+      </if>
+      <if test="location != null">
+        LOCATION,
+      </if>
+      <if test="department != null">
+        DEPARTMENT,
+      </if>
+      <if test="serviceLevel != null">
+        SERVICE_LEVEL,
+      </if>
+      <if test="responsibleEngineer != null">
+        RESPONSIBLE_ENGINEER,
+      </if>
+      <if test="responsibleEngineerId != null">
+        RESPONSIBLE_ENGINEER_ID,
+      </if>
+      <if test="reserveEnginner != null">
+        RESERVE_ENGINNER,
+      </if>
+      <if test="reserveEnginnerId != null">
+        RESERVE_ENGINNER_ID,
+      </if>
+      <if test="bwReader != null">
+        BW_READER,
+      </if>
+      <if test="colorReader != null">
+        COLOR_READER,
+      </if>
+      <if test="installedTime != null">
+        INSTALLED_TIME,
+      </if>
+      <if test="sercet != null">
+        SERCET,
+      </if>
+      <if test="sercetLevel != null">
+        SERCET_LEVEL,
+      </if>
+       <if test="IP != null">
+        IP,
+      </if>
+      <if test="changeTime != null">
+        CHANGE_TIME,
+      </if>
+      <if test="changeMan != null">
+        CHANGE_MAN,
+      </if>
+      <if test="changeManId != null">
+        CHANGE_MAN_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="machCode != null">
+        #{machCode,jdbcType=VARCHAR},
+      </if>
+      <if test="changeType != null">
+        #{changeType,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceArea != null">
+        #{serviceArea,jdbcType=VARCHAR},
+      </if>
+      <if test="location != null">
+        #{location,jdbcType=VARCHAR},
+      </if>
+      <if test="department != null">
+        #{department,jdbcType=VARCHAR},
+      </if>
+      <if test="serviceLevel != null">
+        #{serviceLevel,jdbcType=INTEGER},
+      </if>
+      <if test="responsibleEngineer != null">
+        #{responsibleEngineer,jdbcType=VARCHAR},
+      </if>
+      <if test="responsibleEngineerId != null">
+        #{responsibleEngineerId,jdbcType=VARCHAR},
+      </if>
+      <if test="reserveEnginner != null">
+        #{reserveEnginner,jdbcType=VARCHAR},
+      </if>
+      <if test="reserveEnginnerId != null">
+        #{reserveEnginnerId,jdbcType=VARCHAR},
+      </if>
+      <if test="bwReader != null">
+        #{bwReader,jdbcType=VARCHAR},
+      </if>
+      <if test="colorReader != null">
+        #{colorReader,jdbcType=VARCHAR},
+      </if>
+      <if test="installedTime != null">
+        #{installedTime,jdbcType=DATE},
+      </if>
+      <if test="sercet != null">
+        #{sercet,jdbcType=CHAR},
+      </if>
+      <if test="sercetLevel != null">
+        #{sercetLevel,jdbcType=CHAR},
+      </if>
+       <if test="IP != null">
+        #{IP,jdbcType=VARCHAR},
+      </if>
+      <if test="changeTime != null">
+        #{changeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="changeMan != null">
+        #{changeMan,jdbcType=VARCHAR},
+      </if>
+      <if test="changeManId != null">
+        #{changeManId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

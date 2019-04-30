@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.UserMapper">
+	<resultMap id="BaseResultMap" type="com.xunwei.som.pojo.permissions.User">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<id column="user_id" jdbcType="VARCHAR" property="userId" />
+		<result column="user_name" jdbcType="VARCHAR" property="userName" />
+		<result column="password" jdbcType="VARCHAR" property="password" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="create_timed" jdbcType="TIMESTAMP" property="createTimed" />
+		<result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+		<result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+		<result column="cust_name" jdbcType="VARCHAR" property="custName" />
+		<result column="open_id" jdbcType="VARCHAR" property="openId" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_id, user_name, password, status, create_timed,
+		update_time,
+		last_login_time
+	</sql>
+	<select id="selectByUserId" resultMap="BaseResultMap">
+		select * from user where
+		user_id = #{userId}
+	</select>
+
+	<delete id="deleteByPrimaryKey">
+		delete from user where user_id
+		=#{userId,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.xunwei.som.pojo.permissions.User">
+		insert into user (id, user_id,
+		user_name,
+		password, status, create_timed,
+		update_time, last_login_time)
+		values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR},
+		#{userName,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{status,jdbcType=INTEGER}, #{createTimed,jdbcType=TIMESTAMP},
+		#{updateTime,jdbcType=TIMESTAMP}, #{lastLoginTime,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xunwei.som.pojo.permissions.User">
+		insert into user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="createTimed != null">
+				create_timed,
+			</if>
+			<if test="updateTime != null">
+				update_time,
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time,
+			</if>
+			<if test="custName != null">
+				cust_name,
+			</if>
+			<if test="openId != null">
+				open_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTimed != null">
+				#{createTimed,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				#{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastLoginTime != null">
+				#{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="custName != null">
+				#{custName,jdbcType=VARCHAR},
+			</if>
+			<if test="openId != null">
+				#{openId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.xunwei.som.pojo.permissions.User">
+		update user
+		<set>
+			<if test="userId != null and userId!=''">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="userName != null and userName!=''">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null and password!=''">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="status != null and status!=''">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="createTimed != null">
+				create_timed = #{createTimed,jdbcType=TIMESTAMP},
+			</if>
+			<if test="updateTime != null">
+				update_time = #{updateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="lastLoginTime != null">
+				last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="custName != null and custName!=''">
+				cust_name = #{custName,jdbcType=VARCHAR},
+			</if>
+			<if test="openId != null and openId!=''">
+				open_id = #{openId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<where>
+		    <if test="userId != null and id !=null ">
+			AND id = #{id,jdbcType=VARCHAR}
+			</if>
+			<if test="userId != null and id ==null">
+			AND	user_id = #{userId,jdbcType=VARCHAR}
+			</if>
+		</where>
+	
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xunwei.som.pojo.permissions.User">
+		update user
+		set
+		user_name = #{userName,jdbcType=VARCHAR},
+		password =
+		#{password,jdbcType=VARCHAR},
+		status = #{status,jdbcType=INTEGER},
+		create_timed = #{createTimed,jdbcType=TIMESTAMP},
+		update_time =
+		#{updateTime,jdbcType=TIMESTAMP},
+		last_login_time =
+		#{lastLoginTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+		and user_id = #{userId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectAllUser" resultMap="BaseResultMap">
+		select * from user
+	</select>
+
+	<select id="selectUserByRole" resultMap="BaseResultMap">
+		SELECT us.* FROM
+		user_role u
+		LEFT JOIN user us
+		ON u.user_id = us.user_id
+		<where>
+			<if test="role!=null and role!=''">
+				and u.role_id like concat('%',#{role},'%')
+			</if>
+			<if test="custName!=null and custName!=''">
+				and us.cust_name like concat('%',#{custName},'%')
+			</if>
+			<if test="phone!=null and phone!=''">
+				and us.user_id like concat('%',#{phone},'%')
+			</if>
+		</where>
+	</select>
+
+</mapper>

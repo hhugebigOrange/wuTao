@@ -1,0 +1,589 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.DeviceMapper">
+	<resultMap id="BaseResultMap" type="com.xunwei.som.pojo.Device">
+		<id column="ID" jdbcType="INTEGER" property="Id" />
+		<result column="MACH_CODE" jdbcType="VARCHAR" property="machCode" />
+		<result column="DEV_NAME" jdbcType="VARCHAR" property="devName" />
+		<result column="DEVICE_BRAND" jdbcType="VARCHAR" property="deviceBrand" />
+		<result column="UNIT_TYPE" jdbcType="VARCHAR" property="unitType" />
+		<result column="DEVICE_BOUND" jdbcType="VARCHAR" property="deviceBound" />
+		<result column="DEVICE_TYPE" jdbcType="VARCHAR" property="deviceType" />
+		<result column="OUTPUT_SPEC" jdbcType="VARCHAR" property="outputSpec" />
+		<result column="ES_NUMBER" jdbcType="VARCHAR" property="esNumber" />
+		<result column="CUST_AREA" jdbcType="VARCHAR" property="custArea" />
+		<result column="SERVICE_AREA" jdbcType="VARCHAR" property="serviceArea" />
+		<result column="DEPARTMENT" jdbcType="VARCHAR" property="department" />
+		<result column="SERVICE_LEVEL" jdbcType="VARCHAR" property="serviceLevel" />
+		<result column="CUST_LINKMAN" jdbcType="VARCHAR" property="custLinkman" />
+		<result column="LINKMAN_PHONE" jdbcType="VARCHAR" property="linkmanPhone" />
+		<result column="RESPONSIBLE_ENGINEER" jdbcType="VARCHAR"
+			property="responsibleEngineer" />
+		<result column="RESPONSIBLE_ENGINEER_ID" jdbcType="VARCHAR"
+			property="responsibleEngineerID" />
+		<result column="RESERVE_ENGINNER" jdbcType="VARCHAR" property="reserveEnginner" />
+		<result column="RESERVE_ENGINNER_ID" jdbcType="VARCHAR"
+			property="reserveEnginnerID" />
+		<result column="BW_READER" jdbcType="VARCHAR" property="bwReader" />
+		<result column="COLOR_READER" jdbcType="VARCHAR" property="colorReader" />
+		<result column="INSTALLED_TIME" jdbcType="DATE" property="installedTime" />
+		<result column="ASSET_ATTR" jdbcType="VARCHAR" property="assetAttr" />
+		<result column="ASSET_NUMBER" jdbcType="VARCHAR" property="assetNumber" />
+		<result column="CHANGE_TYPE" jdbcType="VARCHAR" property="changeType" />
+		<result column="LOCATION" jdbcType="VARCHAR" property="location" />
+		<result column="CONTRACT_NO" jdbcType="VARCHAR" property="contractNo" />
+		<result column="SERCET" jdbcType="VARCHAR" property="secret" />
+		<result column="SERCET_LEVEL" jdbcType="VARCHAR" property="secretLevel" />
+		<result column="ASSET_CLASS" jdbcType="VARCHAR" property="assetClass" />
+		<result column="SPECIFICATIONS" jdbcType="VARCHAR" property="specifications" />
+		<result column="HOLD_MAN" jdbcType="VARCHAR" property="holdMan" />
+		<result column="HOLD_DEPARTMENT" jdbcType="VARCHAR" property="holdDepartment" />
+		<result column="IP" jdbcType="VARCHAR" property="IP" />
+		<result column="ASSET_STATUS" jdbcType="VARCHAR" property="assetStatus" />
+		
+	</resultMap>
+	<sql id="Base_Column_List">
+		MACH_CODE, DEV_NAME, DEVICE_BRAND, UNIT_TYPE, DEVICE_BOUND,
+		DEVICE_TYPE,
+		OUTPUT_SPEC,
+		ES_NUMBER, CUST_AREA, SERVICE_AREA,
+		DEPARTMENT, SERVICE_LEVEL, CUST_LINKMAN,
+		LINKMAN_PHONE,
+		RESPONSIBLE_ENGINEER, RESERVE_ENGINNER, BW_READER, COLOR_READER,
+		INSTALLED_TIME,
+		ASSET_ATTR, ASSET_NUMBER
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		*
+		from device
+		where MACH_CODE =
+		#{machCode,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from device
+		where MACH_CODE = #{machCode,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.xunwei.som.pojo.Device">
+		insert into device (MACH_CODE,
+		DEV_NAME, DEVICE_BRAND,
+		UNIT_TYPE, DEVICE_BOUND, DEVICE_TYPE,
+		OUTPUT_SPEC, ES_NUMBER, CUST_AREA,
+		SERVICE_AREA, DEPARTMENT,
+		SERVICE_LEVEL,
+		CUST_LINKMAN, LINKMAN_PHONE, RESPONSIBLE_ENGINEER,
+		RESERVE_ENGINNER, BW_READER, COLOR_READER,
+		INSTALLED_TIME, ASSET_ATTR,
+		ASSET_NUMBER
+		)
+		values (#{machCode,jdbcType=VARCHAR},
+		#{devName,jdbcType=VARCHAR},
+		#{deviceBrand,jdbcType=VARCHAR},
+		#{unitType,jdbcType=VARCHAR}, #{deviceBound,jdbcType=VARCHAR},
+		#{deviceType,jdbcType=VARCHAR},
+		#{outputSpec,jdbcType=VARCHAR},
+		#{esNumber,jdbcType=VARCHAR},
+		#{custArea,jdbcType=VARCHAR},
+		#{serviceArea,jdbcType=VARCHAR}, #{department,jdbcType=VARCHAR},
+		#{serviceLevel,jdbcType=VARCHAR},
+		#{custLinkman,jdbcType=VARCHAR},
+		#{linkmanPhone,jdbcType=VARCHAR},
+		#{responsibleEngineer,jdbcType=VARCHAR},
+		#{reserveEnginner,jdbcType=VARCHAR}, #{bwReader,jdbcType=VARCHAR},
+		#{colorReader,jdbcType=VARCHAR},
+		#{installedTime,jdbcType=DATE},
+		#{assetAttr,jdbcType=VARCHAR}, #{assetNumber,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.xunwei.som.pojo.Device">
+		insert into device
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="machCode != null">
+				MACH_CODE,
+			</if>
+			<if test="devName != null">
+				DEV_NAME,
+			</if>
+			<if test="deviceBrand != null">
+				DEVICE_BRAND,
+			</if>
+			<if test="unitType != null">
+				UNIT_TYPE,
+			</if>
+			<if test="deviceBound != null">
+				DEVICE_BOUND,
+			</if>
+			<if test="deviceType != null">
+				DEVICE_TYPE,
+			</if>
+			<if test="outputSpec != null">
+				OUTPUT_SPEC,
+			</if>
+			<if test="esNumber != null">
+				ES_NUMBER,
+			</if>
+			<if test="custArea != null">
+				CUST_AREA,
+			</if>
+			<if test="serviceArea != null">
+				SERVICE_AREA,
+			</if>
+			<if test="department != null">
+				DEPARTMENT,
+			</if>
+			<if test="serviceLevel != null">
+				SERVICE_LEVEL,
+			</if>
+			<if test="custLinkman != null">
+				CUST_LINKMAN,
+			</if>
+			<if test="linkmanPhone != null">
+				LINKMAN_PHONE,
+			</if>
+			<if test="responsibleEngineer != null">
+				RESPONSIBLE_ENGINEER,
+			</if>
+			<if test="reserveEnginner != null">
+				RESERVE_ENGINNER,
+			</if>
+			<if test="bwReader != null">
+				BW_READER,
+			</if>
+			<if test="colorReader != null">
+				COLOR_READER,
+			</if>
+			<if test="installedTime != null">
+				INSTALLED_TIME,
+			</if>
+			<if test="assetAttr != null">
+				ASSET_ATTR,
+			</if>
+			<if test="assetNumber != null">
+				ASSET_NUMBER,
+			</if>
+			<if test="changeType != null">
+				CHANGE_TYPE,
+			</if>
+			<if test="location != null">
+				LOCATION,
+			</if>
+			<if test="contractNo != null">
+				CONTRACT_NO,
+			</if>
+			<if test="secret != null">
+				SERCET,
+			</if>
+			<if test="secretLevel != null">
+				SERCET_LEVEL,
+			</if>
+			<if test="assetClass != null">
+				ASSET_CLASS,
+			</if>
+			<if test="specifications != null">
+				SPECIFICATIONS,
+			</if>
+			<if test="holdMan != null">
+				HOLD_MAN,
+			</if>
+			<if test="holdDepartment != null">
+				HOLD_DEPARTMENT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="machCode != null">
+				#{machCode,jdbcType=VARCHAR},
+			</if>
+			<if test="devName != null">
+				#{devName,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceBrand != null">
+				#{deviceBrand,jdbcType=VARCHAR},
+			</if>
+			<if test="unitType != null">
+				#{unitType,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceBound != null">
+				#{deviceBound,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceType != null">
+				#{deviceType,jdbcType=VARCHAR},
+			</if>
+			<if test="outputSpec != null">
+				#{outputSpec,jdbcType=VARCHAR},
+			</if>
+			<if test="esNumber != null">
+				#{esNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="custArea != null">
+				#{custArea,jdbcType=VARCHAR},
+			</if>
+			<if test="serviceArea != null">
+				#{serviceArea,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				#{department,jdbcType=VARCHAR},
+			</if>
+			<if test="serviceLevel != null">
+				#{serviceLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="custLinkman != null">
+				#{custLinkman,jdbcType=VARCHAR},
+			</if>
+			<if test="linkmanPhone != null">
+				#{linkmanPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="responsibleEngineer != null">
+				#{responsibleEngineer,jdbcType=VARCHAR},
+			</if>
+			<if test="reserveEnginner != null">
+				#{reserveEnginner,jdbcType=VARCHAR},
+			</if>
+			<if test="bwReader != null">
+				#{bwReader,jdbcType=VARCHAR},
+			</if>
+			<if test="colorReader != null">
+				#{colorReader,jdbcType=VARCHAR},
+			</if>
+			<if test="installedTime != null">
+				#{installedTime,jdbcType=DATE},
+			</if>
+			<if test="assetAttr != null">
+				#{assetAttr,jdbcType=VARCHAR},
+			</if>
+			<if test="assetNumber != null">
+				#{assetNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="changeType != null">
+				#{changeType,jdbcType=VARCHAR},
+			</if>
+			<if test="location != null">
+				#{location,jdbcType=VARCHAR},
+			</if>
+			<if test="contractNo != null">
+				#{contractNo,jdbcType=VARCHAR},
+			</if>
+			<if test="secret != null">
+				#{secret,jdbcType=VARCHAR},
+			</if>
+			<if test="secretLevel != null">
+				#{secretLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="assetClass != null">
+				#{assetClass,jdbcType=VARCHAR},
+			</if>
+			<if test="specifications != null">
+				#{specifications,jdbcType=VARCHAR},
+			</if>
+			<if test="holdMan != null">
+				#{holdMan,jdbcType=VARCHAR},
+			</if>
+			<if test="holdDepartment != null">
+				#{holdDepartment,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xunwei.som.pojo.Device">
+		update device
+		<set>
+			<if test="machCode != null">
+				MACH_CODE = #{machCode,jdbcType=VARCHAR},
+			</if>
+			<if test="contractNo != null">
+				CONTRACT_NO = #{contractNo,jdbcType=VARCHAR},
+			</if>
+			<if test="devName != null">
+				DEV_NAME = #{devName,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceBrand != null">
+				DEVICE_BRAND = #{deviceBrand,jdbcType=VARCHAR},
+			</if>
+			<if test="unitType != null">
+				UNIT_TYPE = #{unitType,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceBound != null">
+				DEVICE_BOUND = #{deviceBound,jdbcType=VARCHAR},
+			</if>
+			<if test="deviceType != null">
+				DEVICE_TYPE = #{deviceType,jdbcType=VARCHAR},
+			</if>
+			<if test="outputSpec != null">
+				OUTPUT_SPEC = #{outputSpec,jdbcType=VARCHAR},
+			</if>
+			<if test="esNumber != null">
+				ES_NUMBER = #{esNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="custArea != null">
+				CUST_AREA = #{custArea,jdbcType=VARCHAR},
+			</if>
+			<if test="serviceArea != null">
+				SERVICE_AREA = #{serviceArea,jdbcType=VARCHAR},
+			</if>
+			<if test="department != null">
+				DEPARTMENT = #{department,jdbcType=VARCHAR},
+			</if>
+			<if test="serviceLevel != null">
+				SERVICE_LEVEL = #{serviceLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="custLinkman != null">
+				CUST_LINKMAN = #{custLinkman,jdbcType=VARCHAR},
+			</if>
+			<if test="linkmanPhone != null">
+				LINKMAN_PHONE = #{linkmanPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="responsibleEngineer != null">
+				RESPONSIBLE_ENGINEER =
+				#{responsibleEngineer,jdbcType=VARCHAR},
+			</if>
+			<if test="responsibleEngineerID != null">
+				RESPONSIBLE_ENGINEER_ID =
+				#{responsibleEngineerID,jdbcType=VARCHAR},
+			</if>
+			<if test="reserveEnginner != null">
+				RESERVE_ENGINNER = #{reserveEnginner,jdbcType=VARCHAR},
+			</if>
+			<if test="reserveEnginnerID != null">
+				RESERVE_ENGINNER_ID =
+				#{reserveEnginnerID,jdbcType=VARCHAR},
+			</if>
+			<if test="bwReader != null">
+				BW_READER = #{bwReader,jdbcType=VARCHAR},
+			</if>
+			<if test="colorReader != null">
+				COLOR_READER = #{colorReader,jdbcType=VARCHAR},
+			</if>
+			<if test="installedTime != null">
+				INSTALLED_TIME = #{installedTime,jdbcType=DATE},
+			</if>
+			<if test="assetAttr != null">
+				ASSET_ATTR = #{assetAttr,jdbcType=VARCHAR},
+			</if>
+			<if test="assetNumber != null">
+				ASSET_NUMBER = #{assetNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="changeType != null">
+				CHANGE_TYPE = #{changeType,jdbcType=VARCHAR},
+			</if>
+			<if test="location != null">
+				LOCATION = #{location,jdbcType=VARCHAR},
+			</if>
+			<if test="changeType != null">
+				SERCET = #{secret,jdbcType=VARCHAR},
+			</if>
+			<if test="location != null">
+				SERCET_LEVEL = #{secretLevel,jdbcType=VARCHAR},
+			</if>
+			<if test="IP != null">
+				IP = #{IP,jdbcType=VARCHAR},
+			</if>
+			<if test="assetClass != null">
+				ASSET_CLASS = #{assetClass,jdbcType=VARCHAR},
+			</if>
+			<if test="specifications != null">
+				SPECIFICATIONS = #{specifications,jdbcType=VARCHAR},
+			</if>
+			<if test="holdMan != null">
+				HOLD_MAN = #{holdMan,jdbcType=VARCHAR},
+			</if>
+			<if test="holdDepartment != null">
+				HOLD_DEPARTMENT = #{holdDepartment,jdbcType=VARCHAR},
+			</if>
+			<if test="assetStatus != null">
+				ASSET_STATUS = #{assetStatus,jdbcType=VARCHAR},
+			</if>
+		</set>
+		<where>
+			<if test="machCode != null and Id !=null">
+				ID = #{Id,jdbcType=INTEGER}
+			</if>
+			<if test="machCode != null and Id == null">
+				MACH_CODE = #{machCode,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</update>
+
+	<update id="updateByPrimaryKey" parameterType="com.xunwei.som.pojo.Device">
+		update device
+		set
+		DEV_NAME = #{devName,jdbcType=VARCHAR},
+		DEVICE_BRAND =
+		#{deviceBrand,jdbcType=VARCHAR},
+		UNIT_TYPE =
+		#{unitType,jdbcType=VARCHAR},
+		DEVICE_BOUND =
+		#{deviceBound,jdbcType=VARCHAR},
+		DEVICE_TYPE =
+		#{deviceType,jdbcType=VARCHAR},
+		OUTPUT_SPEC =
+		#{outputSpec,jdbcType=VARCHAR},
+		ES_NUMBER =
+		#{esNumber,jdbcType=VARCHAR},
+		CUST_AREA = #{custArea,jdbcType=VARCHAR},
+		SERVICE_AREA = #{serviceArea,jdbcType=VARCHAR},
+		DEPARTMENT =
+		#{department,jdbcType=VARCHAR},
+		SERVICE_LEVEL =
+		#{serviceLevel,jdbcType=VARCHAR},
+		CUST_LINKMAN =
+		#{custLinkman,jdbcType=VARCHAR},
+		LINKMAN_PHONE =
+		#{linkmanPhone,jdbcType=VARCHAR},
+		RESPONSIBLE_ENGINEER =
+		#{responsibleEngineer,jdbcType=VARCHAR},
+		RESERVE_ENGINNER =
+		#{reserveEnginner,jdbcType=VARCHAR},
+		BW_READER =
+		#{bwReader,jdbcType=VARCHAR},
+		COLOR_READER =
+		#{colorReader,jdbcType=VARCHAR},
+		INSTALLED_TIME =
+		#{installedTime,jdbcType=DATE},
+		ASSET_ATTR =
+		#{assetAttr,jdbcType=VARCHAR},
+		ASSET_NUMBER =
+		#{assetNumber,jdbcType=VARCHAR}
+		where MACH_CODE =
+		#{machCode,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectByDynamic" resultMap="BaseResultMap">
+		select * from device
+		<where>
+			<if test="serviceArea!=null and serviceArea!=''">
+				AND SERVICE_AREA like concat('%',#{serviceArea},'%')
+			</if>
+			<if test="identifier!=null and identifier!=''">
+				AND SERVICE_AREA IN ('广州乐派数码科技有限公司','行业客户部','系统推进部')
+			</if>
+			<if test="custArea!=null and custArea!=''">
+				AND CUST_AREA like concat('%',#{custArea},'%')
+			</if>
+			<if test="assetAttr!=null and assetAttr!=''">
+				AND ASSET_ATTR like concat('%',#{assetAttr},'%')
+			</if>
+			<if test="machCode!=null and machCode!=''">
+				AND MACH_CODE = #{machCode}
+			</if>
+		</where>
+		ORDER BY CREATE_TIME DESC
+		<if test="page!=null and limit!=''">
+			limit #{page},#{limit}
+		</if>
+	</select>
+
+	<select id="selectByDevice" resultMap="BaseResultMap">
+		SELECT d.* FROM
+		device d LEFT JOIN
+		contract c
+		ON
+		d.CONTRACT_NO=c.CONTRACT_NO
+		<where>
+			<if test="custName!=null and custName!=''">
+				AND d.cust_area like concat('%',#{custName},'%')
+			</if>
+			<if test="serviceArea!=null and serviceArea!=''">
+				AND d.SERVICE_AREA like concat('%',#{serviceArea},'%')
+			</if>
+			<if test="unitType!=null and unitType!=''">
+				AND d.UNIT_TYPE like concat('%',#{unitType},'%')
+			</if>
+			<if test="assetAttr!=null and assetAttr!=''">
+				AND d.ASSET_ATTR like concat('%',#{assetAttr},'%')
+			</if>
+		</where>
+		<if test="page!=null and limit!=''">
+			limit #{page},#{limit}
+		</if>
+	</select>
+
+	<select id="selectDeviceById" resultMap="BaseResultMap">
+		select * from device
+		where MACH_CODE=#{id}
+	</select>
+
+	<select id="selectDeviceByID" resultMap="BaseResultMap">
+		select * from device
+		where ID=#{id}
+	</select>
+
+
+	<select id="selectDeviceNumByCustName" resultMap="BaseResultMap">
+		SELECT d.*
+		FROM
+		device d
+		LEFT JOIN contract c
+		ON
+		d.CONTRACT_NO=c.CONTRACT_NO WHERE
+		c.cust_name LIKE concat('%',#{custName},'%')
+	</select>
+
+
+	<select id="selectMaintNumByCustName" resultMap="BaseResultMap">
+		SELECT d.*
+		FROM
+		device d
+		LEFT JOIN contract c
+		ON
+		d.CONTRACT_NO=c.CONTRACT_NO
+		LEFT JOIN
+		maintenance m
+		ON m.CONTRACT_CODE=d.CONTRACT_NO
+		WHERE
+		c.cust_name LIKE
+		concat('%',#{custName},'%')
+	</select>
+
+	<select id="selectByKpi" resultMap="BaseResultMap">
+		select * from device
+		<where>
+			<if test="serviceArea!=null and serviceArea!=''">
+				AND SERVICE_AREA like concat('%',#{serviceArea},'%')
+			</if>
+			<if test="identifier!=null and identifier!=''">
+				AND SERVICE_AREA in ('广州乐派数码科技有限公司','行业客户部','系统推进部')
+			</if>
+			<if test="custArea!=null and custArea!=''">
+				AND CUST_AREA like concat('%',#{custArea},'%')
+			</if>
+			<if test="contartctNo!=null and contartctNo!=''">
+				AND CONTRACT_NO=#{contartctNo}
+			</if>
+		</where>
+		<if test="page!=null and limit!=null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+
+	<select id="selectDeviceByAsSetNumber" resultMap="BaseResultMap">
+		select * from
+		device
+		where ASSET_NUMBER=#{asSetNumber}
+	</select>
+
+	<update id="cleanDeviceAttribute">
+		UPDATE device SET
+		SERVICE_LEVEL=NULL,
+		LOCATION=NULL,
+		DEPARTMENT=NULL,
+		CUST_AREA=NULL,
+		SERVICE_LEVEL=NULL,
+		RESPONSIBLE_ENGINEER=NULL,
+		RESPONSIBLE_ENGINEER_ID=NULL,
+		RESERVE_ENGINNER=NULL,
+		RESERVE_ENGINNER_ID=NULL,
+		IP=NULL,
+		INSTALLED_TIME=NULL,
+		CONTRACT_NO=NULL,
+		SERCET=NULL,
+		SERCET_LEVEL=NULL
+		WHERE MACH_CODE=#{machCode}
+	</update>
+
+	<update id="updateDeviceServiceArea">
+		update device SET SERVICE_AREA=#{newServiceArea}
+		WHERE
+		SERVICE_AREA=#{oldServiceArea}
+	</update>
+
+
+</mapper>

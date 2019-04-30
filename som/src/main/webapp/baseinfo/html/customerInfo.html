@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript">
+	window.onload = function() {
+		var tfrow = document.getElementById('tfhover').rows.length;
+		var tbRow = [];
+		for (var i = 1; i < tfrow; i++) {
+			tbRow[i] = document.getElementById('tfhover').rows[i];
+			tbRow[i].onmouseover = function() {
+				this.style.backgroundColor = '#ffffff';
+			};
+			tbRow[i].onmouseout = function() {
+				this.style.backgroundColor = '#bedda7';
+			};
+		}
+	};
+</script>
+<style type="text/css">
+table.tftable {
+	font-size: 12px;
+	color: #333333;
+	width: 100%;
+	border-width: 1px;
+	border-color: #9dcc7a;
+	border-collapse: collapse;
+}
+
+table.tftable th {
+	font-size: 12px;
+	background-color: #abd28e;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #9dcc7a;
+	text-align: left;
+}
+
+table.tftable tr {
+	background-color: #bedda7;
+}
+
+table.tftable td {
+	font-size: 12px;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #9dcc7a;
+}
+</style>
+</head>
+<body>
+
+	<div>
+		<form action="">
+			<table>
+				<tr>
+					<th>客户名称</th>
+					<td><input type="text" name="customerName"></td>
+				</tr>
+				<tr>
+					<th><a href="/som/addCustomer">新增</a></th>
+					<td><input type="submit" value="查看"/></td>
+					<td><input type="reset" value="清除"/></td>
+					<td><input type="submit" value="查看所有"/></td>
+					<td><input type="submit" value="导出"/></td>
+					<td><a href="/som/homePage">返回首页</a></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+
+	<table id="tfhover" class="tftable" border="1">
+		<tr>
+			<th>NO</th>
+			<th>客户名称</th>
+			<th>客户地址</th>
+			<th>合同编码</th>
+			<th>联系人</th>
+			<th>联系电话</th>
+			<th>合同期限</th>
+			<th>合同起始日</th>
+			<th>合同终止日</th>
+			<th>设备数量</th>
+			<th>备注</th>
+		</tr>
+		<tr>
+			<td>Row:1 Cell:1</td>
+			<td>Row:1 Cell:2</td>
+			<td>Row:1 Cell:3</td>
+			<td>Row:1 Cell:4</td>
+			<td>Row:1 Cell:5</td>
+			<td>Row:1 Cell:6</td>
+			<td>Row:1 Cell:7</td>
+			<td>Row:1 Cell:8</td>
+			<td>Row:1 Cell:9</td>
+			<td>Row:1 Cell:10</td>
+			<td>Row:1 Cell:11</td>
+		</tr>
+		<tr>
+			<td>Row:2 Cell:1</td>
+			<td>Row:2 Cell:2</td>
+			<td>Row:2 Cell:3</td>
+			<td>Row:2 Cell:4</td>
+			<td>Row:2 Cell:5</td>
+			<td>Row:2 Cell:6</td>
+			<td>Row:2 Cell:7</td>
+			<td>Row:2 Cell:8</td>
+			<td>Row:2 Cell:9</td>
+			<td>Row:2 Cell:10</td>
+			<td>Row:2 Cell:11</td>
+		</tr>
+		<tr>
+			<td>Row:3 Cell:1</td>
+			<td>Row:3 Cell:2</td>
+			<td>Row:3 Cell:3</td>
+			<td>Row:3 Cell:4</td>
+			<td>Row:3 Cell:5</td>
+			<td>Row:3 Cell:6</td>
+			<td>Row:3 Cell:7</td>
+			<td>Row:3 Cell:8</td>
+			<td>Row:3 Cell:9</td>
+			<td>Row:3 Cell:10</td>
+			<td>Row:3 Cell:11</td>
+		</tr>
+		<tr>
+			<td>Row:4 Cell:1</td>
+			<td>Row:4 Cell:2</td>
+			<td>Row:4 Cell:3</td>
+			<td>Row:4 Cell:4</td>
+			<td>Row:4 Cell:5</td>
+			<td>Row:4 Cell:6</td>
+			<td>Row:4 Cell:7</td>
+			<td>Row:4 Cell:8</td>
+			<td>Row:4 Cell:9</td>
+			<td>Row:4 Cell:10</td>
+			<td>Row:4 Cell:11</td>
+		</tr>
+		<tr>
+			<td>Row:5 Cell:1</td>
+			<td>Row:5 Cell:2</td>
+			<td>Row:5 Cell:3</td>
+			<td>Row:5 Cell:4</td>
+			<td>Row:5 Cell:5</td>
+			<td>Row:5 Cell:6</td>
+			<td>Row:5 Cell:7</td>
+			<td>Row:5 Cell:8</td>
+			<td>Row:5 Cell:9</td>
+			<td>Row:5 Cell:10</td>
+			<td>Row:5 Cell:11</td>
+		</tr>
+		<tr>
+			<td>Row:6 Cell:1</td>
+			<td>Row:6 Cell:2</td>
+			<td>Row:6 Cell:3</td>
+			<td>Row:6 Cell:4</td>
+			<td>Row:6 Cell:5</td>
+			<td>Row:6 Cell:6</td>
+			<td>Row:6 Cell:7</td>
+			<td>Row:6 Cell:8</td>
+			<td>Row:6 Cell:9</td>
+			<td>Row:6 Cell:10</td>
+			<td>Row:6 Cell:11</td>
+		</tr>
+	</table>
+</body>
+</html>

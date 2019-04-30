@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>资产管理</title>
+    <script src="../../../js/layui.js"></script>
+    <link rel="stylesheet" href="../../../css/layui.css">
+    <link rel="stylesheet" href="../../../css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="../../../css/body.css">
+</head>
+<body>
+<div class="title">
+    <p>资产管理</p>
+</div>
+<div class="abovebtn">
+    <form class="layui-form" action="">
+        <div class="layui-inline">
+            <label class="layui-form-label">服务区域</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">客户名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">资产属性</label>
+            <div class="layui-input-block">
+                <select name="city" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="0">讯维</option>
+                    <option value="1">客户</option>
+                    <option value="2">其他</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-bg-gray" lay-filter="demo1" lay-submit="">查询</button>
+            </div>
+        </div>
+    </form>
+    <div class="btn">
+        <button class="layui-btn layui-bg-gray">查看</button>
+        <button class="layui-btn layui-bg-gray">清除</button>
+        <button class="layui-btn layui-bg-gray">查看所有</button>
+        <button class="layui-btn layui-bg-gray">导出</button>
+    </div>
+    <div class="labnum">
+        <label>资产总数量：<u>&nbsp&nbsp&nbsp&nbsp<span>123</span>&nbsp&nbsp&nbsp&nbsp</u></label>
+    </div>
+</div>
+
+<div class="contracttable">
+    <table class="layui-table" lay-data="{width:1600, url:'/test/table/demo2.json?v=2', page: true, limit: 6, limits:[6]}">
+    <thead>
+    <tr>
+        <th lay-data="{field:'no', width:70, sort: true}" rowspan="2">序号</th>
+        <th lay-data="{field:'khmc', width:90}" rowspan="2">客户名称</th>
+        <th lay-data="{field:'zcsx', width:90}" rowspan="2">资产属性</th>
+        <th lay-data="{field:'bgbf', width:90}" rowspan="2">保管部门</th>
+        <th lay-data="{field:'bgr', width:80}" rowspan="2">保管人</th>
+        <th lay-data="{field:'zcbh', width:90}" rowspan="2">资产编号</th>
+        <th lay-data="{field:'zclb', width:90}" rowspan="2">资产类别</th>
+        <th lay-data="{field:'zcmc', width:90}" rowspan="2">设备名称</th>
+        <th lay-data="{field:'xhgg', width:90}" rowspan="2">型号规格</th>
+        <th lay-data="{field:'dw', width:70}" rowspan="2">单位</th>
+        <th lay-data="{align:'center'}" colspan="5">账面数</th>
+        <th lay-data="{field:'sps', width:80}" rowspan="2">实盘数</th>
+        <th lay-data="{field:'username', width:80}" rowspan="2">实盘数</th>
+        <th lay-data="{align:'center'}" colspan="2">盘亏、馈差额</th>
+        <th lay-data="{field:'bz', width:70}" rowspan="2">备注</th>
+    </tr>
+    <tr>
+        <th lay-data="{field:'province', width:70}">数量</th>
+        <th lay-data="{field:'city', width:70}">单价</th>
+        <th lay-data="{field:'yz', width:70}">原值</th>
+        <th lay-data="{field:'ljzj', width:90}">累计折旧</th>
+        <th lay-data="{field:'jz', width:70}">净值</th>
+        <th lay-data="{field:'sl', width:70}">数量</th>
+        <th lay-data="{field:'je', width:70,toolbar: '#barDemo'}">金额</th>
+    </tr>
+    </thead>
+
+</table></div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+    layui.use('table', function(){
+        var table = layui.table;
+
+        table.on('edit(test)', function(obj){ //注：edit是固定事件名，test是table原始容器的属性 lay-filter="对应的值"
+            console.log(obj.value); //得到修改后的值
+            console.log(obj.field); //当前编辑的字段名
+            console.log(obj.data); //所在行的所有相关数据
+        });
+
+        //监听单元格编辑
+        table.on('edit(tableDemo)', function(obj){
+            var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+            layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+        });
+
+    });
+</script>
+</body>
+</html>

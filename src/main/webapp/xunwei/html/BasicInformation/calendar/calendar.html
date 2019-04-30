@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>工作日历</title>
+    <link rel="stylesheet" href="../../../css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="../../../css/modules/laydate/default/laydate.css">
+    <link rel="stylesheet" href="../../../css/layui.css">
+    <script src="../../../js/layui.js"></script>
+    <script src="../../../js/jquery.js"></script>
+    <link rel="stylesheet" href="../../../css/body.css">
+</head>
+<body>
+<div class="title">
+    <span>工作日历</span><span class="particulars">基本信息>>工作日历</span>
+</div>
+<form class="layui-form" action="" style="float: left;margin-right: 20px;">
+    <div class="layui-inline">
+        <label class="layui-form-label">服务区域</label>
+        <div class="layui-input-block">
+            <input name="title" class="layui-input" type="text" placeholder="必填项" autocomplete="off" lay-verify="title" >
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">工程师</label>
+        <div class="layui-input-block">
+            <select name="interest" lay-filter="aihao">
+                <option value="">请选择</option>
+                <option value="1">工程师1</option>
+                <option value="2">工程师2</option>
+                <option value="3">工程师3</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-inline">
+            <button class="layui-btn" lay-filter="demo1" lay-submit="" style="margin-left: 20px;">查询</button>
+    </div>
+</form>
+<button class="layui-btn" id="add">新增行程</button>
+<div class="tab">
+    <table id="demo" lay-filter="test"></table>
+</div>
+<script>
+    //年月选择器
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#test3'
+            ,type: 'month'
+        });
+    });
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            layer.alert(JSON.stringify(data.field), {title: '最终的提交信息' })
+            return false;
+        });
+    });
+
+    layui.use('table', function(){
+        var table = layui.table;
+        table.render({
+            elem: '#demo'
+            ,height: 300
+            ,width:1320
+            ,cellMinWidth:80
+            ,url: '/demo/table/user/' //数据接口
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {field: 'id', title: 'NO', sort: true,width:80}
+                ,{field: 'username', title: '服务区域'}
+                ,{field: 'sex', title: '员工编码'}
+                ,{field: 'city', title: '工程师'}
+                ,{field: 'sign', title: '电话',}
+                ,{field: 'experience', title: '工作状态'}
+                ,{field: 'score', title: '起始日'}
+                ,{field: 'bxr', title: '结束日'}
+                ,{field: 'bxdh', title: '事由原因'}
+                ,{field: 'bzz', title: '备注'}
+            ]]
+        });
+    });
+
+    $('#add').on('click', function(){
+        //页面层
+        layer.open({
+            type:2,
+            title:false,
+            area: ['420px', '530px'], //宽高
+            shadeClose: true, //点击遮罩关闭
+            content:['add.html', 'no'] //这里content是一个URL，不让iframe出现滚动条
+        });
+    })
+</script>
+</body>
+</html>

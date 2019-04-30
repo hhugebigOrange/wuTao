@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.DeviceInfoMapper">
+  <resultMap id="BaseResultMap" type="com.xunwei.som.pojo.DeviceInfo">
+    <id column="MACH_CODE" jdbcType="VARCHAR" property="machCode" />
+    <result column="ES_NUMBER" jdbcType="VARCHAR" property="esNumber" />
+    <result column="UNIT_TYPE" jdbcType="VARCHAR" property="unitType" />
+    <result column="DEV_NAME" jdbcType="VARCHAR" property="devName" />
+    <result column="MANUFA" jdbcType="VARCHAR" property="manufa" />
+    <result column="DEV_STATUS" jdbcType="VARCHAR" property="devStatus" />
+    <result column="EQ_LOCATION" jdbcType="VARCHAR" property="eqLocation" />
+    <result column="INS_DATE" jdbcType="DATE" property="insDate" />
+    <result column="SER_YEAR" jdbcType="INTEGER" property="serYear" />
+    <result column="COMP_NUMBER" jdbcType="INTEGER" property="compNumber" />
+    <result column="ASSET_ATTR" jdbcType="VARCHAR" property="assetAttr" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    MACH_CODE, ES_NUMBER, UNIT_TYPE, DEV_NAME, MANUFA, DEV_STATUS, EQ_LOCATION, INS_DATE, 
+    SER_YEAR, COMP_NUMBER, ASSET_ATTR, REMARK
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from device_info
+    where MACH_CODE = #{machCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from device_info
+    where MACH_CODE = #{machCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.xunwei.som.pojo.DeviceInfo">
+    insert into device_info (MACH_CODE, ES_NUMBER, UNIT_TYPE, 
+      DEV_NAME, MANUFA, DEV_STATUS, 
+      EQ_LOCATION, INS_DATE, SER_YEAR, 
+      COMP_NUMBER, ASSET_ATTR, REMARK
+      )
+    values (#{machCode,jdbcType=VARCHAR}, #{esNumber,jdbcType=VARCHAR}, #{unitType,jdbcType=VARCHAR}, 
+      #{devName,jdbcType=VARCHAR}, #{manufa,jdbcType=VARCHAR}, #{devStatus,jdbcType=VARCHAR}, 
+      #{eqLocation,jdbcType=VARCHAR}, #{insDate,jdbcType=DATE}, #{serYear,jdbcType=INTEGER}, 
+      #{compNumber,jdbcType=INTEGER}, #{assetAttr,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xunwei.som.pojo.DeviceInfo">
+    insert into device_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="machCode != null">
+        MACH_CODE,
+      </if>
+      <if test="esNumber != null">
+        ES_NUMBER,
+      </if>
+      <if test="unitType != null">
+        UNIT_TYPE,
+      </if>
+      <if test="devName != null">
+        DEV_NAME,
+      </if>
+      <if test="manufa != null">
+        MANUFA,
+      </if>
+      <if test="devStatus != null">
+        DEV_STATUS,
+      </if>
+      <if test="eqLocation != null">
+        EQ_LOCATION,
+      </if>
+      <if test="insDate != null">
+        INS_DATE,
+      </if>
+      <if test="serYear != null">
+        SER_YEAR,
+      </if>
+      <if test="compNumber != null">
+        COMP_NUMBER,
+      </if>
+      <if test="assetAttr != null">
+        ASSET_ATTR,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="machCode != null">
+        #{machCode,jdbcType=VARCHAR},
+      </if>
+      <if test="esNumber != null">
+        #{esNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="unitType != null">
+        #{unitType,jdbcType=VARCHAR},
+      </if>
+      <if test="devName != null">
+        #{devName,jdbcType=VARCHAR},
+      </if>
+      <if test="manufa != null">
+        #{manufa,jdbcType=VARCHAR},
+      </if>
+      <if test="devStatus != null">
+        #{devStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="eqLocation != null">
+        #{eqLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="insDate != null">
+        #{insDate,jdbcType=DATE},
+      </if>
+      <if test="serYear != null">
+        #{serYear,jdbcType=INTEGER},
+      </if>
+      <if test="compNumber != null">
+        #{compNumber,jdbcType=INTEGER},
+      </if>
+      <if test="assetAttr != null">
+        #{assetAttr,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunwei.som.pojo.DeviceInfo">
+    update device_info
+    <set>
+      <if test="esNumber != null">
+        ES_NUMBER = #{esNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="unitType != null">
+        UNIT_TYPE = #{unitType,jdbcType=VARCHAR},
+      </if>
+      <if test="devName != null">
+        DEV_NAME = #{devName,jdbcType=VARCHAR},
+      </if>
+      <if test="manufa != null">
+        MANUFA = #{manufa,jdbcType=VARCHAR},
+      </if>
+      <if test="devStatus != null">
+        DEV_STATUS = #{devStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="eqLocation != null">
+        EQ_LOCATION = #{eqLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="insDate != null">
+        INS_DATE = #{insDate,jdbcType=DATE},
+      </if>
+      <if test="serYear != null">
+        SER_YEAR = #{serYear,jdbcType=INTEGER},
+      </if>
+      <if test="compNumber != null">
+        COMP_NUMBER = #{compNumber,jdbcType=INTEGER},
+      </if>
+      <if test="assetAttr != null">
+        ASSET_ATTR = #{assetAttr,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MACH_CODE = #{machCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xunwei.som.pojo.DeviceInfo">
+    update device_info
+    set ES_NUMBER = #{esNumber,jdbcType=VARCHAR},
+      UNIT_TYPE = #{unitType,jdbcType=VARCHAR},
+      DEV_NAME = #{devName,jdbcType=VARCHAR},
+      MANUFA = #{manufa,jdbcType=VARCHAR},
+      DEV_STATUS = #{devStatus,jdbcType=VARCHAR},
+      EQ_LOCATION = #{eqLocation,jdbcType=VARCHAR},
+      INS_DATE = #{insDate,jdbcType=DATE},
+      SER_YEAR = #{serYear,jdbcType=INTEGER},
+      COMP_NUMBER = #{compNumber,jdbcType=INTEGER},
+      ASSET_ATTR = #{assetAttr,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where MACH_CODE = #{machCode,jdbcType=VARCHAR}
+  </update>
+</mapper>

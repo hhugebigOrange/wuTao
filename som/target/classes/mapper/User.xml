@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 标准模板：复制该模板需要修改的项是 1.修改实体对象映射属性：mapModel里的属性 2.修改表名：sys_user -> 3.修改实体名：User 
+	-> 4.修改插入字段： 5.修改更新字段： 
+	oracle 创建自增长 CREATE SEQUENCE OMS_USER_SEQ;
+	-->
+
+<mapper namespace="com.cr999.oms.user.mapper.UserMapper">
+	<sql id="sqlTableName">
+		OMS_USER
+	</sql>
+	<sql id="sqlInsertColumns">
+		ID, UNAME, PASSWORD, NAME, COMPANYID, COMPANY, TEL, PROVINCE, CITY, AREA, ADDRESS,
+		CUSTOMERNUMBER,RECEIVINGNUMBER,UNIONID,
+		OPENID, REMARK, CREATE_BY, CREATION_DATE, LAST_UPDATED_BY, LAST_UPDATE_DATE,
+		RECORD_VERSION,
+		DELETED_FLAG, DELETED_BY, DELETION_DATE, WAREHOUSE, PRODUCTOWNERSHIPDEPARTMENT
+	</sql>
+	<sql id="sqlInsertValues">
+		#{id,jdbcType=NUMERIC},#{uname,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+		#{companyID, jdbcType = NUMERIC}, #{company,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR},
+		#{city,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+		#{customernumber,jdbcType=VARCHAR}, #{receivingnumber,jdbcType=VARCHAR},
+		#{unionid,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR},
+		#{createBy,jdbcType=NUMERIC}, #{creationDate,jdbcType=TIMESTAMP}, #{lastUpdatedBy,jdbcType=NUMERIC},
+		#{lastUpdateDate,jdbcType=TIMESTAMP}, #{recordVersion,jdbcType=NUMERIC}, #{deletedFlag,jdbcType=NUMERIC},
+		#{deletedBy,jdbcType=NUMERIC}, #{deletionDate,jdbcType=TIMESTAMP}, #{warehouse, jdbcType=VARCHAR},
+		#{productownershipdepartment, jdbcType=VARCHAR}
+	</sql>
+	<sql id="sqlInsertListColumns">
+		ID, UNAME, PASSWORD, NAME, COMPANYID, COMPANY, TEL, PROVINCE, CITY, AREA, ADDRESS,
+		CUSTOMERNUMBER,RECEIVINGNUMBER,UNIONID,
+		OPENID, REMARK, CREATE_BY, CREATION_DATE, LAST_UPDATED_BY, LAST_UPDATE_DATE,
+		RECORD_VERSION,
+		DELETED_FLAG, DELETED_BY, DELETION_DATE, WAREHOUSE, PRODUCTOWNERSHIPDEPARTMENT
+	</sql>
+	<sql id="sqlInsertListValues">
+		#{m.id,jdbcType=NUMERIC},#{m.uname,jdbcType=VARCHAR}, #{m.password,jdbcType=VARCHAR}, #{m.name,jdbcType=VARCHAR},
+		#{m.companyID, jdbcType = NUMERIC}, #{m.company,jdbcType=VARCHAR}, #{m.tel,jdbcType=VARCHAR}, #{m.province,jdbcType=VARCHAR},
+		#{m.city,jdbcType=VARCHAR}, #{m.area,jdbcType=VARCHAR}, #{m.address,jdbcType=VARCHAR},
+		#{m.customernumber,jdbcType=VARCHAR}, #{m.receivingnumber,jdbcType=VARCHAR},
+		#{m.unionid,jdbcType=VARCHAR}, #{m.openid,jdbcType=VARCHAR}, #{m.remark,jdbcType=VARCHAR},
+		#{m.createBy,jdbcType=NUMERIC}, #{m.creationDate,jdbcType=TIMESTAMP}, #{m.lastUpdatedBy,jdbcType=NUMERIC},
+		#{m.lastUpdateDate,jdbcType=TIMESTAMP}, #{m.recordVersion,jdbcType=NUMERIC}, #{m.deletedFlag,jdbcType=NUMERIC},
+		#{m.deletedBy,jdbcType=NUMERIC}, #{m.deletionDate,jdbcType=TIMESTAMP}, #{m.warehouse, jdbcType=VARCHAR},
+		#{m.productownershipdepartment, jdbcType=VARCHAR}
+	</sql>
+	<sql id="sqlUpdateColumns">
+		UNAME = #{uname,jdbcType=VARCHAR},
+		PASSWORD = #{password,jdbcType=VARCHAR},
+		NAME = #{name,jdbcType=VARCHAR},
+		COMPANYID = #{companyID, jdbcType=NUMERIC},
+		COMPANY = #{company,jdbcType=VARCHAR},
+		TEL = #{tel,jdbcType=VARCHAR},
+		PROVINCE = #{province,jdbcType=VARCHAR},
+		CITY = #{city,jdbcType=VARCHAR},
+		AREA = #{area,jdbcType=VARCHAR},
+		ADDRESS = #{address,jdbcType=VARCHAR},
+		CUSTOMERNUMBER = #{customernumber,jdbcType=VARCHAR},
+		RECEIVINGNUMBER = #{receivingnumber,jdbcType=VARCHAR},
+		UNIONID = #{unionid,jdbcType=VARCHAR},
+		OPENID = #{openid,jdbcType=VARCHAR},
+		REMARK = #{remark,jdbcType=VARCHAR},
+		CREATE_BY = #{createBy,jdbcType=NUMERIC},
+		CREATION_DATE = #{creationDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY = #{lastUpdatedBy,jdbcType=NUMERIC},
+		LAST_UPDATE_DATE = #{lastUpdateDate,jdbcType=TIMESTAMP},
+		RECORD_VERSION = #{recordVersion,jdbcType=NUMERIC},
+		DELETED_FLAG = #{deletedFlag,jdbcType=NUMERIC},
+		DELETED_BY = #{deletedBy,jdbcType=NUMERIC},
+		DELETION_DATE = #{deletionDate,jdbcType=TIMESTAMP},
+		WAREHOUSE = #{warehouse, jdbcType=VARCHAR},
+		PRODUCTOWNERSHIPDEPARTMENT = #{productownershipdepartment, jdbcType=VARCHAR}
+	</sql>
+	<sql id="sqlUpdateListColumns">
+		UNAME = #{m.uname,jdbcType=VARCHAR},
+		PASSWORD = #{m.password,jdbcType=VARCHAR},
+		NAME = #{m.name,jdbcType=VARCHAR},
+		COMPANYID = #{m.companyID, jdbcType=NUMERIC},
+		COMPANY = #{m.company,jdbcType=VARCHAR},
+		TEL = #{m.tel,jdbcType=VARCHAR},
+		PROVINCE = #{m.province,jdbcType=VARCHAR},
+		CITY = #{m.city,jdbcType=VARCHAR},
+		AREA = #{m.area,jdbcType=VARCHAR},
+		ADDRESS = #{m.address,jdbcType=VARCHAR},
+		CUSTOMERNUMBER = #{m.customernumber,jdbcType=VARCHAR},
+		RECEIVINGNUMBER = #{m.receivingnumber,jdbcType=VARCHAR},
+		UNIONID = #{m.unionid,jdbcType=VARCHAR},
+		OPENID = #{m.openid,jdbcType=VARCHAR},
+		REMARK = #{m.remark,jdbcType=VARCHAR},
+		CREATE_BY = #{m.createBy,jdbcType=NUMERIC},
+		CREATION_DATE = #{m.creationDate,jdbcType=TIMESTAMP},
+		LAST_UPDATED_BY = #{m.lastUpdatedBy,jdbcType=NUMERIC},
+		LAST_UPDATE_DATE = #{m.lastUpdateDate,jdbcType=TIMESTAMP},
+		RECORD_VERSION = #{m.recordVersion,jdbcType=NUMERIC},
+		DELETED_FLAG = #{m.deletedFlag,jdbcType=NUMERIC},
+		DELETED_BY = #{m.deletedBy,jdbcType=NUMERIC},
+		DELETION_DATE = #{m.deletionDate,jdbcType=TIMESTAMP},
+		WAREHOUSE = #{m.warehouse, jdbcType=VARCHAR},
+		PRODUCTOWNERSHIPDEPARTMENT = #{m.productownershipdepartment, jdbcType=VARCHAR}
+	</sql>
+
+	<sql id="sqlUpdateColumnsNotNull">
+			<!-- 根据实体更新增加、修改属性 -->
+		<if test="id != null">
+			ID = #{id},
+		</if>
+		<if test="uname != null">
+			UNAME = #{uname},
+		</if>
+		
+		<if test="password != null">
+			PASSWORD = #{password},
+		</if>
+		<if test="name != null">
+			NAME = #{name},
+		</if>
+		<if test="companyID != null">
+			COMPANYID = #{companyID},
+		</if>
+		<if test="company != null">
+			COMPANY = #{company},
+		</if>
+		<if test="tel != null">
+			TEL = #{tel},
+		</if>
+		<if test="province != null">
+			PROVINCE = #{province},
+		</if>
+		<if test="city != null">
+			CITY = #{city},
+		</if>
+		<if test="area != null">
+			AREA = #{area},
+		</if>
+		<if test="address != null">
+			ADDRESS = #{address},
+		</if>
+		<if test="customernumber != null">
+			CUSTOMERNUMBER = #{customernumber},
+		</if>
+		<if test="receivingnumber != null">
+			RECEIVINGNUMBER = #{receivingnumber},
+		</if>
+		<if test="unionid != null">
+			UNIONID = #{unionid},
+		</if>
+		<if test="openid != null">
+			OPENID = #{openid},
+		</if>
+		<if test="remark != null">
+			REMARK = #{remark},
+		</if>
+		<if test="createBy != null">
+			CREATE_BY = #{createBy},
+		</if>
+		<if test="creationDate != null">
+			CREATION_DATE = #{creationDate},
+		</if>
+		<if test="lastUpdatedBy != null">
+			LAST_UPDATED_BY = #{lastUpdatedBy},
+		</if>
+		<if test="lastUpdateDate != null">
+			LAST_UPDATE_DATE = #{lastUpdateDate},
+		</if>
+		<if test="recordVersion != null">
+			RECORD_VERSION = #{recordVersion},
+		</if>
+		<if test="deletedFlag != null">
+			DELETED_FLAG = #{deletedFlag},
+		</if>
+		<if test="deletedBy != null">
+			DELETED_BY = #{deletedBy},
+		</if>
+		<if test="deletionDate != null">
+			DELETION_DATE = #{deletionDate},
+		</if>
+		<if test="warehouse != null">
+			WAREHOUSE = #{warehouse},
+		</if>
+		<if test="productownershipdepartment != null">
+			PRODUCTOWNERSHIPDEPARTMENT = #{productownershipdepartment},
+		</if>
+	</sql>
+
+	<sql id="sqlUpdateListColumnsNotNull">
+		<if test="m.id != null">
+			ID = #{m.id},
+		</if>
+		<if test="m.uname != null">
+			UNAME = #{m.uname},
+		</if>
+		<if test="m.password != null">
+			PASSWORD = #{m.password},
+		</if>
+		<if test="m.name != null">
+			NAME = #{m.name},
+		</if>
+		<if test="m.companyID != null">
+			COMPANYID = #{m.companyID},
+		</if>
+		<if test="m.company != null">
+			COMPANY = #{m.company},
+		</if>
+		<if test="m.tel != null">
+			TEL = #{m.tel},
+		</if>
+		<if test="m.province != null">
+			PROVINCE = #{m.province},
+		</if>
+		<if test="m.city != null">
+			CITY = #{m.city},
+		</if>
+		<if test="m.area != null">
+			AREA = #{m.area},
+		</if>
+		<if test="m.address != null">
+			ADDRESS = #{m.address},
+		</if>
+		<if test="m.customernumber != null">
+			CUSTOMERNUMBER = #{m.customernumber},
+		</if>
+		<if test="m.receivingnumber != null">
+			RECEIVINGNUMBER = #{m.receivingnumber},
+		</if>
+		<if test="m.unionid != null">
+			UNIONID = #{m.unionid},
+		</if>
+		<if test="m.openid != null">
+			OPENID = #{m.openid},
+		</if>
+		<if test="m.remark != null">
+			REMARK = #{m.remark},
+		</if>
+		<if test="m.createBy != null">
+			CREATE_BY = #{m.createBy},
+		</if>
+		<if test="m.creationDate != null">
+			CREATION_DATE = #{m.creationDate},
+		</if>
+		<if test="m.lastUpdatedBy != null">
+			LAST_UPDATED_BY = #{m.lastUpdatedBy},
+		</if>
+		<if test="m.lastUpdateDate != null">
+			LAST_UPDATE_DATE = #{m.lastUpdateDate},
+		</if>
+		<if test="m.recordVersion != null">
+			RECORD_VERSION = #{m.recordVersion},
+		</if>
+		<if test="m.deletedFlag != null">
+			DELETED_FLAG = #{m.deletedFlag},
+		</if>
+		<if test="m.deletedBy != null">
+			DELETED_BY = #{m.deletedBy},
+		</if>
+		<if test="m.deletionDate != null">
+			DELETION_DATE = #{m.deletionDate},
+		</if>
+		<if test="m.warehouse != null">
+			WAREHOUSE = #{m.warehouse},
+		</if>
+		<if test="m.productownershipdepartment != null">
+			PRODUCTOWNERSHIPDEPARTMENT = #{m.productownershipdepartment},
+		</if>
+	</sql>
+
+	<sql id="sqlSelectListByQuery">
+		SELECT U.* 
+		FROM 
+		<include refid="sqlTableName" />
+		<where>
+			1 = 1
+		</where>
+	</sql>
+	<!-- 结果映射 -->
+	<resultMap type="User" id="mapModel">
+		<id column="ID" property="id" />
+		<result column="UNAME" property="uname" />
+		<result column="PASSWORD" property="password" />
+		<result column="NAME" property="name" />
+		<result column="COMPANYID" property="companyID" />
+		<result column="COMPANY" property="company" />
+		<result column="TEL" property="tel" />
+		<result column="PROVINCE" property="province" />
+		<result column="CITY" property="city" />
+		<result column="AREA" property="area" />
+		<result column="ADDRESS" property="address" />
+		<result column="CUSTOMERNUMBER" property="customernumber" />
+		<result column="RECEIVINGNUMBER" property="receivingnumber" />
+		<result column="UNIONID" property="unionid" />
+		<result column="OPENID" property="openid" />
+		<result column="REMARK" property="remark" />
+		<result column="CREATE_BY" property="createBy" />
+		<result column="CREATION_DATE" property="creationDate" />
+		<result column="LAST_UPDATED_BY" property="lastUpdatedBy" />
+		<result column="LAST_UPDATE_DATE" property="lastUpdateDate" />
+		<result column="RECORD_VERSION" property="recordVersion" />
+		<result column="DELETED_FLAG" property="deletedFlag" />
+		<result column="DELETED_BY" property="deletedBy" />
+		<result column="DELETION_DATE" property="deletionDate" />
+		<result column="ROLEID" property="roleId" />
+		<result column="ISRELATION" property="isrelation" />
+		<result column="WAREHOUSE" property="warehouse" />
+		<result column="PRODUCTOWNERSHIPDEPARTMENT" property="productownershipdepartment" />
+	</resultMap>
+
+	<!-- 查询 -->
+	<!-- 查询：指定Id -->
+	<select id="selectModelById" parameterType="int" resultMap="mapModel">
+		SELECT U.*,UR.ROLEID AS ROLEID FROM 
+		<include refid="sqlTableName" /> U
+		LEFT OUTER JOIN OMS_USER_ROLE UR ON U.ID = UR.USERID AND UR.DELETED_FLAG = '0'
+		WHERE U.ID = #{id} AND U.DELETED_FLAG = '0'
+	</select>
+	<!-- 查询：所有 -->
+	<select id="selectList" resultMap="mapModel">
+		SELECT U.*,UR.ROLEID AS ROLEID FROM 
+		<include refid="sqlTableName" /> U
+		LEFT OUTER JOIN OMS_USER_ROLE UR ON U.ID = UR.USERID AND UR.DELETED_FLAG = '0'
+		WHERE 1=1 AND U.DELETED_FLAG = '0'
+	</select>
+	<!-- 查询：字典 -->
+	<select id="selectListByMap" parameterType="java.util.Map"
+		resultMap="mapModel">
+		SELECT U.*,UR.ROLEID AS ROLEID FROM 
+		<include refid="sqlTableName" /> U
+		LEFT OUTER JOIN OMS_USER_ROLE UR ON U.ID = UR.USERID AND UR.DELETED_FLAG = '0'
+		<where>
+			1=1
+			<choose>
+				<when test="ids != null">
+					AND U.Id IN
+					<trim prefix="(" suffix=")" suffixOverrides=",">
+						<foreach collection="ids" item="itemId" separator=",">
+							#{itemId}
+						</foreach>
+					</trim>
+				</when>
+				<when test="id != null">
+					AND U.Id = #{id}
+				</when>
+				<otherwise>
+					<if test="sqlWhere != null">${sqlWhere}</if>
+				</otherwise>
+			</choose>
+			AND U.DELETED_FLAG = '0'
+		</where>
+		<if test="sqlOrderBy != null and sqlOrderBy != ''">ORDER BY ${sqlOrderBy}</if>
+	</select>
+	<!-- 查询：条件 -->
+	<select id="selectListByWhere" parameterType="SqlCondition"
+		resultMap="mapModel">
+		SELECT U.*,UR.ROLEID AS ROLEID FROM 
+		<include refid="sqlTableName" /> U
+		LEFT OUTER JOIN OMS_USER_ROLE UR ON U.ID = UR.USERID AND UR.DELETED_FLAG = '0'
+		<where>
+			1=1
+			<if test="sqlWhere != null">AND ${sqlWhere}</if>
+			AND U.DELETED_FLAG = '0'
+		</where>
+		<if test="sqlOrderBy != null and sqlOrderBy != ''">ORDER BY ${sqlOrderBy}</if>
+	</select>
+	<!-- 查询：指定Ids -->
+	<select id="selectListByIds" parameterType="arraylist"
+		resultMap="mapModel">
+		SELECT U.*,UR.ROLEID AS ROLEID FROM 
+		<include refid="sqlTableName" /> U
+		LEFT OUTER JOIN OMS_USER_ROLE UR ON U.ID = UR.USERID AND UR.DELETED_FLAG = '0'
+		WHERE U.Id IN
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<foreach collection="list" item="id" separator=",">
+				#{id}
+			</foreach>
+		</trim>
+		AND U.DELETED_FLAG = '0'
+		ORDER BY U.Id
+	</select>
+	<!-- 查询：分页 -->
+	<sql id="sqlSelectListByPaging">
+		SELECT U.*,UR.ROLEID AS ROLEID FROM 
+		<include refid="sqlTableName" /> U
+		LEFT OUTER JOIN OMS_USER_ROLE UR ON U.ID = UR.USERID AND UR.DELETED_FLAG = '0'
+		<where>
+			1=1
+			<if test="sqlWhere != null">AND ${sqlWhere}</if>
+			AND U.DELETED_FLAG = '0'
+		</where>
+	</sql>
+	<select id="selectListByPaging" parameterType="PagedConditionIn"
+		resultMap="mapModel">
+		<include refid="sqlSelectListByPaging" />
+		<if test="sqlOrderBy != null and sqlOrderBy != ''">ORDER BY ${sqlOrderBy}</if>
+	</select>
+	<select id="selectCountByPaging" parameterType="PagedConditionIn"
+		resultType="int">
+		SELECT COUNT(*) Count FROM (
+		<include refid="sqlSelectListByPaging" />
+		) t
+	</select>
+	<!-- 查询：对象分页 -->
+
+	<select id="selectListByQuery" parameterType="InUser" resultMap="mapModel">
+		<include refid="sqlSelectListByQuery" />
+	</select>
+	<select id="selectCountByQuery" parameterType="InUser"
+		resultType="int">
+		SELECT COUNT(*) Count FROM (
+		<include refid="sqlSelectListByQuery" />
+		) t
+	</select>
+	<!-- 查询：数量 -->
+	<select id="selectCount" resultType="int">
+		SELECT COUNT(*) FROM
+		<include refid="sqlTableName" />
+	</select>
+	<select id="selectCountByMap" parameterType="java.util.Map"
+		resultType="int">
+		SELECT COUNT(*) FROM
+		<include refid="sqlTableName" />
+		<where>
+			<if test="id != null">
+				AND Id = #{id}
+			</if>
+			<if test="sqlWhere != null">
+				AND ${sqlWhere}
+			</if>
+		</where>
+	</select>
+	<!-- 新增 -->
+
+	<!-- 新增：单个 -->
+	<!-- 
+		<insert id="insert" keyProperty="id" useGeneratedKeys="false" parameterType="User" >
+	
+	<selectKey keyProperty="id" resultType="int" order="BEFORE">  
+	    	SELECT <include refid="sqlTableName_SEQ" /> as id FROM dual 
+	     </selectKey>  -->
+	<insert id="insert" parameterType="User" >
+		INSERT INTO
+		<include refid="sqlTableName" />
+		(
+		<include refid="sqlInsertColumns" />
+		)
+		VALUES(
+		<include refid="sqlInsertValues" />
+		)
+	</insert>
+	<!-- 新增：批量 -->
+	<insert id="insertList" parameterType="arraylist">
+		INSERT INTO
+		<include refid="sqlTableName" />
+		(
+		<include refid="sqlInsertListColumns" />
+		)
+		<!-- collection可以是List对于list,数组对于array,Map对应ids -->
+		<foreach collection="list" item="m" index="index" separator="union all">
+			SELECT
+			<include refid="sqlInsertListValues" />
+			FROM dual
+		</foreach>
+	</insert>
+
+	<!-- 修改 -->
+	<!-- 修改：单个 -->
+	<update id="update" parameterType="User">
+		UPDATE
+		<include refid="sqlTableName" />
+		<set>
+			<!-- 根据实体更新增加、修改属性 -->
+			<include refid="sqlUpdateColumns" />
+		</set>
+		WHERE Id=#{id}
+	</update>
+	<!-- 修改：单个，按非空条件 -->
+	<update id="updateNotNull" parameterType="User">
+		UPDATE
+		<include refid="sqlTableName" />
+		<set>
+			<!-- 根据实体更新增加、修改属性 -->
+			<include refid="sqlUpdateColumnsNotNull" />
+		</set>
+		<where>
+			id=#{id}
+		</where>
+	</update>
+
+	<!-- 修改：批量 -->
+	<update id="updateList" parameterType="arraylist">
+		<foreach collection="list" item="m" separator=";">
+			UPDATE
+			<include refid="sqlTableName" />
+			<set>
+				<!-- 根据实体更新增加、修改属性 -->
+				<include refid="sqlUpdateListColumns" />
+			</set>
+			<where>
+				1=1
+				<if test="m.id != null">
+					AND Id=#{m.id}
+				</if>
+			</where>
+		</foreach>
+	</update>
+
+
+	<!-- 修改：批量，按非空条件 -->
+	<update id="updateListNotNull" parameterType="arraylist">
+		<foreach collection="list" item="m" index="index" open="begin" close=";end;" separator=";">
+			UPDATE
+			<include refid="sqlTableName" />
+			<set>
+				<!-- 根据实体更新增加、修改属性 -->
+				<include refid="sqlUpdateListColumnsNotNull" />
+			</set>
+			<where>
+				1=1
+				<if test="m.id != null">
+					AND Id=#{m.id}
+				</if>
+			</where>
+		</foreach>
+	</update>
+
+
+	<!-- 修改：按sqlWhere条件 -->
+	<update id="updateByMap" parameterType="java.util.Map">
+		UPDATE
+		<include refid="sqlTableName" />
+		<set>
+			<!-- 根据实体更新增加、修改属性 -->
+			<include refid="sqlUpdateColumnsNotNull" />
+		</set>
+		<where>
+			<choose>
+				<when test="sqlWhere != null">
+					AND ${sqlWhere}
+				</when>
+				<otherwise>
+					AND 1 !=1
+				</otherwise>
+			</choose>
+		</where>
+	</update>
+
+
+	<!-- 删除 -->
+	<!-- 删除：单个 -->
+	<delete id="deleteById" parameterType="int">
+		DELETE FROM
+		<include refid="sqlTableName" />
+		WHERE Id=#{id}
+	</delete>
+	<!-- 删除：批量 -->
+	<delete id="deleteByList">
+		DELETE FROM
+		<include refid="sqlTableName" />
+		WHERE Id IN
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<foreach collection="list" item="m" separator=",">
+				#{m.id}
+			</foreach>
+		</trim>
+	</delete>
+	<!-- 删除：批量Id -->
+	<delete id="deleteByIds">
+		DELETE FROM
+		<include refid="sqlTableName" />
+		WHERE Id IN
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<foreach collection="list" item="id" separator=",">
+				#{id}
+			</foreach>
+		</trim>
+	</delete>
+	<!-- 删除：按sqlWhere条件 -->
+	<delete id="deleteByMap" parameterType="java.util.Map">
+		DELETE FROM
+		<include refid="sqlTableName" />
+		<where>
+			<choose>
+				<when test="sqlWhere != null">
+					${sqlWhere}
+				</when>
+				<otherwise>
+					1 != 1
+				</otherwise>
+			</choose>
+		</where>
+	</delete>
+
+	<!-- 是否存在 -->
+	<!-- 是否存在：指定Id -->
+	<select id="selectExistsById" parameterType="int" resultType="Boolean">
+		SELECT count(1) FROM
+		<include refid="sqlTableName" />
+		WHERE Id=#{id}
+	</select>
+	<!-- 是否都存在：多个Id -->
+	<select id="selectAllExistsByIds" resultType="int">
+		SELECT COUNT(1) result
+		FROM
+		<include refid="sqlTableName" />
+		WHERE Id IN
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<foreach collection="list" item="id" separator=",">
+				#{id}
+			</foreach>
+		</trim>
+	</select>
+	<!-- 是否至少一个存在：多个Id -->
+	<select id="selectAnyExistsByIds" resultType="Boolean">
+		SELECT EXISTS (
+		SELECT 1 FROM
+		<include refid="sqlTableName" />
+		WHERE Id IN
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<foreach collection="list" item="id" separator=",">
+				#{id}
+			</foreach>
+		</trim>
+		)
+	</select>
+
+	<!-- ++++++++++++++++++++++++++++++++++++++++++++++++++上面为通用++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+</mapper>	

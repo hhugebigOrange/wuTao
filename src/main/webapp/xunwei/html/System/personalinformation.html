@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息</title>
+    <script src="../../../js/layui.js"></script>
+    <link rel="stylesheet" href="../../../css/layui.css">
+    <style type="text/css">
+        form{width: 400px;}
+    </style>
+    <script src="../../js/layui.js"></script>
+    <script src="../../js/jquery.js"></script>
+    <link rel="stylesheet" href="../../css/layui.css">
+    <link rel="stylesheet" href="../../css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="../../css/body.css">
+
+</head>
+<body>
+<div class="title">
+    <span>SOM运营个人信息</span><span class="particulars">系统管理>>个人信息</span>
+</div>
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">ID</label>
+        <div class="layui-input-block">
+            <input name="oldpwd" class="layui-input" type="text" placeholder="" autocomplete="off" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">公司名</label>
+        <div class="layui-input-block">
+            <input name="newpwd" class="layui-input" type="text" placeholder="" autocomplete="off" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">姓名</label>
+        <div class="layui-input-block">
+            <input name="Confirm" class="layui-input" type="text" placeholder="" autocomplete="off" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-block">
+            <input name="Confirm" class="layui-input" type="text" placeholder="" autocomplete="off" lay-verify="email">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="demo1" lay-submit="">立即提交</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            layer.alert(JSON.stringify(data.field), {title: '最终的提交信息' })
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>

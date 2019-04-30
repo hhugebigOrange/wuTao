@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<div>
+		<form action="/som/doAddManager">
+			<table>
+				<tr>
+					<th>姓名</th>
+					<td><input type="text" name="staffName"></td>
+				</tr>
+				<tr>
+					<th>所在分公司</th>
+					<td><input type="text" name="comperName"></td>
+				</tr>
+				<tr>
+					<th>角色</th>
+					<td><select name="role">
+							<option value="1">运维经理</option>
+							<option value="2">客服主管</option>
+							<option value="3">客服调度员</option>
+							<option value="4">技术主管</option>
+							<option value="5">工程师</option>
+							<option value="6">驻现场人员</option>
+							<option value="7">客户助理</option>
+					</select></td>
+				</tr>
+				<tr>
+					<th>注册手机号</th>
+					<td><input type="number" name="phoneName"></td>
+				</tr>
+				<tr>
+					<th>创建时间</th>
+					<td><input type="date" name="createData"></td>
+				</tr>
+				<tr>
+					<td><input type="submit" name="提交"></td>
+				</tr>
+			</table>
+
+		</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <title>首页</title>
+  <link rel="stylesheet" href="../css/layui.css">
+    <script src="../js/jquery.js"></script>
+    <script src="../js/echarts.js"></script>
+    <script src="../js/layui.js"></script>
+    <link rel="stylesheet" href="../css/leftnav.css">
+    <link rel="stylesheet" href="../css/index.css">
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <!--头部-->
+  <div class="header">
+      <div class="logo color-white">
+          <img src="../images/logo.png" width="125"/>
+      </div>
+      <div class="font">
+          <p class="fontcomp">广东讯维信息产业股份有限公司</p>
+          <p class="welcome">欢迎光临SOM平台 讯维网址：www.insolu.cn</p>
+      </div>
+      <span></span>
+  </div>
+    <!--左侧菜单-->
+    <div class="sidenav">
+        <ul class="left_nav">
+            <li class="oneli">
+                <a target="iframe_a" href="HomePage/homepage/client.html" class="nav_left ico-homePage">首页</a>
+            <ul class="nav_right">
+                <li><a href="HomePage/Workorder.html" target="iframe_a" href="javascript:">工单概况</a></li>
+                <li><a href="HomePage/equipment.html" target="iframe_a" href="javascript:">设备概况</a></li>
+                <li><a href="HomePage/contract.html" target="iframe_a" href="javascript:">合同概况</a></li>
+                <li><a href="HomePage/employees.html" target="iframe_a" href="javascript:">在岗人数</a></li>
+                <li><a href="HomePage/customersatisfaction/customersatisfaction.html" target="iframe_a" href="javascript:">客户满意度</a></li>
+            </ul>
+            </li>
+            <li class="oneli">
+                <a target="iframe_a" href="javascript:" class="nav_left ico-basicInformation">基本信息</a>
+                <ul class="nav_right">
+                    <li><a href="BasicInformation/client/client.html"target="iframe_a" href="javascript:" >客户信息</a></li>
+                    <li><a href="BasicInformation/user/user.html" target="iframe_a" href="javascript:">用户管理</a></li></li>
+                    <li><a href="BasicInformation/calendar/calendar.html" target="iframe_a" href="javascript:">工作日历</a></li>
+                </ul>
+            </li>
+            <li class="oneli">
+                <a target="iframe_a" href="javascript:" class="nav_left ico-customer">客户管理</a>
+                <ul class="nav_right">
+                    <li><a target="iframe_a" href="Customer/contract/contract.html">合同管理</a></li>
+                    <li><a href="Customer/satisfaction.html"target="iframe_a" >客户满意度管理</a></li>
+                </ul>
+            </li>
+            <li class="oneli">
+                <a target="iframe_a" href="javascript:" class="nav_left ico-service">服务管理</a>
+                <ul class="nav_right">
+                    <li><a  href="Service/workorder/workorder.html" target="iframe_a">工单管理</a></li>
+                    <li><a href="Service/faultanalysis.html" target="iframe_a">故障分析</a></li>
+                </ul>
+            </li>
+            <li class="oneli">
+                <a href="javascript:" target="iframe_a" class="nav_left ico-equipmentAndAsset">设备及资产管理</a>
+                <ul class="nav_right">
+                    <li><a href="EquipmentAndAsset/equipmentinformation/equipmentinformation.html" target="iframe_a">设备管理</a></li>
+                    <li><a href="EquipmentAndAsset/Assets/assets.html" target="iframe_a">资产管理</a> </li>
+                </ul>
+            </li>
+            <li class="oneli">
+                <a target="iframe_a" href="javascript:" class="nav_left ico-maintenance">保养管理</a>
+                <ul class="nav_right">
+                    <li><a href="Maintenance/maintenanceschedule/maintenanceschedule.html" target="iframe_a">保养计划</a></li>
+                    <li><a href="Maintenance/Maintenanceperformed.html" target="iframe_a">保养执行</a></li>
+                </ul></li>
+            <li class="oneli">
+                <a target="iframe_a" href="javascript:" class="nav_left ico-statement">报表管理</a>
+                <ul class="nav_right">
+                    <li><a target="iframe_a" href="javascript:">KPI管理</a>
+                        <ul class="three">
+                            <li><a href="Statement/KPI/engineer.html" target="iframe_a" >工程师KPI报表</a></li>
+                            <li><a href="Statement/KPI/client.html"target="iframe_a" >客户KPI报表</a></li>
+                            <li><a href="Statement/KPI/filiale.html"target="iframe_a" >分公司KPI</a></li>
+                            <li><a href="Statement/KPI/Headofficeoperation.html"target="iframe_a" >总公司运维KPI</a></li>
+                            <li><a href="Statement/KPI/Atcustomerservice.html"target="iframe_a" >坐席客服KPI</a></li>
+                        </ul></li>
+                    <li><a href="Statement/tbWorksheetanalysis.html" target="iframe_a">工单分析表</a></li>
+                    <li><a href="Statement/tbmaintain.html" target="iframe_a">维修报表</a></li>
+                    <li><a href="Statement/Equipmentnormaloperationrate.html" target="iframe_a">设备运转正常率</a></li>
+                    <li><a target="iframe_a" href="javascript:">保养报表</a>
+                        <ul class="three">
+                            <li><a href="Statement/tbmaintain/tbmaintain.html" target="iframe_a" >保养报表</a></li>
+                            <li><a href="Statement/tbmaintain/tbEngineersummary.html"target="iframe_a" >工程师汇总表</a></li>
+                            <li><a href="Statement/tbmaintain/tbCustomerperiodicmaintenance.html"  target="iframe_a"style="font-size:10px;">客户周期性维修报表</a></li>
+                        </ul></li>
+                    <li><a target="iframe_a" href="javascript:">设备管理报表</a>
+                        <ul class="three">
+                            <li><a href="Statement/tbEquipmentmanagement/tbEquipmentmanagement.html" target="iframe_a">设备管理报表</a></li>
+                            <li><a href="Statement/tbEquipmentmanagement/tbChangesinequipment.html" target="iframe_a">设备变动报表</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="Statement/tbOperationalcontract.html" target="iframe_a">运维合同报表</a></li>
+                </ul>
+            </li>
+            <li class="oneli"><a target="iframe_a" href="javascript:" class="nav_left ico-working">在岗管理</a>
+                <ul class="nav_right">
+                    <li>
+                        <a href="Working/Workingstatusofengineer.html" target="iframe_a">工程师工作状态</a>
+                    </li>
+                </ul>
+            </li>
+            <!--耗材管理-->
+            <li class="oneli layui-hide">
+                <a target="iframe_a" href="javascript:" class="nav_left">
+                    <img src="../images/working.png"/>耗材管理
+                </a>
+            </li>
+            <!--账单管理-->
+            <li class="oneli layui-hide">
+                <a target="iframe_a" href="javascript:" class="nav_left">
+                    <img src="../images/working.png"/>账单管理
+                </a>
+            </li>
+            <li class="oneli">
+                <a target="iframe_a" href="javascript:" class="nav_left ico-system">系统管理</a>
+                <ul class="nav_right">
+                    <!--<li><a href="System/qrcode.html" target="iframe_a">二维码信息管理</a></li>-->
+                    <li><a href="System/changepassword.html" target="iframe_a">密码修改</a></li>
+                    <!--<li><a href="System/personalinformation.html" target="iframe_a">个人信息</a></li>-->
+                    <!--<li><a href="System/promotelinks.html" target="iframe_a">链接推广</a></li>-->
+                    <li><a href="System/Promoteqrcodes.html" target="iframe_a">推广二维码</a></li>
+                    <li><a href="System/Workersinglesprinting.html" target="iframe_a">工单打印</a></li>
+                </ul></li>
+        </ul>
+    </div>
+  
+  <div class="layui-body body">
+    <!-- 内容主体区域 -->
+      <iframe src="HomePage/homepage/majordomo.html" name="iframe_a"scrolling="auto" style="width:1500px;height: 800px;border:0px;">
+      </iframe>
+  </div>
+  <!--<div class="layui-footer">-->
+    <!--&lt;!&ndash; 底部固定区域 &ndash;&gt;-->
+  <!--</div>-->
+</div>
+<script type="text/javascript">
+
+    //JavaScript代码区域
+// 左侧菜单栏
+$(function () {
+    $(".left_nav li").hover(function () {
+        $(".nav_right", this).show();
+    });
+    $(".left_nav li").mouseleave(function () {
+        $(".nav_right", this).hide();
+    });
+    $(".nav_right li", this).hover(function () {
+        $(".three", this).show();
+    })
+    $(".nav_right li", this).mouseleave(function () {
+        $(".three", this).hide();
+    })
+});
+layui.use('element', function(){
+  var element = layui.element;
+});
+
+</script>
+</body>
+</html>

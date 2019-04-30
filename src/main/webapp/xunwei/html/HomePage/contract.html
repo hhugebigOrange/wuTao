@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>合同概况</title>
+    <script src="../../js/layui.js"></script>
+    <link rel="stylesheet" href="../../css/layui.css">
+    <link rel="stylesheet" href="../../css/body.css">
+</head>
+<body style="width: 3000px;">
+<div class="title">
+    <span>合同概况</span><span class="particulars">服务看板>>合同概况</span>
+</div>
+<div class="abovebtn">
+    <form class="layui-form" action="">
+        <div class="layui-inline">
+            <label class="layui-form-label">服务区域：</label>
+            <div class="layui-input-block">
+                <select name="type" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="0">区域1</option>
+                    <option value="1">区域2</option>
+                    <option value="2">区域3</option>
+                </select>
+            </div>
+        </div>
+    </form>
+    <div class="btn">
+        <button class="layui-btn layui-bg-gray">查询</button>
+        <button class="layui-btn layui-bg-gray">清除</button>
+        <button class="layui-btn layui-bg-gray">查看所有</button>
+        <button class="layui-btn layui-bg-gray">导出</button>
+    </div>
+    <div class="labnum">
+        <label>合同总数：<u>&nbsp&nbsp&nbsp&nbsp<span id="sum">123</span>&nbsp&nbsp&nbsp&nbsp</u></label>
+        <label>即将到期合同：<u>&nbsp&nbsp&nbsp&nbsp<span id="AboutToExpire">123</span>&nbsp&nbsp&nbsp&nbsp</u></label>
+        <label>已到期合同：<u>&nbsp&nbsp&nbsp&nbsp<span id="WasDue">123</span>&nbsp&nbsp&nbsp&nbsp</u></label>
+        <label>续期合同：<u>&nbsp&nbsp&nbsp&nbsp<span id="renewal">123</span>&nbsp&nbsp&nbsp&nbsp</u></label>
+    </div>
+</div>
+
+<div class="tab">
+    <table id="demo" lay-filter="test"></table>
+</div>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+    layui.use('table', function(){
+        var table = layui.table;
+        table.render({
+            elem: '#demo'
+            ,height: 312
+            ,cellMinWidth: 80
+            ,url: '/demo/table/user/' //数据接口
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {field: 'id', title: 'NO', sort: true}
+                ,{field: 'username', title: '登记时间'}
+                ,{field: 'sex', title: '经办部门'}
+                ,{field: 'city', title: '服务区域'}
+                ,{field: 'sign', title: '经办人',}
+                ,{field: 'experience', title: '合同保管人'}
+                ,{field: 'score', title: '合同编码'}
+                ,{field: 'bxr', title: '合同名称'}
+                ,{field: 'bxdh', title: '客户单位名称'}
+                ,{field: 'khdz', title: '签约日期'}
+                ,{field: 'gzlx', title: '到期日期'}
+                ,{field: 'gzzt', title: '离到期天数'}
+                ,{field: 'qx', title: '期限（月）'}
+                ,{field: 'htyddqtxts', title: '合同约定到期通知提醒天数',width:150}
+                ,{field: 'htdqyj', title: '合同到期预警'}
+                ,{field: 'khmc', title: '客户名称'}
+                ,{field: 'wbsfwkh', title: '外包所服务客户'}
+                ,{field: 'htbdje', title: '合同标的金额'}
+                ,{field: 'htlx', title: '合同类型'}
+                ,{field: 'htxz', title: '合同性质'}
+                ,{field: 'htzxqk', title: '合同执行情况'}
+                ,{field: 'htzzqk', title: '合同终止情况'}
+                ,{field: 'tqzzrq', title: '提前终止日'}
+                ,{field: 'tqzzqksm', title: '提前终止情况说明'}
+                ,{field: 'yjgdrq', title: '移交归档日期'}
+                ,{field: 'jjr', title: '接交人'}
+                ,{field: 'bz', title: '备注'}
+            ]]
+        });
+    });
+</script>
+</body>
+</html>

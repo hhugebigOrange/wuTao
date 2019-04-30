@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.CustInfoMapper">
+	<resultMap id="BaseResultMap" type="com.xunwei.som.pojo.CustInfo">
+		<id column="CUST_ID" jdbcType="INTEGER" property="custId" />
+		<result column="CUST_NAME" jdbcType="VARCHAR" property="custName" />
+		<result column="CUST_ADDR" jdbcType="VARCHAR" property="custAddr" />
+		<result column="CUST_CALL" jdbcType="VARCHAR" property="custCall" />
+		<result column="LINKMAN" jdbcType="VARCHAR" property="linkman" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="DISPLAY" jdbcType="VARCHAR" property="display" />
+		<result column="WORK_TIME" jdbcType="TIME" property="workTime" />
+		<result column="OFFWORK_TIME" jdbcType="TIME" property="offWorkTime" />
+		<result column="SIGN_COMP" jdbcType="TIME" property="signComp" />
+	</resultMap>
+
+	<!-- 插入客户信息 -->
+	<insert id="insert" parameterType="com.xunwei.som.pojo.CustInfo">
+	insert into cust_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="custName != null and custName!=''">
+				CUST_NAME,
+			</if>
+			<if test="custAddr != null and custAddr!=''">
+				CUST_ADDR,
+			</if>
+			<if test="linkman != null and linkman!=''">
+				LINKMAN,
+			</if>
+			<if test="phone != null and phone!=''">
+				PHONE,
+			</if>
+			<if test="workTime != null">
+				WORK_TIME,
+			</if>
+			<if test="offWorkTime != null">
+				OFFWORK_TIME,
+			</if>
+			<if test="signComp != null">
+				SIGN_COMP,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="custName != null and custName!=''">
+				#{custName,jdbcType=VARCHAR},
+			</if>
+			<if test="custAddr != null and custAddr!=''">
+				#{custAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="linkman != null and linkman!=''">
+				#{linkman,jdbcType=VARCHAR},
+			</if>
+		    <if test="phone != null and phone!=''">
+				#{phone,jdbcType=VARCHAR},
+			</if>
+			<if test="workTime != null">
+				#{workTime,jdbcType=TIME},
+			</if>
+			<if test="offWorkTime != null">
+				#{offWorkTime,jdbcType=TIME},
+			</if>
+			<if test="signComp != null">
+				#{signComp,jdbcType=TIME},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectCusIdByName" resultType="java.lang.Integer">
+		select CUST_ID from
+		cust_info where CUST_NAME=#{name}
+	</select>
+
+	<select id="selectCustById" resultMap="BaseResultMap">
+		select * from cust_info
+		where CUST_ID=#{id}
+	</select>
+
+	<select id="selectCustByBaseInfo" resultMap="BaseResultMap">
+		select * from cust_info where DISPLAY = 1
+		<if test="custName!=null and custName!=''">
+			and CUST_NAME like concat('%',#{custName},'%')
+		</if>
+		<if test="identifier!=null and identifier!=''">
+			and SIGN_COMP in ('广州乐派数码科技有限公司','行业客户部','系统推进部')
+		</if>
+		<if test="serviceArea!=null and serviceArea!=''">
+			and SIGN_COMP like concat('%',#{serviceArea},'%')
+		</if>
+		ORDER BY SIGN_COMP,CUST_ID
+		<if test="page!=null and limit!=null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+
+	<update id="update" parameterType="com.xunwei.som.pojo.CustInfo">
+		UPDATE cust_info
+		<set>
+			<if test="custName!=null and custName!=''">
+				CUST_NAME=#{custName},
+			</if>
+			<if test="custAddr!=null and custAddr!=''">
+				CUST_ADDR=#{custAddr},
+			</if>
+			<if test="linkman!=null and linkman!=''">
+				LINKMAN=#{linkman},
+			</if>
+			<if test="phone!=null and phone!=''">
+				PHONE=#{phone},
+			</if>
+			<if test="display!=null and display!=''">
+				DISPLAY=#{display},
+			</if>
+			<if test="workTime!=null">
+				WORK_TIME=#{workTime},
+			</if>
+			<if test="offWorkTime!=null">
+				OFFWORK_TIME=#{offWorkTime},
+			</if>
+		</set>
+		where CUST_ID=#{custId}
+	</update>
+	
+	<update id="deleteCustById">
+	  UPDATE cust_info set DISPLAY=#{display} where CUST_ID=#{custId}
+	</update>
+
+</mapper>

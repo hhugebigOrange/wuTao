@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.ConstractExecMapper">
+  <resultMap id="BaseResultMap" type="com.xunwei.som.pojo.ConstractExec">
+    <result column="CONTRACT_CODE" jdbcType="VARCHAR" property="contractCode" />
+    <result column="PERFOR_OF_CONTRACT" jdbcType="VARCHAR" property="perforOfContract" />
+    <result column="TERMIN_OF_CONTRACT" jdbcType="VARCHAR" property="terminOfContract" />
+    <result column="EAR_TERMIN_DATE" jdbcType="DATE" property="earTerminDate" />
+    <result column="EAR_TERMIN_INSTR" jdbcType="VARCHAR" property="earTerminInstr" />
+    <result column="TRANS_FIL_DATE" jdbcType="DATE" property="transFilDate" />
+    <result column="MAKE_POPLE" jdbcType="VARCHAR" property="makePople" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <insert id="insert" parameterType="com.xunwei.som.pojo.ConstractExec">
+    insert into constract_exec (CONTRACT_CODE, PERFOR_OF_CONTRACT, TERMIN_OF_CONTRACT, 
+      EAR_TERMIN_DATE, EAR_TERMIN_INSTR, TRANS_FIL_DATE, 
+      MAKE_POPLE, REMARK)
+    values (#{contractCode,jdbcType=VARCHAR}, #{perforOfContract,jdbcType=VARCHAR}, #{terminOfContract,jdbcType=VARCHAR}, 
+      #{earTerminDate,jdbcType=DATE}, #{earTerminInstr,jdbcType=VARCHAR}, #{transFilDate,jdbcType=DATE}, 
+      #{makePople,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xunwei.som.pojo.ConstractExec">
+    insert into constract_exec
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="contractCode != null">
+        CONTRACT_CODE,
+      </if>
+      <if test="perforOfContract != null">
+        PERFOR_OF_CONTRACT,
+      </if>
+      <if test="terminOfContract != null">
+        TERMIN_OF_CONTRACT,
+      </if>
+      <if test="earTerminDate != null">
+        EAR_TERMIN_DATE,
+      </if>
+      <if test="earTerminInstr != null">
+        EAR_TERMIN_INSTR,
+      </if>
+      <if test="transFilDate != null">
+        TRANS_FIL_DATE,
+      </if>
+      <if test="makePople != null">
+        MAKE_POPLE,
+      </if>
+      <if test="remark != null">
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="contractCode != null">
+        #{contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="perforOfContract != null">
+        #{perforOfContract,jdbcType=VARCHAR},
+      </if>
+      <if test="terminOfContract != null">
+        #{terminOfContract,jdbcType=VARCHAR},
+      </if>
+      <if test="earTerminDate != null">
+        #{earTerminDate,jdbcType=DATE},
+      </if>
+      <if test="earTerminInstr != null">
+        #{earTerminInstr,jdbcType=VARCHAR},
+      </if>
+      <if test="transFilDate != null">
+        #{transFilDate,jdbcType=DATE},
+      </if>
+      <if test="makePople != null">
+        #{makePople,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

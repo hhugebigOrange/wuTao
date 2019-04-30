@@ -1,0 +1,180 @@
+*{margin: 0px;padding:0px;}
+html{font-size:62.5%;} 	
+body{font-size:14px;
+    font-size:1.4rem;
+    height: 100%;background-color: #f5f5f5;width:100%;
+}
+.login-main input::-webkit-input-placeholder{font-size: 18px;}    /* 使用webkit内核的浏览器 */
+.login-main input:-moz-placeholder{font-size: 18px;}                  /* Firefox版本4-18 */
+.login-main input::-moz-placeholder{font-size: 18px;}                  /* Firefox版本19+ */
+.login-main input:-ms-input-placeholder{font-size: 18px;}
+.login-main input:-webkit-autofill{
+	-webkit-text-fill-color: #555 !important;
+	-webkit-box-shadow: 0 0 0px 1000px transparent  inset !important;
+    background-color:transparent;
+    background-image: none;
+    transition: background-color 50000s ease-in-out 0s; /* 背景色透明  生效时长  过渡效果  启用时延迟的时间 */
+}
+.bg-white{
+	background-color: #fff;
+}
+/* 表格宽度 */
+.tab{
+    width: 96%;
+    margin: 0 auto;
+}
+.dis-n{display: none;}
+#assistant .layui-table-tool-self{display: none}
+/*输入框*/
+.allinput{width: 190px;height:38px;
+    /* line-height: 38px; */
+}
+.upWidth{
+    width: 340px !important;
+}
+/* 必填标识符 */
+label>span{
+    margin-right: 3px;
+    color: #f00;
+    font-size: 18px;
+    /* display: inline-block; */
+    vertical-align: baseline;
+    vertical-align: -webkit-baseline-middle;
+}
+/* select的高度 */
+.selHeight{height:38px;line-height: 38px;}
+
+.pos-abs{position: absolute;}
+.mar-left{margin-left:320px;}
+.bor-col{border-color:#e6e6e6}
+.labelWidth{margin-right:10px;}
+
+/* 新增弹窗的lable */
+.addInput{width:130px;}
+
+.body>.titleLab{
+    width: 94%;
+    margin: 0 auto;
+    height: 35px;
+    font-size: 18px;
+    color: #009b85;
+}
+.noAdmin{background:#ddd;color:#fff}
+/*头部*/
+.usernames{font-size: 18px;margin-right: 5px;color: #333;vertical-align: sub}
+.header{background-color: #f5f5f5;position:fixed;height:100px;width:100%; overflow: hidden;z-index: 9999;}
+.logo{width:15%;text-align: center;float: left;border-bottom:1px solid #87a8fe;height:100px;line-height: 100px;}
+.logoFont{float: left;margin-left: 35px;}
+.color-blue{background-color: #4cbff6;}
+.fontcomp{font-weight: bolder;color:#333333;margin-top: 25px;font-size: 20px}
+.welcome{font-weight: lighter;color: #737373;padding-top: 3px;}
+.exit-img{width: 200px;height: 50px;line-height: 50px;overflow: hidden; float: right;margin-right: 3%;margin-top: 25px;text-align: right;}
+/* .exit{margin-top: 30px;} */
+/*左边导航栏*/
+.oneli img{width: 20px;height: 20px;padding-right: 10px;}
+.sidenav{margin-top:100px;}
+/*内容区域*/
+.body{z-index: 100;width: 85%;left: 15%;top: 100px !important;bottom: 0 !important;background:#f5f5f5;position: absolute;overflow: auto}
+.body::-webkit-scrollbar{
+    display: none;
+}
+.color-white{background-color: white;}
+.title{color:#4cbff6;font-size:18px;border-bottom: 2px solid #cfe2ef;padding: 10px;margin-bottom: 20px;}
+.title .particulars{float: right;width: 25px;margin-right: 10px;}
+/*上面按钮文本*/
+
+/*按钮*/
+.demand{margin-left: 10px !important;}
+.abovebtn button {border-radius:5px;border:1px #cccccc solid;width: 90px;}
+/* 按钮所在div宽度 */
+.btn{text-align: right;margin-top: 10px; width: 98%}
+
+/*label*/
+.labnum{margin-left: 20px;margin-top:10px;font-weight: lighter}
+.labnum>label{margin:5px 10px;}
+
+/*合同管理*/
+.contractmanage{float: left;text-align: center}
+.contract{width: 180px; height: 530px; padding: 10px;}
+.contract li{font-size: 18px;line-height: 40px;border-radius: 10px;}
+.contract li:hover{background: #cde8ff}
+
+.color-red{color: red}
+.color-46a7f5{background-color: #46a7f5}
+.color-a79de7{background-color: #a79de7}
+.color-6ad1d1{background-color: #6ad1d1}
+.color-blue{background-color: #4cbff6;}
+.color-white{background-color: white}
+
+/* 合同概况 */
+
+
+
+
+.title{color:#4cbff6;font-size:18px;border-bottom: 2px solid #cfe2ef;padding: 10px;margin-bottom: 20px;}
+.title .particulars{float: right;width: 25px;margin-right: 10px;}
+/*上面按钮文本*/
+/*按钮*/
+.demand{margin-left: 10px !important;}
+.abovebtn button {border-radius:5px;border:1px #cccccc solid;width: 90px;}
+.btn{text-align: right;margin-top: 10px;}
+
+/*label*/
+.labnum{margin-left: 20px;margin-top:10px;font-weight: lighter}
+.labnum>label{margin:5px 10px;}
+
+/*合同管理*/
+.contractmanage{float: left;text-align: center}
+.contract{width: 180px; height: 530px; padding: 10px;}
+.contract li{font-size: 18px;line-height: 40px;border-radius: 10px;}
+.contract li:hover{background: #cde8ff}
+
+.color-red{color: red}
+.color-46a7f5{background-color: #46a7f5}
+.color-a79de7{background-color: #a79de7}
+.color-6ad1d1{background-color: #6ad1d1}
+.color-blue{background-color: #4cbff6;}
+.color-white{background-color: white}
+
+
+/* 合同概况 */
+
+
+
+.moduleDiv{
+    width: 94%;
+    margin: 0 auto;
+}
+
+
+.laytable-cell-undefined{
+    width: 200px;
+}
+
+#calendarDate .layui-laydate{
+    width: 94%;
+}
+#calendarDate .layui-laydate-main{
+    width: 100% !important;
+}
+#calendarDate .layui-laydate-content table{
+    width: 100%;
+    height: 500px;
+}
+#calendarDate .layui-laydate-content td{
+    font-size: 18px;
+}
+#calendarDate .laydate-day-mark{
+    font-size: 16px !important;
+}
+/* #calendarDate .layui-laydate-content table tbody tr td:first-child{
+    background-color: #c6f9f5;
+}
+#calendarDate .layui-laydate-content table tbody tr td:last-child{
+    background-color: #c6f9f5;
+} */
+
+/* .sdd select option{
+    height: 50px;
+    line-height: 50px;
+} */

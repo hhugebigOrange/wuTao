@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>设备管理</title>
+    <script src="../../../js/layui.js"></script>
+    <link rel="stylesheet" href="../../../css/layui.css">
+    <script src="../../../js/jquery.js"></script>
+    <link rel="stylesheet" href="../../../css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="../../../css/body.css">
+    <style type="text/css">
+        .layui-inline{margin-bottom: 10px;}
+    </style>
+</head>
+<body>
+<div class="title">
+    <span>设备管理</span><span class="particulars">设备及资产管理>>设备管理</span>
+</div>
+<div class="abovebtn">
+    <form class="layui-form" action="">
+        <div class="layui-inline">
+            <label class="layui-form-label">服务区域：</label>
+            <div class="layui-input-block">
+                <select name="type" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="0">区域1</option>
+                    <option value="1">区域2</option>
+                    <option value="2">区域3</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">客户名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">资产属性：</label>
+            <div class="layui-input-block">
+                <select name="type" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="0">区域1</option>
+                    <option value="1">区域2</option>
+                    <option value="2">区域3</option>
+                </select>
+            </div>
+        </div><br>
+        <div class="layui-inline">
+            <label class="layui-form-label">工单类型</label>
+            <div class="layui-input-block">
+                <select name="interest" lay-filter="aihao">
+                    <option value="">请选择</option>
+                    <option value="1">事故类</option>
+                    <option value="2">事件类</option>
+                    <option value="3">需求类</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-bg-gray" lay-filter="demo1" lay-submit="">查询</button>
+            </div>
+        </div>
+    </form>
+    <div class="btn">
+        <button class="layui-btn layui-bg-gray" id="add">新增</button>
+        <button class="layui-btn layui-bg-gray">查看</button>
+        <button class="layui-btn layui-bg-gray">清除</button>
+        <button class="layui-btn layui-bg-gray">查看所有</button>
+        <button class="layui-btn layui-bg-gray">导入</button>
+        <button class="layui-btn layui-bg-gray">导出</button>
+        <button class="layui-btn layui-bg-gray" id="change">变动</button>
+        <button class="layui-btn layui-bg-gray">二维码生成</button>
+    </div>
+
+    <div class="labnum">
+        <label>总数：<u>&nbsp&nbsp&nbsp&nbsp<span id="sum">123</span>&nbsp&nbsp&nbsp&nbsp</u></label>
+    </div>
+</div>
+
+<div class="tab">
+    <table id="demo" lay-filter="test"></table>
+</div>
+
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            layer.alert(JSON.stringify(data.field), {title: '最终的提交信息' })
+            return false;
+        });
+    });
+    layui.use('table', function(){
+        var table = layui.table;
+        table.render({
+            elem: '#demo'
+            ,height: 312
+            ,cellMinWidth: 80
+            ,url: '/demo/table/user/' //数据接口
+            ,page: true //开启分页
+            ,cols: [[ //表头
+                {field: 'id', title: 'NO', sort: true, fixed: 'left'}
+                ,{field: 'username', title: '设备序列号'}
+                ,{field: 'sex', title: '机器编码'}
+                ,{field: 'city', title: '设备名称'}
+                ,{field: 'sign', title: '设备型号',}
+                ,{field: 'experience', title: '厂家'}
+                ,{field: 'score', title: '客户名称'}
+                ,{field: 'bxr', title: '设备位置'}
+                ,{field: 'bxdh', title: '安装日期'}
+                ,{field: 'khdz', title: '服务年限'}
+                ,{field: 'khdz', title: '服务区域'}
+                ,{field: 'khdz', title: '所属公司'}
+                ,{field: 'khdz', title: '资产属性'}
+                ,{field: 'khdz', title: '资产编码'}
+                ,{field: 'bz', title: '备注'}
+                ,{field: 'gnx', title: '功能项'}
+            ]]
+        });
+    });
+    // 新增
+    $('#add').on('click', function(){
+        //页面层
+        layer.open({
+            type:2,
+            title:false,
+            area: ['420px', '530px'], //宽高
+            shadeClose: true, //点击遮罩关闭
+            content:['addequipment.html', 'no'] //这里content是一个URL，不让iframe出现滚动条
+        });
+    })
+    // 变动
+    $('#change').on('click', function(){
+        //页面层
+        layer.open({
+            type:2,
+            title:false,
+            area: ['420px', '530px'],
+            shadeClose: true,
+            content:['variation.html', 'no']
+        });
+    })
+</script>
+</body>
+</html>

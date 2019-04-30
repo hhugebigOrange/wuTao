@@ -1,0 +1,32 @@
+
+body{padding: 10px;}
+.title{color:#4cbff6;font-size:18px;width:1200px;border-bottom: 2px solid #cfe2ef;padding: 10px;margin-bottom: 20px;}
+.title .particulars{float: right;color: #cccccc;font-size: small;margin-top: 10px;}
+/*上面按钮文本*/
+/*输入框*/
+.layui-input{width: 270px;}
+/*按钮*/
+.abovebtn button {border-radius:5px;border:1px #cccccc solid;width: 100px;}
+.btn{margin: 20px;}
+/*label*/
+.labnum{margin-left: 20px;font-weight: lighter}
+/*下面的table*/
+.tab{margin:0px 10px 10px 0px;}
+.layui-table-cell{
+    height:auto;
+    overflow:visible;
+    text-overflow:inherit;
+    white-space:normal;
+}
+/*合同管理*/
+.contractmanage{float: left;text-align: center}
+.contract{width: 180px; height: 530px; padding: 10px;}
+.contract li{font-size: 18px;line-height: 40px;border-radius: 10px;}
+.contract li:hover{background: #cde8ff}
+
+.color-red{color: red}
+.color-46a7f5{background-color: #46a7f5}
+.color-a79de7{background-color: #a79de7}
+.color-6ad1d1{background-color: #6ad1d1}
+.color-blue{background-color: #4cbff6;}
+.color-white{background-color: white}

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.AdminLoginTableMapper">
+  <resultMap id="BaseResultMap" type="com.xunwei.som.pojo.AdminLoginTable">
+    <id column="PRI_NUMBER" jdbcType="INTEGER" property="priNumber" />
+    <result column="PRI_GROUP" jdbcType="VARCHAR" property="priGroup" />
+    <result column="SEL_PRI" jdbcType="VARCHAR" property="selPri" />
+    <result column="DEL_PRI" jdbcType="VARCHAR" property="delPri" />
+    <result column="UPD_PRI" jdbcType="VARCHAR" property="updPri" />
+    <result column="ADD_PRI" jdbcType="VARCHAR" property="addPri" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    PRI_NUMBER, PRI_GROUP, SEL_PRI, DEL_PRI, UPD_PRI, ADD_PRI
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from admin_login_table
+    where PRI_NUMBER = #{priNumber,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from admin_login_table
+    where PRI_NUMBER = #{priNumber,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xunwei.som.pojo.AdminLoginTable">
+    insert into admin_login_table (PRI_NUMBER, PRI_GROUP, SEL_PRI, 
+      DEL_PRI, UPD_PRI, ADD_PRI
+      )
+    values (#{priNumber,jdbcType=INTEGER}, #{priGroup,jdbcType=VARCHAR}, #{selPri,jdbcType=VARCHAR}, 
+      #{delPri,jdbcType=VARCHAR}, #{updPri,jdbcType=VARCHAR}, #{addPri,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.xunwei.som.pojo.AdminLoginTable">
+    insert into admin_login_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="priNumber != null">
+        PRI_NUMBER,
+      </if>
+      <if test="priGroup != null">
+        PRI_GROUP,
+      </if>
+      <if test="selPri != null">
+        SEL_PRI,
+      </if>
+      <if test="delPri != null">
+        DEL_PRI,
+      </if>
+      <if test="updPri != null">
+        UPD_PRI,
+      </if>
+      <if test="addPri != null">
+        ADD_PRI,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="priNumber != null">
+        #{priNumber,jdbcType=INTEGER},
+      </if>
+      <if test="priGroup != null">
+        #{priGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="selPri != null">
+        #{selPri,jdbcType=VARCHAR},
+      </if>
+      <if test="delPri != null">
+        #{delPri,jdbcType=VARCHAR},
+      </if>
+      <if test="updPri != null">
+        #{updPri,jdbcType=VARCHAR},
+      </if>
+      <if test="addPri != null">
+        #{addPri,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xunwei.som.pojo.AdminLoginTable">
+    update admin_login_table
+    <set>
+      <if test="priGroup != null">
+        PRI_GROUP = #{priGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="selPri != null">
+        SEL_PRI = #{selPri,jdbcType=VARCHAR},
+      </if>
+      <if test="delPri != null">
+        DEL_PRI = #{delPri,jdbcType=VARCHAR},
+      </if>
+      <if test="updPri != null">
+        UPD_PRI = #{updPri,jdbcType=VARCHAR},
+      </if>
+      <if test="addPri != null">
+        ADD_PRI = #{addPri,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PRI_NUMBER = #{priNumber,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xunwei.som.pojo.AdminLoginTable">
+    update admin_login_table
+    set PRI_GROUP = #{priGroup,jdbcType=VARCHAR},
+      SEL_PRI = #{selPri,jdbcType=VARCHAR},
+      DEL_PRI = #{delPri,jdbcType=VARCHAR},
+      UPD_PRI = #{updPri,jdbcType=VARCHAR},
+      ADD_PRI = #{addPri,jdbcType=VARCHAR}
+    where PRI_NUMBER = #{priNumber,jdbcType=INTEGER}
+  </update>
+</mapper>

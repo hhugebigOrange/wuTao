@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新增</title>
+    <script src="../../../js/layui.js"></script>
+    <link rel="stylesheet" href="../../../css/layui.css">
+    <style type="text/css">
+        *{margin: 0px auto;padding: 0px;}
+        fieldset{width:400px;}
+        form{padding: 10px;}
+    </style>
+    <link rel="stylesheet" href="../../../css/modules/layer/default/layer.css">
+</head>
+<body>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+    <legend>新增客户信息</legend>
+
+<form class="layui-form" action="">
+    <div class="layui-form-item">
+        <label class="layui-form-label">服务区域：</label>
+        <div class="layui-input-block">
+            <input name="clientname" class="layui-input" type="text" placeholder="请输入名称" autocomplete="off" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">员工编码：</label>
+        <div class="layui-input-block">
+            <input name="clientname" class="layui-input" type="text" placeholder="请输入名称" autocomplete="off" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">工程师：</label>
+        <div class="layui-input-block">
+            <input name="clientname" class="layui-input" type="text" placeholder="请输入名称" autocomplete="off" lay-verify="required">
+        </div>
+    </div>
+    <div class="layui-form-item">
+            <label class="layui-form-label">电话：</label>
+            <div class="layui-input-inline">
+                <input name="phone" class="layui-input" type="text" autocomplete="off" lay-verify="phone">
+            </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">在岗状态：</label>
+        <div class="layui-input-block">
+            <select name="type" lay-verify="required">
+                <option value="">请选择</option>
+                <option value="0">休假</option>
+                <option value="1">培训</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">起始日期</label>
+        <div class="layui-input-block">
+            <input name="status" class="layui-input" type="text" placeholder="" autocomplete="off" lay-verify="date" id="date1">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">终止日期</label>
+        <div class="layui-input-block">
+            <input name="status" class="layui-input" type="text" placeholder="" autocomplete="off" lay-verify="date" id="date2">
+        </div>
+    </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">事由原因：</label>
+    <div class="layui-input-block">
+        <input name="status" class="layui-input" type="text" placeholder="" autocomplete="off" lay-verify="required">
+    </div>
+</div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn" lay-filter="demo1" lay-submit="">立即提交</button>
+            <button class="layui-btn layui-btn-primary" type="reset">重置</button>
+        </div>
+    </div>
+</form>
+</fieldset>
+<script>
+    layui.use(['form', 'layedit', 'laydate'], function(){
+        var form = layui.form
+            ,layer = layui.layer
+            ,laydate=layui.data;
+        laydate.render({
+            elem:"#date1"
+        })
+        laydate.render({
+            elem:"#date2"
+        })
+        //监听提交
+        form.on('submit(demo1)', function(data){
+            layer.alert(JSON.stringify(data.field), {title: '最终的提交信息' })
+            return false;
+        });
+
+        //表单初始赋值
+        // form.val('example', {
+        //     "username": "贤心" // "name": "value"
+        // })
+
+    });
+</script>
+
+</body>
+</html>

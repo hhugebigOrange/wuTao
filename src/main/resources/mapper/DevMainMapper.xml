@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.DevMainMapper">
+	<resultMap id="BaseResultMap" type="com.xunwei.som.pojo.DevMain">
+		<result column="MACH_CODE" jdbcType="VARCHAR" property="machCode" />
+		<result column="CUST_ID" jdbcType="INTEGER" property="custId" />
+		<result column="MAIN_TIME" jdbcType="TIMESTAMP" property="mainTime" />
+		<result column="MAIN_FREQUENCY" jdbcType="VARCHAR" property="mainFrequency" />
+		<result column="STAFF_ID" jdbcType="INTEGER" property="staffId" />
+		<result column="ARRIVAL_TIME" jdbcType="DATE" property="arrivalTime" />
+		<result column="NUMBER_FEEBACK" jdbcType="VARCHAR" property="numberFeeback" />
+	</resultMap>
+	<insert id="insert" parameterType="com.xunwei.som.pojo.DevMain">
+		insert into dev_main
+		(MACH_CODE, CUST_ID, MAIN_TIME,
+		MAIN_FREQUENCY, STAFF_ID)
+		values
+		(#{machCode,jdbcType=VARCHAR}, #{custId,jdbcType=INTEGER},
+		#{mainTime,jdbcType=TIMESTAMP},
+		#{mainFrequency,jdbcType=VARCHAR},
+		#{staffId,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.xunwei.som.pojo.DevMain">
+		insert into dev_main
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="machCode != null">
+				MACH_CODE,
+			</if>
+			<if test="custId != null">
+				CUST_ID,
+			</if>
+			<if test="mainTime != null">
+				MAIN_TIME,
+			</if>
+			<if test="mainFrequency != null">
+				MAIN_FREQUENCY,
+			</if>
+			<if test="staffId != null">
+				STAFF_ID,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="machCode != null">
+				#{machCode,jdbcType=VARCHAR},
+			</if>
+			<if test="custId != null">
+				#{custId,jdbcType=INTEGER},
+			</if>
+			<if test="mainTime != null">
+				#{mainTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="mainFrequency != null">
+				#{mainFrequency,jdbcType=VARCHAR},
+			</if>
+			<if test="staffId != null">
+				#{staffId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectDevMain" resultMap="BaseResultMap">
+		SELECT d.* FROM
+		dev_main d LEFT JOIN
+		device de ON
+		d.MACH_CODE=de.MACH_CODE
+		LEFT JOIN staff_info s
+		ON d.STAFF_ID=s.STAFF_ID
+		LEFT JOIN cust_info c
+		ON d.CUST_ID=c.CUST_ID 
+		<where>
+		  <if test="compName!=null and compName!=''">
+		     AND s.COMP_NAME LIKE concat('%',#{compName},'%')
+		  </if>
+		  <if test="custName!=null and custName!=''">
+		     AND c.CUST_NAME LIKE concat('%',#{custName},'%')
+		  </if>
+		  <if test="engineerName!=null and engineerName!=''">
+		     AND s.NAME LIKE concat('%',#{engineerName},'%')
+		  </if>
+		</where>
+	</select>
+
+</mapper>

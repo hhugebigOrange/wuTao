@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.StaffInfoMapper">
+	<resultMap id="BaseResultMap" type="com.xunwei.som.pojo.StaffInfo">
+		<id column="STAFF_ID" jdbcType="VARCHAR" property="staffId" />
+		<result column="NAME" jdbcType="VARCHAR" property="name" />
+		<result column="PHONE" jdbcType="VARCHAR" property="phone" />
+		<result column="COMP_NUMBER" jdbcType="INTEGER" property="compNumber" />
+		<result column="COMP_NAME" jdbcType="VARCHAR" property="compName" />
+		<result column="POST" jdbcType="VARCHAR" property="post" />
+		<result column="WORK_COND" jdbcType="VARCHAR" property="workCond" />
+		<result column="STATUS" jdbcType="VARCHAR" property="status" />
+		<result column="REMARK" jdbcType="VARCHAR" property="remark" />
+		<result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+		<result column="START_DATE" jdbcType="DATE" property="startDate" />
+		<result column="END_DATE" jdbcType="DATE" property="endDate" />
+		<result column="RESON" jdbcType="VARCHAR" property="reson" />
+		<result column="SECRET" jdbcType="CHAR" property="secret" />
+		<result column="SECRET_LEVEL" jdbcType="CHAR" property="secretLevel" />
+		<result column="SECRET_CLASS" jdbcType="CHAR" property="secretClass" />
+		<result column="DISPLAY" jdbcType="VARCHAR" property="display" />
+	</resultMap>
+	<insert id="insert" parameterType="com.xunwei.som.pojo.StaffInfo">
+		insert into staff_info
+		(STAFF_ID,NAME,PHONE,COMP_NAME,POST,CREATE_DATE,COMP_NUMBER,SECRET,SECRET_LEVEL,REMARK)
+		values
+		(#{staffId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{compName,jdbcType=VARCHAR},#{post,jdbcType=VARCHAR},#{createDate,jdbcType=DATE},#{compNumber,jdbcType=INTEGER},#{secret,jdbcType=CHAR},#{secretLevel,jdbcType=CHAR},#{remark,jdbcType=CHAR})
+	</insert>
+	<select id="selectStaffByDynamic" resultMap="BaseResultMap">
+		select * from staff_info where DISPLAY=1
+		<if test="name !=null and name != '' ">
+			and NAME like concat('%',#{name},'%')
+		</if>
+		<if test="compName !=null and compName !=''">
+			and COMP_NAME like concat('%',#{compName},'%')
+		</if>
+		<if test="identifier !=null and identifier !=''">
+			and COMP_NAME in ('广州乐派数码科技有限公司','行业客户部','系统推进部')
+		</if>
+		<if test="post !=null and post != '' ">
+			and POST =#{post}
+		</if>
+		<if test="phone !=null and phone != '' ">
+			and PHONE = #{phone}
+		</if>
+		<if test="workCond !=null and workCond != '' ">
+			and WORK_COND = #{workCond}
+		</if>
+		ORDER BY COMP_NAME,ORDER_TIME DESC
+		<if test="page !=null and limit != null ">
+			limit #{page},#{limit}
+		</if>
+	</select>
+
+	<!-- 根据输所属的公司名查询所属的公司ID -->
+	<select id="selectCompIdByName" resultType="java.lang.Integer">
+		SELECT
+		DISTINCT
+		c.COMP_NUMBER
+		FROM
+		comp_info c
+		LEFT JOIN staff_info s
+		ON
+		c.COMP_NAME=s.COMP_NAME WHERE c.COMP_NAME=#{name}
+	</select>
+
+	<select id="selectAllStaff" resultMap="BaseResultMap">
+		select * from staff_info
+	</select>
+
+	<select id="selectStaffByNum" resultMap="BaseResultMap">
+		select * from staff_info
+		where STAFF_ID=#{staffNo}
+	</select>
+
+	<update id="update" parameterType="com.xunwei.som.pojo.StaffInfo">
+		update staff_info
+		<set>
+			<if test="workCond != null">
+				WORK_COND = #{workCond},
+			</if>
+			<if test="startDate != null">
+				START_DATE = #{startDate},
+			</if>
+			<if test="endDate != null">
+				END_DATE = #{endDate},
+			</if>
+			<if test="reson != null">
+				RESON = #{reson},
+			</if>
+			<if test="name != null">
+				NAME = #{name},
+			</if>
+			<if test="phone != null">
+				PHONE = #{phone},
+			</if>
+			<if test="post != null">
+				POST = #{post},
+			</if>
+			<if test="compName != null">
+				COMP_NAME = #{compName},
+			</if>
+			<if test="secret != null">
+				SECRET = #{secret},
+			</if>
+			<if test="secretLevel != null">
+				SECRET_LEVEL = #{secretLevel},
+			</if>
+			<if test="secretClass != null">
+				SECRET_CLASS = #{secretClass},
+			</if>
+			<if test="display != null">
+				DISPLAY = #{display},
+			</if>
+			<if test="remark != null">
+				REMARK = #{remark},
+			</if>
+		</set>
+		where STAFF_ID = #{staffId}
+	</update>
+
+	<update id="updateDateByStaffId">
+		UPDATE staff_info SET
+		START_DATE=NULL,END_DATE=NULL,RESON=NULL,WORK_COND='在岗' WHERE
+		STAFF_ID=#{staffId}
+	</update>
+
+	<select id="selectStaffByOrder" resultMap="BaseResultMap">
+		SELECT DISTINCT
+		st.*
+		FROM
+		staff_info st
+		LEFT JOIN service_info s
+		ON
+		st.STAFF_ID=s.STAFF_ID
+		LEFT
+		JOIN order_info o
+		ON
+		o.WO_NUMBER=s.WO_NUMBER WHERE s.prob_solve IS NOT
+		NULL
+		GROUP BY st.staff_id
+	</select>
+
+	<select id="selectStaffBySeat" resultMap="BaseResultMap">
+		SELECT DISTINCT
+		st.*
+		FROM
+		staff_info st
+		LEFT JOIN service_info s
+		ON
+		st.STAFF_ID=s.STAFF_ID
+		LEFT
+		JOIN order_info o
+		ON
+		o.WO_NUMBER=s.WO_NUMBER WHERE s.prob_solve IS NOT
+		NULL
+		GROUP BY o.DISTRIBUTE_MAN
+	</select>
+
+	<delete id="deleteStaffById">
+		DELETE FROM staff_info WHERE STAFF_ID=#{staffId}
+	</delete>
+</mapper>

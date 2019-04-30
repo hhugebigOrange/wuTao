@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 引用db.properties配置文件 -->
+    <properties resource="db.properties"/>
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+    </settings>
+    
+    <typeAliases>
+       <package name="com.xunwei.som"/>
+    </typeAliases>
+
+    <!--
+        development : 开发模式
+        work : 工作模式
+     -->
+	<environments default="development">
+		<environment id="development">
+			<!-- 事务管理器，类型有jdbc、managed,一般使用jdbc支持事务 -->
+			<transactionManager type="JDBC" />
+			<!-- 数据源，type有unpooled(不使用连接池，每次创建新的连接)、pooled(使用连接池)、jndi(由容器提供数据源) -->
+			<dataSource type="unpooled">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+		<environment id="test">
+			<!-- 事务管理器，类型有jdbc、managed,一般使用jdbc支持事务 -->
+			<transactionManager type="JDBC" />
+			<!-- 数据源，type有unpooled(不使用连接池，每次创建新的连接)、pooled(使用连接池)、jndi(由容器提供数据源) -->
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url" value="${url}" />
+				<property name="username" value="${username}" />
+				<property name="password" value="${password}" />
+			</dataSource>
+		</environment>
+	</environments>
+	
+    <mappers>
+      <mapper resource="mapper/MachineMapper.xml" />
+      <mapper resource="mapper/StaffInfoMapper.xml" />
+    </mappers>
+    
+</configuration>

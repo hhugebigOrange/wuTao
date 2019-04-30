@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.ContractMapper">
+	<resultMap id="BaseResultMap" type="com.xunwei.som.pojo.Contract">
+		<id column="ID" jdbcType="INTEGER" property="id" />
+		<result column="contract_no" jdbcType="VARCHAR" property="contractNo" />
+		<result column="main_service" jdbcType="VARCHAR" property="mainService" />
+		<result column="child_service" jdbcType="VARCHAR" property="childService" />
+		<result column="cust_name" jdbcType="VARCHAR" property="custName" />
+		<result column="cust_id" jdbcType="INTEGER" property="custId" />
+		<result column="start_date" jdbcType="DATE" property="startDate" />
+		<result column="end_date" jdbcType="DATE" property="endDate" />
+		<result column="contract_type" jdbcType="VARCHAR" property="contractType" />
+		<result column="signing_company" jdbcType="VARCHAR" property="signingCompany" />
+		<result column="cust_linkman" jdbcType="VARCHAR" property="custLinkman" />
+		<result column="linkman_phone" jdbcType="VARCHAR" property="linkmanPhone" />
+		<result column="opening_bank" jdbcType="VARCHAR" property="openingBank" />
+		<result column="bank_account" jdbcType="VARCHAR" property="bankAccount" />
+		<result column="tax_iden" jdbcType="VARCHAR" property="taxIden" />
+		<result column="address" jdbcType="VARCHAR" property="address" />
+		<result column="asset_ascription" jdbcType="VARCHAR" property="assetAscription" />
+		<result column="kpi_1" jdbcType="DATE" property="kpi1" />
+		<result column="kpi_2" jdbcType="DATE" property="kpi2" />
+		<result column="kpi_3" jdbcType="VARCHAR" property="kpi3" />
+		<result column="reg_time" jdbcType="DATE" property="regTime" />
+		<result column="handling_department" jdbcType="VARCHAR"
+			property="handlingDepartment" />
+		<result column="agent" jdbcType="VARCHAR" property="agent" />
+		<result column="contract_holdman" jdbcType="VARCHAR" property="contractHoldman" />
+		<result column="contract_nature" jdbcType="VARCHAR" property="contractNature" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		contract_no, main_service, child_service, cust_name,
+		start_date, end_date,
+		contract_type, signing_company,
+		cust_linkman,
+		linkman_phone, opening_bank,
+		bank_account,
+		tax_iden,
+		address,
+		asset_ascription, kpi_1, kpi_2, kpi_3, reg_time,
+		handling_department,
+		agent, contract_holdman
+	</sql>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.String"
+		resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from contract
+		where contract_no = #{contractNo,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		contract
+		where contract_no = #{contractNo,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.xunwei.som.pojo.Contract">
+		insert into contract
+		(contract_no, main_service, child_service,
+		cust_name, start_date,
+		end_date, contract_type, signing_company,
+		cust_linkman, linkman_phone,
+		opening_bank,
+		bank_account, tax_iden,
+		address,
+		asset_ascription, kpi_1,
+		kpi_2,
+		kpi_3, reg_time,
+		handling_department,
+		agent, contract_holdman)
+		values
+		(#{contractNo,jdbcType=VARCHAR},
+		#{mainService,jdbcType=VARCHAR},
+		#{childService,jdbcType=VARCHAR},
+		#{custName,jdbcType=VARCHAR},
+		#{startDate,jdbcType=DATE},
+		#{endDate,jdbcType=DATE},
+		#{contractDeadline,jdbcType=INTEGER},
+		#{contractType,jdbcType=VARCHAR}, #{signingCompany,jdbcType=VARCHAR},
+		#{custLinkman,jdbcType=VARCHAR}, #{linkmanPhone,jdbcType=VARCHAR},
+		#{openingBank,jdbcType=VARCHAR},
+		#{bankAccount,jdbcType=VARCHAR},
+		#{taxIden,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR},
+		#{assetAscription,jdbcType=VARCHAR}, #{kpi1,jdbcType=DATE},
+		#{kpi2,jdbcType=DATE},
+		#{kpi3,jdbcType=VARCHAR},
+		#{regTime,jdbcType=DATE}, #{handlingDepartment,jdbcType=VARCHAR},
+		#{agent,jdbcType=VARCHAR}, #{contractHoldman,jdbcType=VARCHAR})
+	</insert>
+
+	<insert id="insertSelective" parameterType="com.xunwei.som.pojo.Contract">
+		insert into contract
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contractNo != null">
+				contract_no,
+			</if>
+			<if test="mainService != null">
+				main_service,
+			</if>
+			<if test="childService != null">
+				child_service,
+			</if>
+			<if test="custName != null">
+				cust_name,
+			</if>
+			<if test="custId != null">
+				cust_id,
+			</if>
+			<if test="startDate != null">
+				start_date,
+			</if>
+			<if test="endDate != null">
+				end_date,
+			</if>
+			<if test="contractType != null">
+				contract_type,
+			</if>
+			<if test="signingCompany != null">
+				signing_company,
+			</if>
+			<if test="custLinkman != null">
+				cust_linkman,
+			</if>
+			<if test="linkmanPhone != null">
+				linkman_phone,
+			</if>
+			<if test="openingBank != null">
+				opening_bank,
+			</if>
+			<if test="bankAccount != null">
+				bank_account,
+			</if>
+			<if test="taxIden != null">
+				tax_iden,
+			</if>
+			<if test="address != null">
+				address,
+			</if>
+			<if test="assetAscription != null">
+				asset_ascription,
+			</if>
+			<if test="kpi1 != null">
+				kpi_1,
+			</if>
+			<if test="kpi2 != null">
+				kpi_2,
+			</if>
+			<if test="kpi3 != null">
+				kpi_3,
+			</if>
+			<if test="regTime != null">
+				reg_time,
+			</if>
+			<if test="handlingDepartment != null">
+				handling_department,
+			</if>
+			<if test="agent != null">
+				agent,
+			</if>
+			<if test="contractHoldman != null">
+				contract_holdman,
+			</if>
+			<if test="contractNature != null">
+				contract_nature,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="contractNo != null">
+				#{contractNo,jdbcType=VARCHAR},
+			</if>
+			<if test="mainService != null">
+				#{mainService,jdbcType=VARCHAR},
+			</if>
+			<if test="childService != null">
+				#{childService,jdbcType=VARCHAR},
+			</if>
+			<if test="custName != null">
+				#{custName,jdbcType=VARCHAR},
+			</if>
+			<if test="custId != null">
+				#{custId,jdbcType=INTEGER},
+			</if>
+			<if test="startDate != null">
+				#{startDate,jdbcType=DATE},
+			</if>
+			<if test="endDate != null">
+				#{endDate,jdbcType=DATE},
+			</if>
+			<if test="contractDeadline != null">
+				#{contractDeadline,jdbcType=INTEGER},
+			</if>
+			<if test="contractType != null">
+				#{contractType,jdbcType=VARCHAR},
+			</if>
+			<if test="signingCompany != null">
+				#{signingCompany,jdbcType=VARCHAR},
+			</if>
+			<if test="custLinkman != null">
+				#{custLinkman,jdbcType=VARCHAR},
+			</if>
+			<if test="linkmanPhone != null">
+				#{linkmanPhone,jdbcType=VARCHAR},
+			</if>
+			<if test="openingBank != null">
+				#{openingBank,jdbcType=VARCHAR},
+			</if>
+			<if test="bankAccount != null">
+				#{bankAccount,jdbcType=VARCHAR},
+			</if>
+			<if test="taxIden != null">
+				#{taxIden,jdbcType=VARCHAR},
+			</if>
+			<if test="address != null">
+				#{address,jdbcType=VARCHAR},
+			</if>
+			<if test="assetAscription != null">
+				#{assetAscription,jdbcType=VARCHAR},
+			</if>
+			<if test="kpi1 != null">
+				#{kpi1,jdbcType=DATE},
+			</if>
+			<if test="kpi2 != null">
+				#{kpi2,jdbcType=DATE},
+			</if>
+			<if test="kpi3 != null">
+				#{kpi3,jdbcType=VARCHAR},
+			</if>
+			<if test="regTime != null">
+				#{regTime,jdbcType=DATE},
+			</if>
+			<if test="handlingDepartment != null">
+				#{handlingDepartment,jdbcType=VARCHAR},
+			</if>
+			<if test="agent != null">
+				#{agent,jdbcType=VARCHAR},
+			</if>
+			<if test="contractHoldman != null">
+				#{contractHoldman,jdbcType=VARCHAR},
+			</if>
+			<if test="contractNature != null">
+				#{contractNature,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+
+	<update id="updateByPrimaryKeySelective">
+		update contract
+		<set>
+			<if test="record.contractNo != null">
+				contract_no = #{record.contractNo},
+			</if>
+			<if test="record.mainService != null">
+				main_service = #{record.mainService},
+			</if>
+			<if test="record.childService != null">
+				child_service = #{record.childService},
+			</if>
+			<if test="record.custName != null">
+				cust_name = #{record.custName},
+			</if>
+			<if test="record.startDate != null">
+				start_date = #{record.startDate},
+			</if>
+			<if test="record.endDate != null">
+				end_date = #{record.endDate},
+			</if>
+			<if test="record.contractType != null">
+				contract_type = #{record.contractType},
+			</if>
+			<if test="record.signingCompany != null">
+				signing_company = #{record.signingCompany},
+			</if>
+			<if test="record.custLinkman != null">
+				cust_linkman = #{record.custLinkman},
+			</if>
+			<if test="record.linkmanPhone != null">
+				linkman_phone = #{record.linkmanPhone},
+			</if>
+			<if test="record.openingBank != null">
+				opening_bank = #{record.openingBank},
+			</if>
+			<if test="record.bankAccount != null">
+				bank_account = #{record.bankAccount},
+			</if>
+			<if test="record.taxIden != null">
+				tax_iden = #{record.taxIden},
+			</if>
+			<if test="record.address != null">
+				address = #{record.address},
+			</if>
+			<if test="record.assetAscription != null">
+				asset_ascription = #{record.assetAscription},
+			</if>
+			<if test="record.kpi1 != null">
+				kpi_1 = #{record.kpi1},
+			</if>
+			<if test="record.kpi2 != null">
+				kpi_2 = #{record.kpi2},
+			</if>
+			<if test="record.kpi3 != null">
+				kpi_3 = #{record.kpi3},
+			</if>
+			<if test="record.regTime != null">
+				reg_time = #{record.regTime},
+			</if>
+			<if test="record.handlingDepartment != null">
+				handling_department =
+				#{record.handlingDepartment},
+			</if>
+			<if test="record.agent != null">
+				agent = #{record.agent},
+			</if>
+			<if test="record.contractHoldman != null">
+				contract_holdman = #{record.contractHoldman},
+			</if>
+			<if test="record.contractNature != null">
+				contract_nature = #{record.contractNature},
+			</if>
+		</set>
+		<where>
+			<if test="record.contractNo != null and record.id !=null">
+				ID = #{record.id}
+			</if>
+			<if test="record.contractNo != null and record.id ==null">
+				contract_no = #{record.contractNo}
+			</if>
+			<if test="record.contractNo == null and record.id !=null">
+				ID = #{record.id}
+			</if>
+			<if test="custName != null">
+				cust_name=#{custName}
+			</if>
+		</where>
+	</update>
+
+	<select id="selectByID" resultMap="BaseResultMap">
+		select * from contract where
+		ID=#{ID}
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="com.xunwei.som.pojo.Contract">
+		update contract
+		set main_service = #{mainService,jdbcType=VARCHAR},
+		child_service =
+		#{childService,jdbcType=VARCHAR},
+		cust_name =
+		#{custName,jdbcType=VARCHAR},
+		start_date = #{startDate,jdbcType=DATE},
+		end_date = #{endDate,jdbcType=DATE},
+		contract_type =
+		#{contractType,jdbcType=VARCHAR},
+		signing_company =
+		#{signingCompany,jdbcType=VARCHAR},
+		cust_linkman =
+		#{custLinkman,jdbcType=VARCHAR},
+		linkman_phone =
+		#{linkmanPhone,jdbcType=VARCHAR},
+		opening_bank =
+		#{openingBank,jdbcType=VARCHAR},
+		bank_account =
+		#{bankAccount,jdbcType=VARCHAR},
+		tax_iden =
+		#{taxIden,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		asset_ascription = #{assetAscription,jdbcType=VARCHAR},
+		kpi_1 =
+		#{kpi1,jdbcType=DATE},
+		kpi_2 = #{kpi2,jdbcType=DATE},
+		kpi_3 =
+		#{kpi3,jdbcType=VARCHAR},
+		reg_time = #{regTime,jdbcType=DATE},
+		handling_department = #{handlingDepartment,jdbcType=VARCHAR},
+		agent =
+		#{agent,jdbcType=VARCHAR},
+		contract_holdman =
+		#{contractHoldman,jdbcType=VARCHAR}
+		where contract_no =
+		#{contractNo,jdbcType=VARCHAR}
+	</update>
+
+	<select id="selectByComp" resultMap="BaseResultMap">
+		select * from contract
+		<where>
+			<if test="compName!=null and compName!=''">
+				AND main_service like concat('%',#{compName},'%')
+			</if>
+		</where>
+	</select>
+
+	<select id="selectByCust" resultMap="BaseResultMap">
+		select * from contract
+		<where>
+			<if test="custName!=null and custName!=''">
+				AND cust_name like concat('%',#{custName},'%')
+			</if>
+			<if test="compName!=null and compName!=''">
+				AND main_service like concat('%',#{compName},'%')
+			</if>
+			<if test="identifier!=null and identifier!=''">
+				AND main_service in ('广州乐派数码科技有限公司','行业客户部','系统推进部')
+			</if>
+			<if test="timeout!=null and timeout!=''">
+				AND end_date &lt;NOW()
+			</if>
+			<if test="dueTo!=null and dueTo!=''">
+				AND end_date &gt;=NOW() AND DATE_ADD(NOW(),INTERVAL 1
+				YEAR) &gt;= end_date
+			</if>
+			<if test="contractNature!=null and contractNature!=''">
+				AND contract_nature like
+				concat('%',#{contractNature},'%')
+			</if>
+		</where>
+		<if test="order!=null and order==1">
+			ORDER BY (end_date-CURRENT_DATE) ASC 
+			<if test="page!=null and limit!=null">
+			limit #{page},#{limit}
+		     </if>
+		</if>
+		<if test="order!=null and order==2">
+			ORDER BY (end_date-CURRENT_DATE) DESC 
+			<if test="page!=null and limit!=null">
+			limit #{page},#{limit}
+		     </if>
+		</if>
+		<if test="page!=null and limit!=null and order!=1 and order!=2">
+			ORDER BY start_date DESC limit #{page},#{limit}
+		</if>
+	</select>
+
+	<select id="countCustNumber" resultType="java.lang.Integer">
+		SELECT COUNT(cust_name) FROM
+		(SELECT DISTINCT cust_name FROM contract
+		<where>
+			<if test="custName!=null and custName!=''">
+				AND cust_name like concat('%',#{custName},'%')
+			</if>
+		</where>
+		) AS custNumber
+	</select>
+
+	<select id="selectByKpi" resultMap="BaseResultMap">
+		select * from contract
+		<where>
+			<if test="contractNo!=null and contractNo!=''">
+				and contract_no =#{contractNo}
+			</if>
+			<if test="custName!=null and custName!=''">
+				and cust_name like concat('%',#{custName},'%')
+			</if>
+			<if test="serviceArea!=null and serviceArea!=''">
+				and main_service like concat('%',#{serviceArea},'%')
+			</if>
+			<if test="identifier!=null and identifier!=''">
+				and main_service in ('广州乐派数码科技有限公司','行业客户部','系统推进部')
+			</if>
+		</where>
+		<if test="page!=null and limit!=null">
+			limit #{page},#{limit}
+		</if>
+	</select>
+
+</mapper>

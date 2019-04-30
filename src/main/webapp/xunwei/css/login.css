@@ -1,0 +1,20 @@
+*{margin: 0px;padding:0px;background-repeat: no-repeat;}
+.content{background-image: url("../images/567227.jpg");background-size: 1530px 780px;overflow: hidden;width: 1530px;height: 780px;text-align: center;margin: auto;}
+/*左边*/
+.left{float: left;width:740px;}
+.logo{height: 70px;margin-top: 300px;}
+.font{font-size: 30px;color: white;margin-top: 30px;}
+/*中间那条线*/
+.center{float: left;}
+.center .line{height: 700px;width: 5px;}
+/*右边*/
+.right{float: left;width: 700px;}
+.people{width: 200px;padding-top:100px;}
+/*输入框*/
+.inp{border-radius: 5px;border: 1px #cccccc solid;width:400px;height: 50px;margin: 5px;background-position:6px 6px;
+    background-color: #cde8ff;background-size: 35px 35px;text-align: center;position: relative;left: 152px;}
+.inp  input{border:0px;background-color: #cde8ff;margin-left: 30px;width:330px;margin-top: 10px;border-left: 1px solid white;height: 33px}
+button{border-radius: 5px;border:0px;width: 403px;height: 53px;position: relative;right:47px;}
+.username{background-image: url("../images/username.png");}
+.pwd{background-image: url("../images/key.png");}
+.login{background-color: #346dd8;margin-top: 15px;color: white;margin-left: 5px;}

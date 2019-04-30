@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.StaffInfoMapper">
+
+  <resultMap id="BaseResultMap" type="com.xunwei.som.base.model.staffInfo">
+    <id column="STAFF_ID" jdbcType="INTEGER" property="staffId" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="PHONE" jdbcType="VARCHAR" property="phone" />
+    <result column="COMP_NUMBER" jdbcType="INTEGER" property="compNumber" />
+    <result column="COMP_NAME" jdbcType="VARCHAR" property="compName" />
+    <result column="POST" jdbcType="VARCHAR" property="post" />
+    <result column="WORK_COND" jdbcType="VARCHAR" property="workCond" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="CREATE_DATE" jdbcType="DATE" property="createDate" />
+  </resultMap>
+
+   <insert id="insert" parameterType="com.xunwei.som.base.model.staffInfo">
+    insert into staff_info (NAME, PHONE,COMP_NAME, POST, CREATE_DATE)
+    values (#{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{compName,jdbcType=VARCHAR}, 
+    #{post,jdbcType=VARCHAR}, #{createDate,jdbcType=DATE})
+  </insert>
+  
+   <select id="selectMachineByDynamic" parameterType="com.xunwei.som.base.model.staffInfo" resultMap="BaseResultMap">
+		select * from staff_info
+		<where>
+			<!-- if语句，test指判断条件，如果条件成立则输出里面的内容 -->
+			<if test="machineName !=null and machineName != '' ">
+				and machine_name like concat('%',#{machineName},'%')
+			</if>
+		</where>
+	</select>
+  
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.CompInfoMapper">
+	<resultMap id="BaseResultMap" type="com.xunwei.som.pojo.CompInfo">
+		<id column="COMP_NUMBER" jdbcType="INTEGER" property="compNumber" />
+		<result column="COMP_NAME" jdbcType="VARCHAR" property="compName" />
+		<result column="COMP_LOCATION" jdbcType="VARCHAR" property="compLocation" />
+		<result column="ABBREVIATION" jdbcType="VARCHAR" property="abbreviation" />
+		<result column="DISPLAY" jdbcType="INTEGER" property="display" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		COMP_NUMBER, COMP_NAME, COMP_LOCATION
+	</sql>
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultMap="BaseResultMap">
+		select
+		*
+		from comp_info
+		where COMP_NUMBER = #{compNumber,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from comp_info
+		where COMP_NUMBER = #{compNumber,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.xunwei.som.pojo.CompInfo">
+		insert into comp_info (COMP_NUMBER, COMP_NAME, COMP_LOCATION
+		)
+		values (#{compNumber,jdbcType=INTEGER}, #{compName,jdbcType=VARCHAR},
+		#{compLocation,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.xunwei.som.pojo.CompInfo">
+		insert into comp_info
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="compNumber != null">
+				COMP_NUMBER,
+			</if>
+			<if test="abbreviation != null">
+				ABBREVIATION,
+			</if>
+			<if test="compName != null">
+				COMP_NAME,
+			</if>
+			<if test="compLocation != null">
+				COMP_LOCATION,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="compNumber != null">
+				#{compNumber,jdbcType=INTEGER},
+			</if>
+			<if test="abbreviation != null">
+				#{abbreviation,jdbcType=INTEGER},
+			</if>
+			<if test="compName != null">
+				#{compName,jdbcType=VARCHAR},
+			</if>
+			<if test="compLocation != null">
+				#{compLocation,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.xunwei.som.pojo.CompInfo">
+		update comp_info
+		<set>
+			<if test="compName != null and compName!=''">
+				COMP_NAME = #{compName},
+			</if>
+			<if test="compLocation != null and compLocation!=''">
+				COMP_LOCATION = #{compLocation},
+			</if>
+			<if test="abbreviation != null and abbreviation!=''">
+				ABBREVIATION = #{abbreviation},
+			</if>
+			<if test="display != null">
+				DISPLAY = #{display},
+			</if>
+		</set>
+		where COMP_NUMBER = #{compNumber}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.xunwei.som.pojo.CompInfo">
+		update comp_info
+		set COMP_NAME = #{compName,jdbcType=VARCHAR},
+		COMP_LOCATION = #{compLocation,jdbcType=VARCHAR}
+		ABBREVIATION = #{abbreviation,jdbcType=VARCHAR}
+		DISPLAY = #{display,jdbcType=INTEGER}
+		where COMP_NUMBER = #{compNumber,jdbcType=INTEGER}
+	</update>
+	
+	<select id="selectAllComp" resultMap="BaseResultMap">
+	 select * from comp_info where DISPLAY=1 and COMP_NUMBER != -1
+	</select>
+</mapper>

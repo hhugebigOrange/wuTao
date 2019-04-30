@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>运维合同报表</title>
+    <link rel="stylesheet" href="../../css/modules/laydate/default/laydate.css">
+    <link rel="stylesheet" href="../../css/modules/layer/default/layer.css">
+    <link rel="stylesheet" href="../../css/layui.css">
+    <script src="../../js/jquery.js"></script>
+    <script src="../../js/layui.js"></script>
+    <link rel="stylesheet" href="../../css/body.css">
+</head>
+<body>
+<div class="title">
+    <span>运维合同报表</span><span class="particulars">报表管理>>运维合同报表</span>
+</div>
+<div class="abovebtn">
+    <form class="layui-form" action="">
+        <div class="layui-inline">
+            <label class="layui-form-label">客户名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" required  lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">服务区域</label>
+            <div class="layui-input-block">
+                <select name="type" lay-verify="required">
+                    <option value="">请选择</option>
+                    <option value="0">区域1</option>
+                    <option value="1">区域2</option>
+                    <option value="2">区域3</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-bg-gray" lay-filter="demo1" lay-submit="">查询</button>
+            </div>
+        </div>
+    </form>
+    <div class="btn">
+        <button class="layui-btn layui-bg-gray">查看</button>
+        <button class="layui-btn layui-bg-gray">清除</button>
+        <button class="layui-btn layui-bg-gray">查看所有</button>
+        <button class="layui-btn layui-bg-gray">导入</button>
+        <button class="layui-btn layui-bg-gray">导出</button>
+        <button class="layui-btn layui-bg-gray">批量删除</button>
+    </div>
+</div>
+<div class="tab">
+    <table id="demo" lay-filter="test"></table>
+</div>
+<script>
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+    layui.use('table', function () {
+        var table = layui.table;
+        table.render({
+            elem: '#demo'
+            , height: 312
+            , width:3000
+            , cellMinWidth: 80
+            , url: '/demo/table/user/' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'id', title: 'NO', sort: true}
+                , {field: 'sex', title: '客户名称'}
+                , {field: 'username', title: '登记时间'}
+                , {field: 'jbbm', title: '经办部门'}
+                , {field: 'jbr', title: '经办人'}
+                , {field: 'htbgr', title: '合同保管人'}
+                , {field: 'htbm', title: '合同编码'}
+                , {field: 'httmc', title: '合同名称'}
+                , {field: 'khdwmc', title: '客户单位名称'}
+                , {field: 'qyrq', title: '签约日期'}
+                , {field: 'dqrq', title: '到期日期'}
+                , {field: 'ldqts', title: '离到期天数'}
+                , {field: 'qxy', title: '期限（月）'}
+                , {field: 'htyd', title: '合同约定到期通知提醒天数',width:130}
+                , {field: 'htdqyj', title: '合同到期预警'}
+                , {field: 'tttt', title: '客户名称'}
+                , {field: 'ttttttt', title: '外包所服务客户'}
+                , {field: 'tttttt', title: '合同标的金额'}
+                , {field: 'tttt', title: '合同类型'}
+                , {field: 'tttt', title: '合同性质'}
+                , {field: 'tttttt', title: '合同执行情况'}
+                , {field: 'tttttt', title: '合同终止情况'}
+                , {field: 'ttttt', title: '提前终止日'}
+                , {field: 'tttttttt', title: '提前终止情况说明'}
+                , {field: 'tttttt', title: '移交归档日期'}
+                , {field: 'ttttt', title: '分公司名称'}
+                , {field: 'ttt', title: '接交人'}
+                , {field: 'tt', title: '备注'}
+            ]]
+        });
+    });
+</script>
+</body>
+</html>

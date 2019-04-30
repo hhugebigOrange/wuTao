@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 指定映射的接口 -->
+<mapper namespace="com.xunwei.som.mapper.MachineMapper">
+	<resultMap id="BaseResultMap" type="com.xunwei.som.base.model.Machine">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="machine_name" jdbcType="VARCHAR" property="machineName" />
+	</resultMap>
+
+	<!-- 查询所有 -->
+	<select id="selectAllMachine" resultMap="BaseResultMap">
+		select * from machine
+	</select>
+	
+	<!-- 查询条件查询工单 -->
+	<select id="selectMachineByDynamic" resultMap="BaseResultMap">
+		select * from machine
+		<where>
+			<!-- if语句，test指判断条件，如果条件成立则输出里面的内容 -->
+			<if test="machineName !=null and machineName != '' ">
+				and machine_name like concat('%',#{machineName},'%')
+			</if>
+		</where>
+	</select>
+
+</mapper>

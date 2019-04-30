@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xunwei.som.mapper.SloganMapper">
+  <resultMap id="BaseResultMap" type="com.xunwei.som.pojo.Slogan">
+    <result column="slogan" jdbcType="VARCHAR" property="slogan" />
+  </resultMap>
+  <insert id="insert" parameterType="com.xunwei.som.pojo.Slogan">
+    insert into slogan (slogan)
+    values (#{slogan,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xunwei.som.pojo.Slogan">
+    insert into slogan
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="slogan != null">
+        slogan,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="slogan != null">
+        #{slogan,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <select id="selectSlogan" resultType="java.lang.String">
+      select * from slogan
+  </select>
+  
+  <update id="updateSlogan">
+   UPDATE slogan SET slogan=#{slogan}
+  </update>
+</mapper>
