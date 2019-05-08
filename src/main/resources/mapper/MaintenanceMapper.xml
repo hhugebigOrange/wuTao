@@ -203,7 +203,13 @@
 	</select>
 
 	<select id="selectByCycle" resultMap="BaseResultMap">
-		select * from maintenance
+		SELECT
+		m.*,d.*
+		FROM
+		maintenance m
+		LEFT JOIN device d
+		ON
+		m.MACH_CODE=d.MACH_CODE
 		<where>
 			<if test="Cycle!=null and Cycle!=''">
 				and MAIN_FREQUENCY=#{Cycle}

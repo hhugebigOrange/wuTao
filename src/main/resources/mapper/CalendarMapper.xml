@@ -4,6 +4,7 @@
 	<resultMap id="BaseResultMap" type="com.xunwei.som.calendar.Calendars">
 		<result column="calendar" jdbcType="TIMESTAMP" property="calendar" />
 		<result column="sign" jdbcType="INTEGER" property="sign" />
+		<result column="remark" jdbcType="VARCHAR" property="remark" />
 	</resultMap>
 	<insert id="insert" parameterType="com.xunwei.som.calendar.Calendars">
 		insert into calendar (calendar, sign)

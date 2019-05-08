@@ -167,6 +167,18 @@ label>span{
 #calendarDate .laydate-day-mark{
     font-size: 16px !important;
 }
+.laydate-day-mark::after{
+    content:'休假' !important;
+    position: absolute;
+    right: 12px;
+    top: 2px;
+    width: auto !important;
+    height: auto !important;
+    border-radius: 50%;
+    font-size: 12px;
+    line-height: 14px;
+    color: #fff;
+}
 /* #calendarDate .layui-laydate-content table tbody tr td:first-child{
     background-color: #c6f9f5;
 }

@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xunwei.som.base.controller.BaseController;
+import com.xunwei.som.calendar.CalendarService;
+import com.xunwei.som.calendar.impl.CalendarServiceImpl;
 import com.xunwei.som.pojo.Contract;
 import com.xunwei.som.pojo.Device;
 import com.xunwei.som.pojo.OrderInfo;
@@ -78,6 +80,8 @@ public class UserLoginController extends BaseController {
 	private ParameterSettingService parameterSettingService = new ParameterSettingServiceImpl();
 
 	private CustInfoService custInfoService = new CustInfoServiceImpl();
+	
+	private CalendarService calendarService = new CalendarServiceImpl();
 
 	@RequestMapping("/weChatIndex")
 	public ModelAndView index(ModelAndView modelAndView) throws IOException {
@@ -500,8 +504,10 @@ public class UserLoginController extends BaseController {
 				custScore = custScore + service.getCustScore();
 				customerEvaluation++;
 			}
-			if (SOMUtils.isOverTime(service)) {
-				overOrder++;
+			if (service.getOrderInfo().getFaultType().equals("事故类")){
+				if(SOMUtils.isOverTime(service)) {
+					overOrder++;
+				}
 			}
 		}
 		json.put("code", 0);
@@ -565,8 +571,10 @@ public class UserLoginController extends BaseController {
 			if (service.getCustScore() != null) {
 				customerEvaluation++;
 			}
-			if (SOMUtils.isOverTime(service)) {
-				overOrder++;
+			if (service.getOrderInfo().getFaultType().equals("事故类")){
+				if(SOMUtils.isOverTime(service)) {
+					overOrder++;
+				}
 			}
 		}
 		json.put("code", 0);
@@ -654,8 +662,10 @@ public class UserLoginController extends BaseController {
 			if (service.getCustScore() != null) {
 				customerEvaluation++;
 			}
-			if (SOMUtils.isOverTime(service)) {
-				overOrder++;
+			if (service.getOrderInfo().getFaultType().equals("事故类")){
+				if(SOMUtils.isOverTime(service)) {
+					overOrder++;
+				}
 			}
 
 		}
@@ -738,8 +748,10 @@ public class UserLoginController extends BaseController {
 			if (service.getCustScore() != null) {
 				customerEvaluation++;
 			}
-			if (SOMUtils.isOverTime(service)) {
-				overOrder++;
+			if (service.getOrderInfo().getFaultType().equals("事故类")){
+				if(SOMUtils.isOverTime(service)) {
+					overOrder++;
+				}
 			}
 		}
 		json.put("code", 0);
@@ -1207,4 +1219,22 @@ public class UserLoginController extends BaseController {
 		modelAndView.setViewName("redirect:http://solutionyun.com/weChat/index.html#/engineer/register");
 		return modelAndView;
 	}
+	
+	/**
+	 * 匹配分公司运维助理首页
+	 * 
+	 * @param modelAndView
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/getCalendar", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Map<String, Object> getCalendar() throws Exception {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		// 从前端获取登录人账号
+		Map<String, Object> json = new HashMap<>();
+		json.put("data", calendarService.selectAllCalendar());
+		return json;
+	}
+	
 }

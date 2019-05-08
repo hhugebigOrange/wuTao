@@ -1502,16 +1502,16 @@ public class KpiController extends BaseController {
 			page = para[0];
 			limit = para[1];
 		}
-		String[] faultType={"事故类"};
+		String[] faultType = { "事故类" };
 		List<Device> exportDeviceKpi = customerManageService.selectByDeviceKpi(user.getCustName(), custName, null, null,
 				null, identifier);
 		List<Device> deviceKpi = customerManageService.selectByDeviceKpi(user.getCustName(), custName, null, page,
 				limit, identifier);
-		List<ServiceInfo> deviceService = serviceInfoService.selectServiceInfByDynamic(SOMUtils.orderNumToComp(serviceArea), custName,
-				startDate, endDate, null, null, null, null, null, null, faultType, null, null, null,
-				null, identifier);
-		Map<String,Double> downTime=new HashMap<>();    //停机时间
-		//计算每个设备的停机时间
+		List<ServiceInfo> deviceService = serviceInfoService.selectServiceInfByDynamic(
+				SOMUtils.orderNumToComp(serviceArea), custName, startDate, endDate, null, null, null, null, null, null,
+				faultType, null, null, null, null, identifier);
+		Map<String, Double> downTime = new HashMap<>(); // 停机时间
+		// 计算每个设备的停机时间
 		for (ServiceInfo serviceInfo : deviceService) {
 			double a = 0.0;
 			if (serviceInfo.getProbSolve() == null) {
@@ -1519,37 +1519,38 @@ public class KpiController extends BaseController {
 			}
 			a = Double.valueOf(DurationFormatUtils.formatPeriod(serviceInfo.getOrderInfo().getRepairTime().getTime(),
 					serviceInfo.getProbSolve().getTime(), "m"));
-			if(downTime.get(serviceInfo.getOrderInfo().getMachCode())==null){
+			if (downTime.get(serviceInfo.getOrderInfo().getMachCode()) == null) {
 				downTime.put(serviceInfo.getOrderInfo().getMachCode(), a);
-			}else{
-				downTime.put(serviceInfo.getOrderInfo().getMachCode(), downTime.get(serviceInfo.getOrderInfo().getMachCode())+a);
+			} else {
+				downTime.put(serviceInfo.getOrderInfo().getMachCode(),
+						downTime.get(serviceInfo.getOrderInfo().getMachCode()) + a);
 			}
 		}
 		for (Device device : exportDeviceKpi) {
-			double a=0.0;
-			if(downTime.containsKey(device.getMachCode())){
-				a=downTime.get(device.getMachCode());
+			double a = 0.0;
+			if (downTime.containsKey(device.getMachCode())) {
+				a = downTime.get(device.getMachCode());
 				device.setDownTime(Double.valueOf(SOMUtils.getIntOne(a / 60)));
 				device.setWorkTime(Double.valueOf(SOMUtils.getIntOne((workTimie * 60 - a) / 60)));
 				device.setOperationRate(SOMUtils.getInt((device.getWorkTime() / workTimie) * 100) + "%");
-			}else{
+			} else {
 				device.setDownTime(0.0);
 				device.setWorkTime(workTimie);
 				device.setOperationRate("100%");
 			}
 		}
 		for (Device device : deviceKpi) {
-				double a=0.0;
-				if(downTime.containsKey(device.getMachCode())){
-					a=downTime.get(device.getMachCode());
-					device.setDownTime(Double.valueOf(SOMUtils.getIntOne(a / 60)));
-					device.setWorkTime(Double.valueOf(SOMUtils.getIntOne((workTimie * 60 - a) / 60)));
-					device.setOperationRate(SOMUtils.getInt((device.getWorkTime() / workTimie) * 100) + "%");
-				}else{
-					device.setDownTime(0.0);
-					device.setWorkTime(workTimie);
-					device.setOperationRate("100%");
-				}
+			double a = 0.0;
+			if (downTime.containsKey(device.getMachCode())) {
+				a = downTime.get(device.getMachCode());
+				device.setDownTime(Double.valueOf(SOMUtils.getIntOne(a / 60)));
+				device.setWorkTime(Double.valueOf(SOMUtils.getIntOne((workTimie * 60 - a) / 60)));
+				device.setOperationRate(SOMUtils.getInt((device.getWorkTime() / workTimie) * 100) + "%");
+			} else {
+				device.setDownTime(0.0);
+				device.setWorkTime(workTimie);
+				device.setOperationRate("100%");
+			}
 		}
 		export.put("exportDeviceKpi" + request.getParameter("username"), exportDeviceKpi);
 		json.put("code", 0);
@@ -1628,8 +1629,8 @@ public class KpiController extends BaseController {
 			page = para[0];
 			limit = para[1];
 		}
-		List<Device> exportDeviceKpi = customerManageService.selectByDeviceKpi(user.getCustName(), custName, null, null, null,
-				identifier);
+		List<Device> exportDeviceKpi = customerManageService.selectByDeviceKpi(user.getCustName(), custName, null, null,
+				null, identifier);
 		if (exportDeviceKpi == null || exportDeviceKpi.size() <= 0) {
 			json.put("code", 0);
 			json.put("设备正常运转率", 0);
@@ -1685,13 +1686,10 @@ public class KpiController extends BaseController {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		// 查看登陆人是否有权限
 		Map<String, Object> json = new HashMap<>();
-		// 存放查询出来的保养执行的结果
-		List<Maintenance> maintenancePerform = new ArrayList<>();
 		// 从前端接收参数
 		String custName = request.getParameter("custName");// 客户名称
 		String serviceArea = request.getParameter("serviceArea");// 服务区域
 		String enginnerName = request.getParameter("enginnerName");// 工程师姓名
-		Date date = new Date();// 获取当前年月日
 		if (request.getParameter("username") == null || request.getParameter("username").equals("")) {
 			json.put("code", 1);
 			json.put("msg", "请先登录");
@@ -1713,174 +1711,12 @@ public class KpiController extends BaseController {
 			}
 		}
 		// 先查出相应的保养设备
-		maintenancePerforms = maintenanceserviceImpl.selectmaintenance(custName, serviceArea, enginnerName, "", "", "",
-				null, null, identifier);
-		/*
-		 * List<Maintenance> maintenances =
-		 * maintenanceserviceImpl.selectmaintenance(custName, serviceArea,
-		 * enginnerName, "", "", "", page, limit, identifier);
-		 */
-		Calendar currentTime = Calendar.getInstance();// 当前时间的年月日：时分秒
-		currentTime.setTime(date);
-		Calendar maintenanceTime = Calendar.getInstance();// 每个保养计划里面的时间
+		List<Maintenance> maintenancePerform = maintenanceserviceImpl.selectmaintenance(custName, serviceArea,
+				enginnerName, "", "", "", null, null, identifier);
 		// 遍历保养执行
-		for (Maintenance maintenance : maintenancePerforms) {
-			// 如果周期是月
-			if (maintenance.getMainFrequency().equals("月")) {
-				// 如果最近维修时间没有
-				if (maintenance.getLastTime() == null) {
-					maintenance.setMaintenanceState(0);
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在当月，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH)) {
-					maintenance.setMaintenStatus("已完成");
-					maintenance.setMaintenanceState(1);
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				} else {
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-			}
-			// 如果周期是季度
-			if (maintenance.getMainFrequency().equals("季度")) {
-				// 如果最近维修时间没有
-				if (maintenance.getLastTime() == null) {
-					maintenance.setMaintenanceState(0);
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (SOMUtils.isWhichQuarter(maintenanceTime.get(Calendar.MONTH)) == SOMUtils
-						.isWhichQuarter(currentTime.get(Calendar.MONTH))) {
-					maintenance.setMaintenStatus("已完成");
-					maintenance.setMaintenanceState(1);
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				} else {
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-			}
-			// 如果周期是年
-			if (maintenance.getMainFrequency().equals("年")) {
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setMaintenanceState(0);
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR)) {
-					maintenance.setMaintenStatus("已完成");
-					maintenance.setMaintenanceState(1);
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				} else {
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenanceState(0);
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-			}
-			// 如果周期是年
-			if (maintenance.getMainFrequency().equals("半年")) {
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (currentTime.get(Calendar.DAY_OF_YEAR) - maintenanceTime.get(Calendar.DAY_OF_YEAR) <= 183) {
-					maintenance.setMaintenStatus("已完成");
-					maintenance.setMaintenanceState(1);
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				} else {
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenanceState(0);
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-			}
-			// 如果周期是周
-			if (maintenance.getMainFrequency().equals("周")) {
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.WEEK_OF_YEAR) == currentTime.get(Calendar.WEEK_OF_YEAR)) {
-					maintenance.setMaintenStatus("已完成");
-					maintenance.setMaintenanceState(1);
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				} else {
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenanceState(0);
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-
-			}
-			// 如果周期是日
-			if (maintenance.getMainFrequency().equals("日")) {
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.DAY_OF_YEAR) == currentTime.get(Calendar.DAY_OF_YEAR)) {
-					maintenance.setMaintenStatus("已完成");
-					maintenance.setMaintenanceState(1);
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				} else {
-					maintenance.setUnitType(maintenance.getUnitType());
-					maintenance.setMaintenanceState(0);
-					maintenancePerform.add(SOMUtils.setMaintenance(maintenance));
-					continue;
-				}
-			}
+		for (Maintenance maintenance : maintenancePerform) {
+			maintenance.setMaintenStatus(maintenance.getMaintenanceState() == 0 ? "未完成" : "已完成");
 		}
-		
 		Integer page = null; // 页数
 		Integer limit = null; // 每页显示的条目数
 		Integer[] para = SOMUtils.pageAndLimit(request, maintenancePerform, page, limit);
@@ -1960,8 +1796,8 @@ public class KpiController extends BaseController {
 				continue;
 			}
 			if (deviceNumbers.containsKey(device.getCustArea())) {
-				deviceNumbers.put(device.getCustArea(), deviceNumbers.get(device.getCustArea())+1);
-			} 
+				deviceNumbers.put(device.getCustArea(), deviceNumbers.get(device.getCustArea()) + 1);
+			}
 		}
 
 		List<MaintenanceService> MaintenanceServices = new ArrayList<>();
@@ -2252,7 +2088,7 @@ public class KpiController extends BaseController {
 	public Map<String, Object> exportCustomerKpiSummary(ModelAndView model, HttpServletRequest request,
 			HttpServletResponse res) throws IOException {
 		response.setHeader("Access-Control-Allow-Origin", "*");
-		String[] Titles = { "客户名称", "响应时间达标率", "到达时间达标率", "问题解决时间达标率"};
+		String[] Titles = { "客户名称", "响应时间达标率", "到达时间达标率", "问题解决时间达标率" };
 		Map<String, Object> json = new HashMap<>();
 		String string = request.getParameter("picture");
 		XSSFWorkbook wb = ExcelUtils.copyExcel2007(SOMUtils.qrAddr + "kpi/customer.xlsx");
@@ -2562,7 +2398,7 @@ public class KpiController extends BaseController {
 			row.createCell(20).setCellValue(order.getOrderTurnNum());
 			row.createCell(21).setCellValue(order.getStaffName2());
 			row.createCell(22).setCellValue(order.getWoStatus());
-			row.createCell(23).setCellValue(order.getMaintenanceFeedback());
+			row.createCell(23).setCellValue(order.getTreatmentMeasure());
 		}
 		FileOutputStream fileOut = null;
 		try {
@@ -2625,7 +2461,7 @@ public class KpiController extends BaseController {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		// 设置表头
 		String[] Titles = { "服务单号", "客户名称", "设备型号", "设备品牌", "设备序列号", "机器编码", "服务区域", "部门", "设备位置", "报修时间", "完成时间",
-				"黑白读数", "彩色读数", "故障现象分类", "处理措施","故障代码","故障描述" };
+				"黑白读数", "彩色读数", "故障现象分类", "处理措施", "故障代码", "故障描述" };
 		Map<String, Object> json = new HashMap<>();
 		String string = request.getParameter("picture");
 		XSSFWorkbook wb = ExcelUtils.copyExcel2007(SOMUtils.qrAddr + "kpi/maintenance.xlsx");
@@ -2759,8 +2595,8 @@ public class KpiController extends BaseController {
 			row.createCell(3).setCellValue(device.getUnitType());
 			row.createCell(4).setCellValue(device.getEsNumber());
 			row.createCell(5).setCellValue(device.getMachCode());
-			row.createCell(6).setCellValue(device.getWorkTime() == null ? workTime+"" : device.getWorkTime()+"");
-			row.createCell(7).setCellValue(device.getDownTime() == null ? "0.0" : device.getDownTime()+"");
+			row.createCell(6).setCellValue(device.getWorkTime() == null ? workTime + "" : device.getWorkTime() + "");
+			row.createCell(7).setCellValue(device.getDownTime() == null ? "0.0" : device.getDownTime() + "");
 			row.createCell(8).setCellValue(device.getDownTime() == null ? "100%" : device.getOperationRate());
 		}
 		FileOutputStream fileOut = null;

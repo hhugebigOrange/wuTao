@@ -352,14 +352,15 @@ public class ServiceManageController extends BaseController {
 		else if (woStatus != null && !woStatus.trim().equals("") && woStatus.equals("c")) {
 			startDate = ExcelUtils.fmtOne.format(SOMUtils.initDateByMonth()); // 当月开始时间
 			endDate = ExcelUtils.fmtOne.format(new Date()); // 当前时间
+			String[] fault={"事故类"};
 			if (userRole.getRoleId().equals("客户")) {
 				selectServiceInfos = serviceInfoService.selectServiceInfByDynamic(
 						SOMUtils.orderNumToComp(user.getCustName()), user.getCustName(), startDate, endDate, null, null,
-						null, null, null, null, null, null, null, null,enginnerName, identifier);
+						null, null, null, null,fault, null, null, null,enginnerName, identifier);
 			} else {
 				selectServiceInfos = serviceInfoService.selectServiceInfByDynamic(
 						SOMUtils.orderNumToComp(user.getCustName()), "", startDate, endDate, null, null, null, null,
-						null, null, null, null, null, null, enginnerName,identifier);
+						null, null, fault, null, null, null, enginnerName,identifier);
 			}
 			String part = "";
 			Integer a1 = null;

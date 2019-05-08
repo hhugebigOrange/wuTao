@@ -46,13 +46,13 @@ public class WeChatTechnical extends BaseController {
 	private MaintenanceserviceImpl maintenanceserviceImpl = new MaintenanceserviceImpl();
 
 	private CustomerManageService customerManageService = new CustomerManageServiceImpl();
-	
+
 	private ServiceManageServiceImpl serviceManageServiceImpl = new ServiceManageServiceImpl();
 
 	private StaffInfoService staffInfoService = new StaffInfoServiceImpl();
-	
+
 	private CustomerManageServiceImpl customerManage = new CustomerManageServiceImpl();
-	
+
 	private ServiceInfoService serviceInfoService = new ServiceInfoServiceImpl();
 
 	private UserService userService = new UserServiceImpl();
@@ -89,18 +89,19 @@ public class WeChatTechnical extends BaseController {
 			json.put("msg", "对应openId的用户不存在");
 			return json;
 		}
-		List<Maintenance> maintenances =new ArrayList<>();
-		if(user2.getCustName().equals("广州乐派数码科技有限公司") || user2.getCustName().equals("行业客户部") || user2.getCustName().equals("系统推进部")){
+		List<Maintenance> maintenances = new ArrayList<>();
+		if (user2.getCustName().equals("广州乐派数码科技有限公司") || user2.getCustName().equals("行业客户部")
+				|| user2.getCustName().equals("系统推进部")) {
 			maintenances = maintenanceserviceImpl.selectByCycle(null, null, "广州乐派数码科技有限公司", null);
 			maintenances.addAll(maintenanceserviceImpl.selectByCycle(null, null, "行业客户部", null));
 			maintenances.addAll(maintenanceserviceImpl.selectByCycle(null, null, "系统推进部", null));
-		}else{
+		} else {
 			maintenances = maintenanceserviceImpl.selectByCycle(null, null, user2.getCustName(), null);
 		}
 		List<MaintenanceContract> maintenanceContracts = new ArrayList<>();
-		List<String> contractCode=new ArrayList<>();
+		List<String> contractCode = new ArrayList<>();
 		for (Maintenance maintenance : maintenances) {
-			if(contractCode.contains(maintenance.getContractCode())){
+			if (contractCode.contains(maintenance.getContractCode())) {
 				continue;
 			}
 			MaintenanceContract maintenanceContract = new MaintenanceContract();
@@ -129,7 +130,7 @@ public class WeChatTechnical extends BaseController {
 		// 从前端接收参数
 		String Cycle = request.getParameter("Cycle");// 查询周期
 		String contractNo = request.getParameter("contractNo"); // 合同号
-		String isOver = request.getParameter("isOver"); //是否已经完成
+		String isOver = request.getParameter("isOver"); // 是否已经完成
 		Map<String, Object> json = new HashMap<>();
 		// 进行非空判断
 		// 将传递过来的值存放到Map集合里面
@@ -142,176 +143,11 @@ public class WeChatTechnical extends BaseController {
 			json.put("msg", param + "不能为空");
 			return json;
 		}
-		Date date = new Date();// 获取当前年月日
 		List<Maintenance> maintenances = maintenanceserviceImpl.selectByCycle(Cycle, null, null, contractNo);
-		Calendar currentTime = Calendar.getInstance();// 当前时间的年月日：时分秒
-		currentTime.setTime(date);
-		Calendar maintenanceTime = Calendar.getInstance();// 每个保养计划里面的时间
 		List<Maintenance> needMaintenances = new ArrayList<>();
+		// 遍历保养执行
 		for (Maintenance maintenance : maintenances) {
-			// 如果周期是月
-			if (maintenance.getMainFrequency().equals("月")) {
-				// 如果最近维修时间没有
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在当月，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-			}
-			// 如果周期是季度
-			if (maintenance.getMainFrequency().equals("季度")) {
-				// 如果最近维修时间没有
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (SOMUtils.isWhichQuarter(maintenanceTime.get(Calendar.MONTH)) == SOMUtils
-						.isWhichQuarter(currentTime.get(Calendar.MONTH))) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-			}
-			// 如果周期是年
-			if (maintenance.getMainFrequency().equals("年")) {
-
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-
-			}
-			// 如果周期是年
-			if (maintenance.getMainFrequency().equals("半年")) {
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (currentTime.get(Calendar.DAY_OF_YEAR) - maintenanceTime.get(Calendar.DAY_OF_YEAR) <= 183) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-			}
-			// 如果周期是周
-			if (maintenance.getMainFrequency().equals("周")) {
-
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.WEEK_OF_YEAR) == currentTime.get(Calendar.WEEK_OF_YEAR)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-
-			}
-			// 如果周期是日
-			if (maintenance.getMainFrequency().equals("日")) {
-
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.DAY_OF_YEAR) == currentTime.get(Calendar.DAY_OF_YEAR)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-			}
+			maintenance.setMaintenStatus(maintenance.getMaintenanceState() == 0 ? "未完成" : "已完成");
 		}
 		List<MaintenanceEnginner> maintenanceEnginners = new ArrayList<>();
 		if (Cycle != null && !Cycle.trim().equals("")) {
@@ -420,7 +256,7 @@ public class WeChatTechnical extends BaseController {
 			return json;
 		}
 		List<StaffInfo> engineer = staffInfoService.getStaffByDynamic(staffName, user2.getCustName(), "工程师", null, null,
-				null, state,null);
+				null, state, null);
 		// 分页
 		Integer page = null; // 页数
 		Integer limit = null; // 每页显示的条目数
@@ -466,7 +302,7 @@ public class WeChatTechnical extends BaseController {
 		// 根据openId查找相应用户
 		User user = null;
 		for (User user2 : userService.selectAllUser()) {
-			if (user2.getOpenId()==null) {
+			if (user2.getOpenId() == null) {
 				continue;
 			}
 			if (user2.getOpenId().equals(openId)) {
@@ -479,27 +315,28 @@ public class WeChatTechnical extends BaseController {
 			json.put("msg", "对不起，该openId对应的用户不存在");
 			return json;
 		}
-		StaffInfo staff=null;
+		StaffInfo staff = null;
 		for (StaffInfo staffinfo : staffInfoService.selectAllStaff()) {
-			if(staffinfo.getPhone().equals(user.getUserId())){
-				staff=staffinfo;
+			if (staffinfo.getPhone().equals(user.getUserId())) {
+				staff = staffinfo;
 				break;
 			}
 		}
 		ServiceInfo service = new ServiceInfo();
 		service.setStaffId(staff.getStaffId());
 		service.setState(woStatus);
-		List<ServiceInfo> serviceInfo=new ArrayList<>();
-		if(staff.getCompName().equals("系统推进部") || staff.getCompName().equals("广州乐派数码科技有限公司") ||staff.getCompName().equals("行业客户部")){
+		List<ServiceInfo> serviceInfo = new ArrayList<>();
+		if (staff.getCompName().equals("系统推进部") || staff.getCompName().equals("广州乐派数码科技有限公司")
+				|| staff.getCompName().equals("行业客户部")) {
 			service.setCustSat("XT");
 			serviceInfo = serviceInfoService.selectOrderByWeChatTechnical(service);
 			service.setCustSat("HY");
 			serviceInfo.addAll(serviceInfoService.selectOrderByWeChatTechnical(service));
 			service.setCustSat("GZ");
 			serviceInfo.addAll(serviceInfoService.selectOrderByWeChatTechnical(service));
-		}else{
+		} else {
 			service.setCustSat(SOMUtils.orderNumToComp(user.getCustName()));
-			serviceInfo= serviceInfoService.selectOrderByWeChatTechnical(service);
+			serviceInfo = serviceInfoService.selectOrderByWeChatTechnical(service);
 		}
 		List<OrderManage> orderManages = new ArrayList<>();
 		Integer a1 = null;
@@ -512,7 +349,7 @@ public class WeChatTechnical extends BaseController {
 				a1 = 2;
 			}
 			String woState = serviceInfo2.getOrderInfo().getWoProgress();
-			if(serviceInfo2.getCustScore()!=null){
+			if (serviceInfo2.getCustScore() != null) {
 				switch (serviceInfo2.getCustScore()) {
 				case 3:
 					woState = "commonly";
@@ -558,7 +395,7 @@ public class WeChatTechnical extends BaseController {
 				orderManage.setEnginnerPhone(serviceInfo2.getStaffInfo().getPhone());
 				orderManage.setPartMessage(serviceInfo2.getOrderInfo().getPartsTypeNumber() == null ? null
 						: serviceInfo2.getOrderInfo().getPartsTypeNumber().split(";"));
-				orderManage.setRejected(serviceInfo2.getCustPrai()==null?null:serviceInfo2.getCustPrai());
+				orderManage.setRejected(serviceInfo2.getCustPrai() == null ? null : serviceInfo2.getCustPrai());
 				orderManage.setBwReader(serviceInfo2.getDevice().getBwReader());
 				orderManage.setCoReader(serviceInfo2.getDevice().getColorReader());
 				orderManage.setServiceType(serviceInfo2.getOrderInfo().getServiceType());
@@ -582,7 +419,7 @@ public class WeChatTechnical extends BaseController {
 				orderManage.setEnginnerPhone(serviceInfo2.getStaffInfo().getPhone());
 				orderManage.setPartMessage(serviceInfo2.getOrderInfo().getPartsTypeNumber() == null ? null
 						: serviceInfo2.getOrderInfo().getPartsTypeNumber().split(";"));
-				orderManage.setRejected(serviceInfo2.getCustPrai()==null?null:serviceInfo2.getCustPrai());
+				orderManage.setRejected(serviceInfo2.getCustPrai() == null ? null : serviceInfo2.getCustPrai());
 				orderManage.setServiceType(serviceInfo2.getOrderInfo().getServiceType());
 				orderManage.setMainTenanceFeedback(serviceInfo2.getOrderInfo().getMaintenanceFeedback());
 				orderManage.setTreatmentMeasure(serviceInfo2.getOrderInfo().getTreatmentMeasure());
@@ -611,7 +448,7 @@ public class WeChatTechnical extends BaseController {
 		json.put("data", page == null || orderManages == null ? orderManages : orderManages.subList(page, limit));
 		return json;
 	}
-	
+
 	/**
 	 * 关单接口：完结工单。
 	 * 
@@ -654,7 +491,7 @@ public class WeChatTechnical extends BaseController {
 		json.put("msg", "修改失败");
 		return json;
 	}
-	
+
 	/**
 	 * 技术主管零件订购:通过。
 	 * 
@@ -694,7 +531,7 @@ public class WeChatTechnical extends BaseController {
 		json.put("msg", "零件通过审核失败");
 		return json;
 	}
-	
+
 	/**
 	 * 技术主管零件订购:驳回。
 	 * 
@@ -725,13 +562,13 @@ public class WeChatTechnical extends BaseController {
 			json.put("msg", param + "不能为空");
 			return json;
 		}
-		ServiceInfo service=new ServiceInfo();
+		ServiceInfo service = new ServiceInfo();
 		service.setCustPrai(content);
 		service.setWoNumber(woNumber);
 		// 更新工单信息
 		boolean a = serviceManageServiceImpl.updateOrder(orderInfo);
-		boolean b =serviceInfoService.upDateServiceInfo(service);
-		if (a&&b) {
+		boolean b = serviceInfoService.upDateServiceInfo(service);
+		if (a && b) {
 			json.put("code", 0);
 			json.put("msg", "零件反驳成功");
 			return json;
@@ -740,7 +577,7 @@ public class WeChatTechnical extends BaseController {
 		json.put("msg", "零件反驳失败");
 		return json;
 	}
-	
+
 	/**
 	 * 故障代码以及分类，默认查询所有。
 	 * 

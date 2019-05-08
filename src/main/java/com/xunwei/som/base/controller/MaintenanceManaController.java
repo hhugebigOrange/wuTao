@@ -16,6 +16,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.junit.Test;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -86,16 +87,10 @@ public class MaintenanceManaController extends BaseController {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		// 查看登陆人是否有权限
 		Map<String, Object> json = new HashMap<>();
-		if (maintenancePerforms != null) {
-			maintenancePerforms.clear();
-		}
-		// 存放查询出来的保养执行的结果
-		List<Maintenance> maintenancePerform = new ArrayList<>();
 		// 从前端接收参数
 		String custName = request.getParameter("custName");// 客户名称
 		String serviceArea = request.getParameter("serviceArea");// 服务区域
 		String enginnerName = request.getParameter("enginnerName");// 工程师姓名
-		Date date = new Date();// 获取当前年月日
 		if (request.getParameter("username") == null || request.getParameter("username").equals("")) {
 			json.put("code", 1);
 			json.put("msg", "请先登录");
@@ -136,39 +131,47 @@ public class MaintenanceManaController extends BaseController {
 				"", "", null, null, identifier);
 		List<Maintenance> maintenances = maintenanceserviceImpl.selectmaintenance(custName, user.getCustName(),
 				enginnerName, "", "", "", page, limit, identifier);
-		Calendar currentTime = Calendar.getInstance();// 当前时间的年月日：时分秒
-		currentTime.setTime(date);
-		Calendar maintenanceTime = Calendar.getInstance();// 每个保养计划里面的时间
 		// 遍历保养执行
+		for (Maintenance maintenance : maintenances) {
+			maintenance.setMaintenStatus(maintenance.getMaintenanceState()==0?"未完成":"已完成");
+		}
+		export.put(request.getParameter("username") + "maintenancePerformer", maintenancePerforms);
+		json.put("code", 0);
+		json.put("msg", "查询成功");
+		json.put("count", maintenancePerforms.size());
+		json.put("data", maintenances);
+		return json;
+	}
+
+	
+	/**
+	 *  定时方法，每分钟刷新保养执行的状态
+	 */
+	@Scheduled(fixedRate = 1000 * 60 * 5)
+	public void autoRefreshMaintenancePerform() {
+		List<Maintenance> maintenances = maintenanceserviceImpl.selectmaintenance(null, null, null, null, null, null,
+				null, null, null);
+		Calendar currentTime = Calendar.getInstance();// 当前时间的年月日：时分秒
+		currentTime.setTime(new Date());
+		Calendar maintenanceTime = Calendar.getInstance();// 每个保养计划里面的时间
 		for (Maintenance maintenance : maintenances) {
 			// 如果周期是月
 			if (maintenance.getMainFrequency().equals("月")) {
 				// 如果最近维修时间没有
 				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(maintenance);
 					continue;
 				}
 				maintenanceTime.setTime(maintenance.getLastTime());
 				// 判断最近维修的时间是否是在当月，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (maintenanceTime.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenance.setMaintenStatus("已完成");
 					maintenance.setMaintenanceState(1);
 					maintenanceserviceImpl.updateMaintenance(maintenance);
-					maintenancePerform.add(maintenance);
 					continue;
 				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(maintenance);
 					continue;
 				}
 			}
@@ -176,62 +179,40 @@ public class MaintenanceManaController extends BaseController {
 			if (maintenance.getMainFrequency().equals("季度")) {
 				// 如果最近维修时间没有
 				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(maintenance);
 					continue;
 				}
 				maintenanceTime.setTime(maintenance.getLastTime());
 				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (SOMUtils.isWhichQuarter(maintenanceTime.get(Calendar.MONTH)) == SOMUtils
-						.isWhichQuarter(currentTime.get(Calendar.MONTH))) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenance.setMaintenStatus("已完成");
+				if (SOMUtils.isWhichQuarter(maintenanceTime.get(Calendar.MONTH) + 1) == SOMUtils
+						.isWhichQuarter(currentTime.get(Calendar.MONTH) + 1)) {
 					maintenance.setMaintenanceState(1);
 					maintenanceserviceImpl.updateMaintenance(maintenance);
-					maintenancePerform.add(maintenance);
 					continue;
 				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(maintenance);
 					continue;
 				}
 			}
 			// 如果周期是年
 			if (maintenance.getMainFrequency().equals("年")) {
-
 				// 如果最近维修的时间为空
 				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(maintenance);
 					continue;
 				}
 				maintenanceTime.setTime(maintenance.getLastTime());
 				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (maintenanceTime.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenance.setMaintenStatus("已完成");
 					maintenance.setMaintenanceState(1);
 					maintenanceserviceImpl.updateMaintenance(maintenance);
-					maintenancePerform.add(maintenance);
 					continue;
 				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenancePerform.add(maintenance);
 					continue;
 				}
 			}
@@ -239,104 +220,63 @@ public class MaintenanceManaController extends BaseController {
 			if (maintenance.getMainFrequency().equals("半年")) {
 				// 如果最近维修的时间为空
 				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(maintenance);
 					continue;
 				}
 				maintenanceTime.setTime(maintenance.getLastTime());
 				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (currentTime.get(Calendar.DAY_OF_YEAR) - maintenanceTime.get(Calendar.DAY_OF_YEAR) <= 183) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenance.setMaintenStatus("已完成");
 					maintenance.setMaintenanceState(1);
 					maintenanceserviceImpl.updateMaintenance(maintenance);
-					maintenancePerform.add(maintenance);
 					continue;
 				} else {
-					maintenance.setDevice
-
-					(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance
-
-					(maintenance.getContractCode(), maintenance.getMachCode(), 0, "");
-					maintenance.setMaintenanceState(0);
-					maintenancePerform.add(maintenance);
+					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+							0, "");
 					continue;
 				}
 			}
 			// 如果周期是周
 			if (maintenance.getMainFrequency().equals("周")) {
-
 				// 如果最近维修的时间为空
 				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(maintenance);
 					continue;
 				}
 				maintenanceTime.setTime(maintenance.getLastTime());
 				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (maintenanceTime.get(Calendar.WEEK_OF_YEAR) == currentTime.get(Calendar.WEEK_OF_YEAR)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenance.setMaintenStatus("已完成");
 					maintenance.setMaintenanceState(1);
 					maintenanceserviceImpl.updateMaintenance(maintenance);
-					maintenancePerform.add(maintenance);
 					continue;
 				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenancePerform.add(maintenance);
 					continue;
 				}
-
 			}
 			// 如果周期是日
 			if (maintenance.getMainFrequency().equals("日")) {
 				// 如果最近维修的时间为空
 				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenance.setMaintenStatus("未完成");
-					maintenancePerform.add(maintenance);
 					continue;
 				}
 				maintenanceTime.setTime(maintenance.getLastTime());
 				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (maintenanceTime.get(Calendar.DAY_OF_YEAR) == currentTime.get(Calendar.DAY_OF_YEAR)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenance.setMaintenStatus("已完成");
 					maintenance.setMaintenanceState(1);
 					maintenanceserviceImpl.updateMaintenance(maintenance);
-					maintenancePerform.add(maintenance);
 					continue;
 				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
 					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
-					maintenance.setMaintenanceState(0);
-					maintenancePerform.add(maintenance);
 					continue;
 				}
 			}
 		}
-		export.put(request.getParameter("username") + "maintenancePerformer", maintenancePerforms);
-		json.put("code", 0);
-		json.put("msg", "查询成功");
-		json.put("count", maintenancePerforms.size());
-		json.put("data", maintenancePerform);
-		return json;
 	}
 
 	/**
@@ -747,8 +687,8 @@ public class MaintenanceManaController extends BaseController {
 		List<Maintenance> maintenancePerforms = (List<Maintenance>) export
 				.get(request.getParameter("username") + "maintenancePerformer");
 		// 设置表头
-		String[] Titles = { "客户名称", "服务区域", "合同号码", "机器编码", "保养完成时间", "保养频率", "保养执行状态", "覆盖率(%)", "黑白读数", "彩色读数", "耗材型号",
-				"耗材数量", "责任工程师", "后备工程师", "备注" };
+		String[] Titles = { "客户名称", "服务区域", "合同号码", "机器编码", "保养完成时间", "保养频率", "保养执行状态", "覆盖率(%)", "黑白读数", "彩色读数",
+				"耗材型号", "耗材数量", "责任工程师", "后备工程师", "备注" };
 		// 导出Excel
 		HSSFWorkbook wb = ExcelUtils.exportOrder(respose, Titles, tableName);
 		HSSFSheet sheet = wb.getSheet(tableName);
@@ -768,7 +708,7 @@ public class MaintenanceManaController extends BaseController {
 					maintenance.getLastTime() == null ? "" : ExcelUtils.fmtOne.format(maintenance.getLastTime()));
 			row.createCell(6).setCellValue(maintenance.getMainFrequency());
 			row.createCell(7).setCellValue(maintenance.getMaintenanceState() == 0 ? "未完成" : "已完成");
-			row.createCell(8).setCellValue(maintenance.getCoverage()==null?"":maintenance.getCoverage()+"%");
+			row.createCell(8).setCellValue(maintenance.getCoverage() == null ? "" : maintenance.getCoverage() + "%");
 			row.createCell(9).setCellValue(maintenance.getDevice().getBwReader());
 			row.createCell(10).setCellValue(maintenance.getDevice().getColorReader());
 			row.createCell(11).setCellValue(maintenance.getMaterialModel());
@@ -911,179 +851,13 @@ public class MaintenanceManaController extends BaseController {
 			return json;
 		}
 		List<Maintenance> maintenances = maintenanceserviceImpl.selectByCycle(Cycle, staffId, null, contractNo);
-		Calendar currentTime = Calendar.getInstance();// 当前时间的年月日：时分秒
-		currentTime.setTime(date);
-		Calendar maintenanceTime = Calendar.getInstance();// 每个保养计划里面的时间
-		List<Maintenance> needMaintenances = new ArrayList<>();
 		for (Maintenance maintenance : maintenances) {
-			// 如果周期是月
-			if (maintenance.getMainFrequency().equals("月")) {
-				// 如果最近维修时间没有
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在当月，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-			}
-			// 如果周期是季度
-			if (maintenance.getMainFrequency().equals("季度")) {
-				// 如果最近维修时间没有
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (SOMUtils.isWhichQuarter(maintenanceTime.get(Calendar.MONTH)) == SOMUtils
-						.isWhichQuarter(currentTime.get(Calendar.MONTH))) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-			}
-			// 如果周期是年
-			if (maintenance.getMainFrequency().equals("年")) {
-
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-
-			}
-			// 如果周期是年
-			if (maintenance.getMainFrequency().equals("半年")) {
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (currentTime.get(Calendar.DAY_OF_YEAR) - maintenanceTime.get(Calendar.DAY_OF_YEAR) <= 183) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-			}
-			// 如果周期是周
-			if (maintenance.getMainFrequency().equals("周")) {
-
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.WEEK_OF_YEAR) == currentTime.get(Calendar.WEEK_OF_YEAR)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-
-			}
-			// 如果周期是日
-			if (maintenance.getMainFrequency().equals("日")) {
-
-				// 如果最近维修的时间为空
-				if (maintenance.getLastTime() == null) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-				maintenanceTime.setTime(maintenance.getLastTime());
-				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
-				if (maintenanceTime.get(Calendar.DAY_OF_YEAR) == currentTime.get(Calendar.DAY_OF_YEAR)) {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					needMaintenances.add(maintenance);
-					continue;
-				} else {
-					maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
-							0, "");
-					maintenance.setMaintenanceState(0);
-					needMaintenances.add(maintenance);
-					continue;
-				}
-			}
+			maintenance.setMaintenStatus(maintenance.getMaintenanceState()==0?"未完成":"已完成");
 		}
 		List<MaintenanceEnginner> maintenanceEnginners = new ArrayList<>();
 		if (Cycle != null && !Cycle.trim().equals("")) {
 			if (isOver.equals("已完成")) {
-				for (Maintenance maintenance : needMaintenances) {
+				for (Maintenance maintenance : maintenances) {
 					if (maintenance.getMaintenanceState() == 1 && maintenance.getMainFrequency().equals(Cycle)) {
 						MaintenanceEnginner maintenanceEnginner = new MaintenanceEnginner();
 						maintenanceEnginner.setMachCode(maintenance.getMachCode());
@@ -1097,7 +871,7 @@ public class MaintenanceManaController extends BaseController {
 					}
 				}
 			} else if (isOver.equals("未完成")) {
-				for (Maintenance maintenance : needMaintenances) {
+				for (Maintenance maintenance : maintenances) {
 					if (maintenance.getMaintenanceState() == 0 && maintenance.getMainFrequency().equals(Cycle)) {
 						MaintenanceEnginner maintenanceEnginner = new MaintenanceEnginner();
 						maintenanceEnginner.setMachCode(maintenance.getMachCode());
@@ -1114,7 +888,7 @@ public class MaintenanceManaController extends BaseController {
 			}
 		} else {
 			if (isOver.equals("已完成")) {
-				for (Maintenance maintenance : needMaintenances) {
+				for (Maintenance maintenance : maintenances) {
 					if (maintenance.getMaintenanceState() == 1) {
 						MaintenanceEnginner maintenanceEnginner = new MaintenanceEnginner();
 						maintenanceEnginner.setMachCode(maintenance.getMachCode());
@@ -1128,7 +902,7 @@ public class MaintenanceManaController extends BaseController {
 					}
 				}
 			} else if (isOver.equals("未完成")) {
-				for (Maintenance maintenance : needMaintenances) {
+				for (Maintenance maintenance : maintenances) {
 					if (maintenance.getMaintenanceState() == 0) {
 						MaintenanceEnginner maintenanceEnginner = new MaintenanceEnginner();
 						maintenanceEnginner.setMachCode(maintenance.getMachCode());
@@ -1165,9 +939,6 @@ public class MaintenanceManaController extends BaseController {
 		String responsibleId = request.getParameter("responsibleId");// 工程师id
 		Map<String, Object> json = new HashMap<>();
 		maintenances = maintenanceserviceImpl.selectByCycle("", responsibleId, "", "");
-		for (Maintenance maintenance : maintenances) {
-			maintenance.setDevice(customerManageService.selectDeviceById(maintenance.getMachCode()));
-		}
 		json.put("code", 0);
 		json.put("msg", "需要保养的设备信息");
 		json.put("count", maintenances.size());
@@ -1308,11 +1079,9 @@ public class MaintenanceManaController extends BaseController {
 
 	@Test
 	public void test() {
-		Jedis jedis = new Jedis("localhost");
-		List<CustInfo> custInfos = custInfo.selectCustByBaseInfo(null, null, null, null, null);
-		// 设置 redis 字符串数据
-		jedis.set("runoobkey", JSONArray.fromObject(custInfos).toString());
-		/* System.out.println(jedis.get("runoobkey")); */
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		System.out.println(calendar.get(Calendar.MONTH));
 	}
 	/*
 	 * @ResponseBody public Map<String, Object> test() { // 连接本地的 Redis 服务
