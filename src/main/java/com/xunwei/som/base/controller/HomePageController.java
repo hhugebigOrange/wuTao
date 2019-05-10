@@ -243,8 +243,11 @@ public class HomePageController extends BaseController {
 			serviceManageServiceImpl.updateOrder(order);
 			service.setState("1,true");
 			serviceInfoService.upDateServiceInfo(service);
-			SMS.senMessage(SMS.SERVICE_ACCEPTANCE, service.getOrderInfo().getRepairService(),
-					service.getOrderInfo().getRepairMan(), woNumber);
+			//如果是事故单，则发送短信
+			if(service.getOrderInfo().getFaultType().equals("事故类")){
+				SMS.senMessage(SMS.SERVICE_ACCEPTANCE, service.getOrderInfo().getRepairService(),
+						service.getOrderInfo().getRepairMan(), woNumber);
+			}
 			json.put("code", 0);
 			json.put("msg", "接单成功");
 			return json;
@@ -837,13 +840,6 @@ public class HomePageController extends BaseController {
 			return json;
 		}
 		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
-		// 判断是否进行上一个流程
-		/*
-		 * if (service.getState() == null || !service.getState().contains("4"))
-		 * { json.put("code", 1); json.put("msg", "对不起，请先扫码确认到达现场"); return
-		 * json; }
-		 */
-		// 判断该工单是否已经走过该流程
 		if (service.getState() != null && service.getState().contains("7")) {
 			json.put("code", 1);
 			json.put("msg", "对不起，此工单已经解决");
@@ -922,10 +918,6 @@ public class HomePageController extends BaseController {
 				json.put("msg", "服务反馈成功");
 				return json;
 			}
-			/*if (serviceInfoService.upDateServiceInfo(service)) {
-				SMS.senMessage(SMS.COMPLETION, service.getOrderInfo().getRepairService(),
-						service.getOrderInfo().getRepairMan(), woNumber);
-			}*/
 		}
 		json.put("code", 1);
 		json.put("msg", "服务反馈中出现异常，请联系客服");
@@ -986,8 +978,11 @@ public class HomePageController extends BaseController {
 		service.setProbSolve(new Date());
 		service.setState(service.getState() + ",7,true");
 		if (serviceInfoService.upDateServiceInfo(service)) {
-			SMS.senMessage(SMS.COMPLETION, service.getOrderInfo().getRepairService(),
-					service.getOrderInfo().getRepairMan(), woNumber);
+			//如果是需求单，给客户发短信通知
+			if(service.getOrderInfo().getFaultType().equals("需求类")){
+				SMS.senMessage(SMS.COMPLETION, service.getOrderInfo().getRepairService(),
+						service.getOrderInfo().getRepairMan(), woNumber);
+			}
 			json.put("code", 0);
 			json.put("msg", "服务反馈成功");
 			return json;

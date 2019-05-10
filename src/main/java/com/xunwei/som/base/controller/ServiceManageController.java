@@ -73,9 +73,9 @@ public class ServiceManageController extends BaseController {
 
 	// 用来存放每次查询的客户满意度结果集
 	private List<ServiceInfo> serviceInfos = new ArrayList<>();
-	
-	//用于保存每个用户的查询记录
-	private Map<String,Object> export=new HashMap<>();
+
+	// 用于保存每个用户的查询记录
+	private Map<String, Object> export = new HashMap<>();
 
 	/**
 	 * 用于每次查询后，保存查询后的结果
@@ -109,7 +109,7 @@ public class ServiceManageController extends BaseController {
 		String woStatus = request.getParameter("woStatus"); // 标识符
 		String enginnerName = request.getParameter("enginnerName"); // 工程师姓名
 		String serviceArea = request.getParameter("serviceArea"); // 服务区域
-		Date date=new Date();
+		Date date = new Date();
 		String f = "";
 		String[] faultType = null;
 		if (a != null && !a.equals("")) {
@@ -126,13 +126,13 @@ public class ServiceManageController extends BaseController {
 		}
 		if (startDate != null && !"".equals(startDate)) {
 			startDate = startDate + " 00:00:00";
-		}else{
-			startDate = ExcelUtils.fmt.format(DateUtils.addDays(date, -30))+" 00:00:00";
+		} else {
+			startDate = ExcelUtils.fmt.format(DateUtils.addDays(date, -30)) + " 00:00:00";
 		}
 		if (endDate != null && !"".equals(endDate)) {
 			endDate = endDate + " 23:59:59";
-		}else{
-			endDate= ExcelUtils.fmt.format(date)+" 23:59:59";
+		} else {
+			endDate = ExcelUtils.fmt.format(date) + " 23:59:59";
 		}
 		if (request.getParameter("username") == null || request.getParameter("username").equals("")) {
 			json.put("code", 1);
@@ -157,8 +157,8 @@ public class ServiceManageController extends BaseController {
 		User user = userService.selectByUserId(request.getParameter("username"));
 		UserRole userRole = userService.selectByPrimaryKey(request.getParameter("username")); // 当前用户的角色
 		List<OrderManage> OrderManages = new ArrayList<>();
-		if(serviceArea==null || serviceArea.equals("")){
-			serviceArea="";
+		if (serviceArea == null || serviceArea.equals("")) {
+			serviceArea = "";
 		}
 		if (userRole.getRoleId().equals("总部客服") || userRole.getRoleId().equals("运维总监")) {
 			user.setCustName(serviceArea);
@@ -174,16 +174,17 @@ public class ServiceManageController extends BaseController {
 			if (userRole.getRoleId().equals("客户")) {
 				serviceInfos = serviceInfoService.selectServiceInfByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
 						user.getCustName(), startDate, endDate, null, null, null, null, null, null, null, null, null,
-						null, enginnerName,identifier);
+						null, enginnerName, identifier);
 				selectServiceInfos = serviceInfoService.selectServiceInfByDynamic(
 						SOMUtils.orderNumToComp(user.getCustName()), user.getCustName(), startDate, endDate, null, null,
-						null, null, null, null, null, page, limit, null, enginnerName,identifier);
+						null, null, null, null, null, page, limit, null, enginnerName, identifier);
 			} else {
 				serviceInfos = serviceInfoService.selectServiceInfByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
-						"", startDate, endDate, null, null, null, null, null, null, null, null, null, null, enginnerName,identifier);
+						"", startDate, endDate, null, null, null, null, null, null, null, null, null, null,
+						enginnerName, identifier);
 				selectServiceInfos = serviceInfoService.selectServiceInfByDynamic(
 						SOMUtils.orderNumToComp(user.getCustName()), "", startDate, endDate, null, null, null, null,
-						null, null, null, page, limit, null, enginnerName,identifier);
+						null, null, null, page, limit, null, enginnerName, identifier);
 			}
 			String part = "";
 			Integer a1 = null;
@@ -226,7 +227,7 @@ public class ServiceManageController extends BaseController {
 							: service.getDevice().getReserveEnginner());
 					orderManage.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 					orderManage.setTreatmentMeasure(service.getOrderInfo().getTreatmentMeasure());
-					orderManage.setArrTime(service.getArrTime()==null?null:service.getArrTime());
+					orderManage.setArrTime(service.getArrTime() == null ? null : service.getArrTime());
 					orderManage.setPicture(SOMUtils.picture(service.getWoNumber()));
 					OrderManages.add(orderManage);
 				} else {
@@ -252,7 +253,7 @@ public class ServiceManageController extends BaseController {
 							service.getOrderInfo().getSendTime() == null ? null : service.getOrderInfo().getSendTime());
 					orderManage.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 					orderManage.setTreatmentMeasure(service.getOrderInfo().getTreatmentMeasure());
-					orderManage.setArrTime(service.getArrTime()==null?null:service.getArrTime());
+					orderManage.setArrTime(service.getArrTime() == null ? null : service.getArrTime());
 					orderManage.setPicture(SOMUtils.picture(service.getWoNumber()));
 					OrderManages.add(orderManage);
 				}
@@ -316,7 +317,7 @@ public class ServiceManageController extends BaseController {
 							: service.getDevice().getReserveEnginner());
 					orderManage.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 					orderManage.setTreatmentMeasure(service.getOrderInfo().getTreatmentMeasure());
-					orderManage.setArrTime(service.getArrTime()==null?null:service.getArrTime());
+					orderManage.setArrTime(service.getArrTime() == null ? null : service.getArrTime());
 					orderManage.setPicture(SOMUtils.picture(service.getWoNumber()));
 					OrderManages.add(orderManage);
 				} else {
@@ -342,7 +343,7 @@ public class ServiceManageController extends BaseController {
 							service.getOrderInfo().getSendTime() == null ? null : service.getOrderInfo().getSendTime());
 					orderManage.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 					orderManage.setTreatmentMeasure(service.getOrderInfo().getTreatmentMeasure());
-					orderManage.setArrTime(service.getArrTime()==null?null:service.getArrTime());
+					orderManage.setArrTime(service.getArrTime() == null ? null : service.getArrTime());
 					orderManage.setPicture(SOMUtils.picture(service.getWoNumber()));
 					OrderManages.add(orderManage);
 				}
@@ -352,19 +353,19 @@ public class ServiceManageController extends BaseController {
 		else if (woStatus != null && !woStatus.trim().equals("") && woStatus.equals("c")) {
 			startDate = ExcelUtils.fmtOne.format(SOMUtils.initDateByMonth()); // 当月开始时间
 			endDate = ExcelUtils.fmtOne.format(new Date()); // 当前时间
-			String[] fault={"事故类"};
+			String[] fault = { "事故类" };
 			if (userRole.getRoleId().equals("客户")) {
 				selectServiceInfos = serviceInfoService.selectServiceInfByDynamic(
 						SOMUtils.orderNumToComp(user.getCustName()), user.getCustName(), startDate, endDate, null, null,
-						null, null, null, null,fault, null, null, null,enginnerName, identifier);
+						null, null, null, null, fault, null, null, null, enginnerName, identifier);
 			} else {
 				selectServiceInfos = serviceInfoService.selectServiceInfByDynamic(
 						SOMUtils.orderNumToComp(user.getCustName()), "", startDate, endDate, null, null, null, null,
-						null, null, fault, null, null, null, enginnerName,identifier);
+						null, null, fault, null, null, null, enginnerName, identifier);
 			}
 			String part = "";
 			Integer a1 = null;
-			List<ServiceInfo> serviceInfoss=new ArrayList<>();
+			List<ServiceInfo> serviceInfoss = new ArrayList<>();
 			// 循环给orderInfo和staffInfo赋值
 			for (ServiceInfo service : selectServiceInfos) {
 				if (SOMUtils.isOverTime(service)) {
@@ -406,7 +407,7 @@ public class ServiceManageController extends BaseController {
 								: service.getDevice().getReserveEnginner());
 						orderManage.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 						orderManage.setTreatmentMeasure(service.getOrderInfo().getTreatmentMeasure());
-						orderManage.setArrTime(service.getArrTime()==null?null:service.getArrTime());
+						orderManage.setArrTime(service.getArrTime() == null ? null : service.getArrTime());
 						orderManage.setPicture(SOMUtils.picture(service.getWoNumber()));
 						OrderManages.add(orderManage);
 					} else {
@@ -432,13 +433,13 @@ public class ServiceManageController extends BaseController {
 								: service.getOrderInfo().getSendTime());
 						orderManage.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 						orderManage.setTreatmentMeasure(service.getOrderInfo().getTreatmentMeasure());
-						orderManage.setArrTime(service.getArrTime()==null?null:service.getArrTime());
+						orderManage.setArrTime(service.getArrTime() == null ? null : service.getArrTime());
 						orderManage.setPicture(SOMUtils.picture(service.getWoNumber()));
 						OrderManages.add(orderManage);
 					}
 				}
 			}
-			serviceInfos=serviceInfoss;
+			serviceInfos = serviceInfoss;
 			limit = page + limit;
 			// 如果开始坐标都比条目数大，则默认显示前10条，不足10条全部显示
 			if (page > OrderManages.size()) {
@@ -455,18 +456,16 @@ public class ServiceManageController extends BaseController {
 		} else if (woStatus != null && !woStatus.trim().equals("") && woStatus.equals("d")) {
 			if (userRole.getRoleId().equals("客户")) {
 				serviceInfos = serviceInfoService.selectServiceInfByWoStatus(
-						SOMUtils.orderNumToComp(user.getCustName()), user.getCustName(), null, null, null, null,
-						"2", identifier);
+						SOMUtils.orderNumToComp(user.getCustName()), user.getCustName(), null, null, null, null, "2",
+						identifier);
 				selectServiceInfos = serviceInfoService.selectServiceInfByWoStatus(
-						SOMUtils.orderNumToComp(user.getCustName()), user.getCustName(), null, null, page,
-						limit, "2", identifier);
+						SOMUtils.orderNumToComp(user.getCustName()), user.getCustName(), null, null, page, limit, "2",
+						identifier);
 			} else {
 				serviceInfos = serviceInfoService.selectServiceInfByWoStatus(
-						SOMUtils.orderNumToComp(user.getCustName()), "", null, null, null, null, "2",
-						identifier);
+						SOMUtils.orderNumToComp(user.getCustName()), "", null, null, null, null, "2", identifier);
 				selectServiceInfos = serviceInfoService.selectServiceInfByWoStatus(
-						SOMUtils.orderNumToComp(user.getCustName()), "", null, null, page, limit, "2",
-						identifier);
+						SOMUtils.orderNumToComp(user.getCustName()), "", null, null, page, limit, "2", identifier);
 			}
 			String part = "";
 			Integer a1 = null;
@@ -509,7 +508,7 @@ public class ServiceManageController extends BaseController {
 							: service.getDevice().getReserveEnginner());
 					orderManage.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 					orderManage.setTreatmentMeasure(service.getOrderInfo().getTreatmentMeasure());
-					orderManage.setArrTime(service.getArrTime()==null?null:service.getArrTime());
+					orderManage.setArrTime(service.getArrTime() == null ? null : service.getArrTime());
 					orderManage.setPicture(SOMUtils.picture(service.getWoNumber()));
 					OrderManages.add(orderManage);
 				} else {
@@ -535,7 +534,7 @@ public class ServiceManageController extends BaseController {
 							service.getOrderInfo().getSendTime() == null ? null : service.getOrderInfo().getSendTime());
 					orderManage.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 					orderManage.setTreatmentMeasure(service.getOrderInfo().getTreatmentMeasure());
-					orderManage.setArrTime(service.getArrTime()==null?null:service.getArrTime());
+					orderManage.setArrTime(service.getArrTime() == null ? null : service.getArrTime());
 					orderManage.setPicture(SOMUtils.picture(service.getWoNumber()));
 					OrderManages.add(orderManage);
 				}
@@ -544,17 +543,18 @@ public class ServiceManageController extends BaseController {
 			if (userRole.getRoleId().equals("客户")) {
 				serviceInfos = serviceInfoService.selectServiceInfByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
 						user.getCustName(), startDate, endDate, "", "", machCode, "", "", rapairType, faultType, null,
-						null, processingState, enginnerName,identifier);
+						null, processingState, enginnerName, identifier);
 				selectServiceInfos = serviceInfoService.selectServiceInfByDynamic(
 						SOMUtils.orderNumToComp(user.getCustName()), user.getCustName(), startDate, endDate, "", "",
-						machCode, "", "", rapairType, faultType, page, limit, processingState,enginnerName, identifier);
+						machCode, "", "", rapairType, faultType, page, limit, processingState, enginnerName,
+						identifier);
 			} else {
 				serviceInfos = serviceInfoService.selectServiceInfByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
 						custName, startDate, endDate, "", "", machCode, "", "", rapairType, faultType, null, null,
-						processingState, enginnerName,identifier);
+						processingState, enginnerName, identifier);
 				selectServiceInfos = serviceInfoService.selectServiceInfByDynamic(
 						SOMUtils.orderNumToComp(user.getCustName()), custName, startDate, endDate, "", "", machCode, "",
-						"", rapairType, faultType, page, limit, processingState, enginnerName,identifier);
+						"", rapairType, faultType, page, limit, processingState, enginnerName, identifier);
 			}
 			String part = "";
 			Integer a1 = null;
@@ -597,7 +597,7 @@ public class ServiceManageController extends BaseController {
 							: service.getDevice().getReserveEnginner());
 					orderManage.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 					orderManage.setTreatmentMeasure(service.getOrderInfo().getTreatmentMeasure());
-					orderManage.setArrTime(service.getArrTime()==null?null:service.getArrTime());
+					orderManage.setArrTime(service.getArrTime() == null ? null : service.getArrTime());
 					orderManage.setPicture(SOMUtils.picture(service.getWoNumber()));
 					OrderManages.add(orderManage);
 				} else {
@@ -623,13 +623,13 @@ public class ServiceManageController extends BaseController {
 							service.getOrderInfo().getSendTime() == null ? null : service.getOrderInfo().getSendTime());
 					orderManage.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 					orderManage.setTreatmentMeasure(service.getOrderInfo().getTreatmentMeasure());
-					orderManage.setArrTime(service.getArrTime()==null?null:service.getArrTime());
+					orderManage.setArrTime(service.getArrTime() == null ? null : service.getArrTime());
 					orderManage.setPicture(SOMUtils.picture(service.getWoNumber()));
 					OrderManages.add(orderManage);
 				}
 			}
 		}
-		export.put(request.getParameter("username")+"orderManage", serviceInfos);
+		export.put(request.getParameter("username") + "orderManage", serviceInfos);
 		// 返回结果集
 		json.put("code", 0);
 		json.put("msg", "工单管理数据");
@@ -689,7 +689,7 @@ public class ServiceManageController extends BaseController {
 		// 先查询出所有已完成的服务工单
 		List<ServiceInfo> serviceInfo = serviceInfoService.selectServiceInfByDynamic(
 				serviceArea == null ? null : SOMUtils.orderNumToComp(serviceArea), custName, "", "", "", "", machCode,
-				"", "", "", null, null, null, null, null,identifier);
+				"", "", "", null, null, null, null, null, identifier);
 		List<ServiceInfo> serviceInfos = new ArrayList<>();
 		List<FailureAnalysis> FailureAnalysiss = new ArrayList<>();
 		int day = 0;
@@ -728,7 +728,7 @@ public class ServiceManageController extends BaseController {
 			page = para[0];
 			limit = para[1];
 		}
-		export.put(request.getParameter("username")+"failureAnalysis", serviceInfos);
+		export.put(request.getParameter("username") + "failureAnalysis", serviceInfos);
 		json.put("code", 0);
 		json.put("msg", "故障分析数据");
 		json.put("count", FailureAnalysiss.size());
@@ -757,7 +757,7 @@ public class ServiceManageController extends BaseController {
 		}
 		// 先查询出所有已完成的服务工单
 		List<ServiceInfo> serviceInfo = serviceInfoService.selectServiceInfByDynamic("", "", "", "", "", "", machCode,
-				"", "", "", null, null, null, null, null,null);
+				"", "", "", null, null, null, null, null, null);
 		if (serviceInfo == null || serviceInfo.size() == 0) {
 			json.put("code", 1);
 			json.put("msg", "该机器编码没有历史报修记录");
@@ -857,7 +857,8 @@ public class ServiceManageController extends BaseController {
 		// 查看登陆人是否有权限
 		Map<String, Object> json = new HashMap<>();
 		String tableName = "故障分析表";
-		List<ServiceInfo> serviceInfos=(List<ServiceInfo>) export.get(request.getParameter("username")+"failureAnalysis");
+		List<ServiceInfo> serviceInfos = (List<ServiceInfo>) export
+				.get(request.getParameter("username") + "failureAnalysis");
 		// 设置表头
 		String[] Titles = { "客户名称", "服务区域", "机器编码", "设备名称", "故障类型", "停机时间(分钟)", "创建时间" };
 		// 导出Excel
@@ -954,7 +955,7 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "对不起，该机器尚未绑定合同，不能报修");
 			return json;
 		}
-		if (device.getAssetStatus()!=null && device.getAssetStatus().equals("报废")) {
+		if (device.getAssetStatus() != null && device.getAssetStatus().equals("报废")) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该机器已报废，不能报修");
 			return json;
@@ -962,7 +963,8 @@ public class ServiceManageController extends BaseController {
 		List<OrderInfo> xixi = serviceManageServiceImpl.selectOrderByDynamic(null, machCode, null, null, null, null,
 				null);
 		for (OrderInfo orderInfo2 : xixi) {
-			if (!orderInfo2.getWoStatus().equals("已完成") && !orderInfo2.getWoStatus().equals("已关单") && !orderInfo2.getWoStatus().equals("已转单")) {
+			if (!orderInfo2.getWoStatus().equals("已完成") && !orderInfo2.getWoStatus().equals("已关单")
+					&& !orderInfo2.getWoStatus().equals("已转单")) {
 				json.put("code", 1);
 				json.put("msg", "该设备已报修，请勿重复报修");
 				return json;
@@ -1129,7 +1131,7 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "对不起，该机器尚未绑定合同，不能报修");
 			return json;
 		}
-		if (device.getAssetStatus()!=null && device.getAssetStatus().equals("报废")) {
+		if (device.getAssetStatus() != null && device.getAssetStatus().equals("报废")) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该机器已报废，不能报修");
 			return json;
@@ -1137,7 +1139,8 @@ public class ServiceManageController extends BaseController {
 		List<OrderInfo> xixi = serviceManageServiceImpl.selectOrderByDynamic(null, machCode, null, null, null, null,
 				null);
 		for (OrderInfo orderInfo2 : xixi) {
-			if (!orderInfo2.getWoStatus().equals("已完成") && !orderInfo2.getWoStatus().equals("已关单") && !orderInfo2.getWoStatus().equals("已转单")) {
+			if (!orderInfo2.getWoStatus().equals("已完成") && !orderInfo2.getWoStatus().equals("已关单")
+					&& !orderInfo2.getWoStatus().equals("已转单")) {
 				json.put("code", 1);
 				json.put("msg", "该设备已报修，请勿重复报修");
 				return json;
@@ -1462,7 +1465,7 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "对不起，该机器尚未绑定合同，不能报修");
 			return json;
 		}
-		if (device.getAssetStatus()!=null && device.getAssetStatus().equals("报废")) {
+		if (device.getAssetStatus() != null && device.getAssetStatus().equals("报废")) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该机器已报废，不能报修");
 			return json;
@@ -1470,7 +1473,8 @@ public class ServiceManageController extends BaseController {
 		List<OrderInfo> xixi = serviceManageServiceImpl.selectOrderByDynamic(null, machCode, null, null, null, null,
 				null);
 		for (OrderInfo orderInfo2 : xixi) {
-			if (!orderInfo2.getWoStatus().equals("已完成") && !orderInfo2.getWoStatus().equals("已关单") && !orderInfo2.getWoStatus().equals("已转单")) {
+			if (!orderInfo2.getWoStatus().equals("已完成") && !orderInfo2.getWoStatus().equals("已关单")
+					&& !orderInfo2.getWoStatus().equals("已转单")) {
 				json.put("code", 1);
 				json.put("msg", "该设备已报修，请勿重复报修");
 				return json;
@@ -1485,11 +1489,12 @@ public class ServiceManageController extends BaseController {
 		// 2.客户名称
 		String custName = device.getCustArea();
 		// 4.客户地址
-		if(custInfo.selectCustByBaseInfo(device.getCustArea(), null, null, null, null)==null){
+		if (custInfo.selectCustByBaseInfo(device.getCustArea(), null, null, null, null) == null) {
 			json.put("code", 1);
-			json.put("msg","对不起，该机器对应的客户信息不存在");
+			json.put("msg", "对不起，该机器对应的客户信息不存在");
 		}
-		String custAddr = custInfo.selectCustByBaseInfo(device.getCustArea(), null, null, null, null).get(0).getCustAddr();
+		String custAddr = custInfo.selectCustByBaseInfo(device.getCustArea(), null, null, null, null).get(0)
+				.getCustAddr();
 		// 5.报修人
 		String repairMan = request.getParameter("repairMan"); // 报修人
 		// 6.报修人电话
@@ -1508,7 +1513,7 @@ public class ServiceManageController extends BaseController {
 				&& !materialNumber.trim().equals("")) {
 			serviceType = materialModel + ":" + materialNumber;
 		}
-		
+
 		// 8.故障类型
 		String faultType = "事故类";
 		// 9.获取备注
@@ -1801,7 +1806,7 @@ public class ServiceManageController extends BaseController {
 		// 判断报修类型
 		if (userService.selectByPrimaryKey(account).getRoleId().equals("CUST")) {
 			repairType = "网络";
-		} else if(faultType.equals("事件类")){
+		} else if (faultType.equals("事件类")) {
 			repairType = "主动服务";
 		} else {
 			repairType = "电话";
@@ -1998,13 +2003,15 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "对不起，该工程师姓名不存在，请检查并重新输入");
 			return json;
 		}
-		if (!(enginner.getPost().equals("工程师") || enginner.getPost().equals("技术主管") || enginner.getPost().equals("运维经理"))) {
+		if (!(enginner.getPost().equals("工程师") || enginner.getPost().equals("技术主管")
+				|| enginner.getPost().equals("运维经理"))) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该员工不是工程师，请重新输入");
 			return json;
 		}
 		UserRole role = userService.selectByPrimaryKey(account);
-		if (serviceManageServiceImpl.selectOrderByOrderNum(woNumber).getFaultType().equals("事故类")) {
+		String faultType = serviceManageServiceImpl.selectOrderByOrderNum(woNumber).getFaultType();
+		if (faultType.equals("事故类")) {
 			if (role.getRoleId().equals("运维助理")) {
 				json.put("code", 1);
 				json.put("msg", "对不起，运维助理不能受理事故类");
@@ -2029,7 +2036,6 @@ public class ServiceManageController extends BaseController {
 		// 更新服务信息
 		boolean b = serviceInfoService.upDateServiceInfo(serviceInfo);
 		if (a && b) {
-			// 发送短信到相应工程师的手机上
 			SMS.senMessage(SMS.ENGINNER_ACCEPTANCE, enginner.getPhone(), enginner.getName(), woNumber);
 			json.put("code", 0);
 			json.put("msg", "派单成功");
@@ -2274,11 +2280,12 @@ public class ServiceManageController extends BaseController {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		// 查看登陆人是否有权限
 		Map<String, Object> json = new HashMap<>();
-		List<ServiceInfo> serviceInfos=(List<ServiceInfo>) export.get(request.getParameter("username")+"orderManage");
+		List<ServiceInfo> serviceInfos = (List<ServiceInfo>) export
+				.get(request.getParameter("username") + "orderManage");
 		String tableName = "工单表";
 		// 设置表头
 		String[] Titles = { "客户名称", "工单号码", "设备名称", "机器编码", "工单来源", "设备序列号", "设备型号", "设备位置", "报修人/联系人", "联系电话", "报修时间",
-				"派单时间", "工程师接单时间", "工程师到达时间","完成时间", "指定工程师", "服务类型", "服务类别", "故障描述","处理措施", "处理状态", "是否有零件订购" };
+				"派单时间", "工程师接单时间", "工程师到达时间", "完成时间", "指定工程师", "服务类型", "服务类别", "故障描述", "处理措施", "处理状态", "是否有零件订购" };
 		// 导出Excel
 		HSSFWorkbook wb = ExcelUtils.exportOrder(res, Titles, tableName);
 		HSSFSheet sheet = wb.getSheet(tableName);
@@ -2308,10 +2315,10 @@ public class ServiceManageController extends BaseController {
 					: ExcelUtils.fmtOne.format(service.getOrderInfo().getSendTime()));
 			row.createCell(13).setCellValue(service.getOrderInfo().getGetOrderTime() == null ? null
 					: ExcelUtils.fmtOne.format(service.getOrderInfo().getGetOrderTime()));
-			row.createCell(14).setCellValue(service.getArrTime() == null ? null
-					: ExcelUtils.fmtOne.format(service.getArrTime()));
-			row.createCell(15).setCellValue(service.getProbSolve() == null ? null
-					: ExcelUtils.fmtOne.format(service.getProbSolve()));
+			row.createCell(14)
+					.setCellValue(service.getArrTime() == null ? null : ExcelUtils.fmtOne.format(service.getArrTime()));
+			row.createCell(15).setCellValue(
+					service.getProbSolve() == null ? null : ExcelUtils.fmtOne.format(service.getProbSolve()));
 			row.createCell(16).setCellValue(service.getStaffInfo() == null ? "" : service.getStaffInfo().getName());
 			row.createCell(17).setCellValue(service.getOrderInfo().getFaultType());
 			row.createCell(18).setCellValue(service.getOrderInfo().getAccidentType());
@@ -2340,7 +2347,7 @@ public class ServiceManageController extends BaseController {
 			return json;
 		}
 		OrderInfo order = serviceManageServiceImpl.selectOrderByOrderNum(woNumber);
-		
+
 		if (order == null) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该工单号不存在，无法导出工单");
@@ -2352,7 +2359,7 @@ public class ServiceManageController extends BaseController {
 			return json;
 		}
 		Device device = customerManage.selectByCode(order.getMachCode());
-		ServiceInfo serviceInfo=serviceInfoService.selectServiceInfByDyWoNumber(woNumber);
+		ServiceInfo serviceInfo = serviceInfoService.selectServiceInfByDyWoNumber(woNumber);
 		HSSFWorkbook wb = ExcelUtils.copyExcel(SOMUtils.qrAddr + "orderTemplate1.xls");
 		HSSFSheet sheet = wb.getSheet("Sheet1");
 		HSSFRow row = sheet.getRow(2);
@@ -2391,16 +2398,21 @@ public class ServiceManageController extends BaseController {
 		row = sheet.getRow(14);
 		row.getCell(1).setCellValue(device.getEsNumber());
 		// 负责工程师
-		row.getCell(4).setCellValue(staffInfoServiceImplnew.selectStaffByNum(serviceInfoService.selectServiceInfByDynamic2("", woNumber, "").get(0).getStaffId())
+		row.getCell(4)
+				.setCellValue(staffInfoServiceImplnew
+						.selectStaffByNum(
+								serviceInfoService.selectServiceInfByDynamic2("", woNumber, "").get(0).getStaffId())
 						.getName());
-		//到达时间、完成时间
+		// 到达时间、完成时间
 		row = sheet.getRow(16);
-		row.getCell(4).setCellValue(serviceInfo.getArrTime()==null?null:ExcelUtils.fmtOne.format(serviceInfo.getArrTime()));
-		row.getCell(7).setCellValue(serviceInfo.getProbSolve()==null?null:ExcelUtils.fmtOne.format(serviceInfo.getProbSolve()));
+		row.getCell(4).setCellValue(
+				serviceInfo.getArrTime() == null ? null : ExcelUtils.fmtOne.format(serviceInfo.getArrTime()));
+		row.getCell(7).setCellValue(
+				serviceInfo.getProbSolve() == null ? null : ExcelUtils.fmtOne.format(serviceInfo.getProbSolve()));
 		// 服务区域
 		row = sheet.getRow(22);
 		row.getCell(4).setCellValue(device.getServiceArea());
-		ExcelUtils.download(res, wb, " "+woNumber);
+		ExcelUtils.download(res, wb, " " + woNumber);
 		json.put("code", 0);
 		json.put("msg", "导出工单成功");
 		return json;
@@ -2443,7 +2455,7 @@ public class ServiceManageController extends BaseController {
 	 * @param modelAndView
 	 * @return
 	 */
-	@RequestMapping(value = "/woNumberPicture",produces = "application/json; charset=utf-8")
+	@RequestMapping(value = "/woNumberPicture", produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public Map<String, Object> woNumberPicture(ModelAndView modelAndView) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
@@ -2461,24 +2473,24 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "该工单不存在");
 			return json;
 		}
-		List<User> users=new ArrayList<>();
-		File file=null;
+		List<User> users = new ArrayList<>();
+		File file = null;
 		String a = null;
-		for(int i=1;i<=3;i++){
-			a=SOMUtils.pictureAddr+woNumber+"/"+woNumber+"-"+i+".png";
+		for (int i = 1; i <= 3; i++) {
+			a = SOMUtils.pictureAddr + woNumber + "/" + woNumber + "-" + i + ".png";
 			file = new File(a);
-			if(i==1&&!file.exists()){
+			if (i == 1 && !file.exists()) {
 				json.put("msg", "对不起，该工单暂无图片");
 				return json;
 			}
-			if(file.exists()){
-				User user=new User();
-				user.setCustName("http://"+SOMUtils.pictureAddr1+woNumber+"/"+woNumber+"-"+i+".png");
+			if (file.exists()) {
+				User user = new User();
+				user.setCustName("http://" + SOMUtils.pictureAddr1 + woNumber + "/" + woNumber + "-" + i + ".png");
 				users.add(user);
 			}
 		}
 		json.put("data", users);
 		return json;
 	}
-	
+
 }

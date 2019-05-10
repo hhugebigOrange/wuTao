@@ -44,10 +44,15 @@
 
 
 	<!-- 拦截器 -->
-	<!-- <mvc:interceptors> <mvc:interceptor> <mvc:mapping path="/**" /> <mvc:exclude-mapping 
-		path="/login" /> <mvc:exclude-mapping path="/dologin" /> <mvc:exclude-mapping 
-		path="/serviceBoard" /> <bean class="com.xunwei.som.interceptor.LoginInterceptor"></bean> 
-		</mvc:interceptor> </mvc:interceptors> -->
+	<!-- <mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/login" />
+			<mvc:exclude-mapping path="/dologin" />
+			<mvc:exclude-mapping path="/serviceBoard" />
+			<bean class="com.xunwei.som.interceptor.LoginInterceptor"></bean>
+		</mvc:interceptor>
+	</mvc:interceptors> -->
 
 	<mvc:interceptors>
 		<mvc:interceptor>
@@ -57,40 +62,29 @@
 	</mvc:interceptors>
 
 	<!-- 对模型视图名称的解析，即在模型视图名称添加前后缀 -->
-	<!-- <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
-		<property name="templateEngine" ref="templateEngine" />
-		<property name="characterEncoding" value="UTF-8" />
-	</bean>
-	<bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine">
-		<property name="templateResolver" ref="templateResolver" />
-
-	</bean>
-	<bean id="templateResolver"
-		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
-		<property name="templateMode" value="LEGACYHTML5" />
-		<property name="prefix" value="/" />
-		<property name="suffix" value=".html" />
-		<property name="templateMode" value="LEGACYHTML5" />
-		<property name="order" value="0"></property>
-		<property name="characterEncoding" value="UTF-8" />
-	</bean> -->
+	<!-- <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver"> <property 
+		name="templateEngine" ref="templateEngine" /> <property name="characterEncoding" 
+		value="UTF-8" /> </bean> <bean id="templateEngine" class="org.thymeleaf.spring4.SpringTemplateEngine"> 
+		<property name="templateResolver" ref="templateResolver" /> </bean> <bean 
+		id="templateResolver" class="org.thymeleaf.templateresolver.ServletContextTemplateResolver"> 
+		<property name="templateMode" value="LEGACYHTML5" /> <property name="prefix" 
+		value="/" /> <property name="suffix" value=".html" /> <property name="templateMode" 
+		value="LEGACYHTML5" /> <property name="order" value="0"></property> <property 
+		name="characterEncoding" value="UTF-8" /> </bean> -->
 
 
-	<!-- <bean
+	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		<property name="prefix" value="/" /> <property name="suffix" value=".jsp" 
+		/> <property name="viewClass" value="org.springframework.web.servlet.view.InternalResourceView" 
+		/> <property name="contentType" value="text/html;charset=UTF-8" /> <property 
+		name="order" value="0"></property> </bean> -->
+
+	<bean
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="prefix" value="/" />
-		<property name="suffix" value=".jsp" />
-		<property name="viewClass"
-			value="org.springframework.web.servlet.view.InternalResourceView" />
+		<property name="suffix" value=".html" />
 		<property name="contentType" value="text/html;charset=UTF-8" />
-		<property name="order" value="0"></property>
-	</bean> -->
-	
-	 <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
-        <property name="prefix" value="/" />
-        <property name="suffix" value=".html" />
-        <property name="contentType" value="text/html;charset=UTF-8" />
-    </bean>
+	</bean>
 
 	<!--国际化 -->
 	<bean id="messageSource"

@@ -105,7 +105,6 @@
 		<!-- <constructor-arg value="sid"/> <property name="httpOnly" value="true"/> 
 			<property name="domain" value=""/> -->
 		<property name="maxAge" value="-1" />
-
 		<property name="name" value="www.foo.com.session" />
 		<property name="path" value="/" />
 	</bean>
