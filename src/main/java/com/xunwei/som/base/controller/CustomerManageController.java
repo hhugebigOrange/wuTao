@@ -12,6 +12,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -157,7 +158,10 @@ public class CustomerManageController extends BaseController {
 		UserRole userRole = userService.selectByPrimaryKey(request.getParameter("username")); // 当前用户的角色
 		if (userRole.getRoleId().equals("总部客服") || userRole.getRoleId().equals("运维总监")) {
 			user.setCustName("");
-		} else if (user.getCustName().equals("广州乐派数码科技有限公司") || user.getCustName().equals("系统推进部")
+		} else if (userRole.getRoleId().equals("优质运维专员") || userRole.getRoleId().equals("运维管理人员")) {
+			user.setCustName("");
+		}
+		else if (user.getCustName().equals("广州乐派数码科技有限公司") || user.getCustName().equals("系统推进部")
 				|| user.getCustName().equals("行业客户部")) {
 			user.setCustName("");
 			identifier = "1";
@@ -517,6 +521,7 @@ public class CustomerManageController extends BaseController {
 		String contractNature = request.getParameter("contractNature"); // 合同性质
 		String woStatus = request.getParameter("woStatus"); // 标识符
 		String order = request.getParameter("order"); // 标识符
+		String assetAscription=request.getParameter("assetAscription");
 		List<Contract> timeContracts = new ArrayList<Contract>();
 		List<Contract> dueToContracts = new ArrayList<Contract>();
 		List<Contract> selectContracts = new ArrayList<Contract>();
@@ -549,6 +554,8 @@ public class CustomerManageController extends BaseController {
 		UserRole userRole = userService.selectByPrimaryKey(request.getParameter("username")); // 当前用户的角色
 		if (userRole.getRoleId().equals("总部客服") || userRole.getRoleId().equals("运维总监")) {
 			user.setCustName("");
+		} else if (userRole.getRoleId().equals("优质运维专员") || userRole.getRoleId().equals("运维管理人员")) {
+			user.setCustName("");
 		} else if (user.getCustName().equals("广州乐派数码科技有限公司") || user.getCustName().equals("系统推进部")
 				|| user.getCustName().equals("行业客户部")) {
 			user.setCustName("");
@@ -558,26 +565,26 @@ public class CustomerManageController extends BaseController {
 			if (woStatus.equals("a")) {
 				if (userRole.getRoleId().equals("客户")) {
 					contracts = customerManage.selectByCust(user.getCustName(), null, "", "", null, null, null, order,
-							identifier);
+							identifier,assetAscription);
 					selectContracts = customerManage.selectByCust(user.getCustName(), null, "", "", page, limit, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					// 查找到期合同
 					timeContracts = customerManage.selectByCust(user.getCustName(), null, "1", "", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					// 查找一年内到期合同
 					dueToContracts = customerManage.selectByCust(user.getCustName(), null, "", "1", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 				} else {
 					contracts = customerManage.selectByCust(null, user.getCustName(), "", "", null, null, null, order,
-							identifier);
+							identifier,assetAscription);
 					selectContracts = customerManage.selectByCust(null, user.getCustName(), "", "", page, limit, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					// 查找到期合同
 					timeContracts = customerManage.selectByCust(null, user.getCustName(), "1", "", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					// 查找一年内到期合同
 					dueToContracts = customerManage.selectByCust(null, user.getCustName(), "", "1", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 				}
 				// 保存数据
 				for (Contract contract : selectContracts) {
@@ -598,26 +605,26 @@ public class CustomerManageController extends BaseController {
 			} else if (woStatus.equals("b")) {
 				if (userRole.getRoleId().equals("客户")) {
 					contracts = customerManage.selectByCust(user.getCustName(), null, "1", "", null, null, null, order,
-							identifier);
+							identifier,assetAscription);
 					selectContracts = customerManage.selectByCust(null, user.getCustName(), "", "", page, limit, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					// 查找到期合同
 					timeContracts = customerManage.selectByCust(user.getCustName(), null, "1", "", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					// 查找一年内到期合同
 					dueToContracts = customerManage.selectByCust(user.getCustName(), null, "", "1", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 				} else {
 					contracts = customerManage.selectByCust(null, user.getCustName(), "1", "", null, null, null, order,
-							identifier);
+							identifier,assetAscription);
 					selectContracts = customerManage.selectByCust(null, user.getCustName(), "1", "", page, limit, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					// 查找到期合同
 					timeContracts = customerManage.selectByCust(null, user.getCustName(), "1", "", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					// 查找一年内到期合同
 					dueToContracts = customerManage.selectByCust(null, user.getCustName(), "", "1", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 				}
 				// 保存数据
 				for (Contract contract : selectContracts) {
@@ -640,24 +647,24 @@ public class CustomerManageController extends BaseController {
 			} else if (woStatus.equals("c")) {
 				if (userRole.getRoleId().equals("客户")) {
 					contracts = customerManage.selectByCust(user.getCustName(), null, "", "1", null, null, null, order,
-							identifier);
+							identifier,assetAscription);
 					selectContracts = customerManage.selectByCust(user.getCustName(), null, "", "1", page, limit, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					timeContracts = customerManage.selectByCust(user.getCustName(), null, "1", "", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					// 查找一年内到期合同
 					dueToContracts = customerManage.selectByCust(user.getCustName(), null, "", "1", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 				} else {
 					contracts = customerManage.selectByCust(null, user.getCustName(), "", "1", null, null, null, order,
-							identifier);
+							identifier,assetAscription);
 					selectContracts = customerManage.selectByCust(null, user.getCustName(), "", "1", page, limit, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					timeContracts = customerManage.selectByCust(null, user.getCustName(), "1", "", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 					// 查找一年内到期合同
 					dueToContracts = customerManage.selectByCust(null, user.getCustName(), "", "1", null, null, null,
-							order, identifier);
+							order, identifier,assetAscription);
 
 				}
 				// 保存数据
@@ -694,15 +701,15 @@ public class CustomerManageController extends BaseController {
 			}
 			// 查询相应的合同
 			selectContracts = customerManage.selectByCust(custName, serviceArea, "", "", page, limit, contractNature,
-					order, identifier);
+					order, identifier,assetAscription);
 			contracts = customerManage.selectByCust(custName, serviceArea, "", "", null, null, contractNature, order,
-					identifier);
+					identifier,assetAscription);
 			// 查找到期合同
 			timeContracts = customerManage.selectByCust(custName, serviceArea, "1", "", null, null, null, order,
-					identifier);
+					identifier,assetAscription);
 			// 查找一年内到期合同
 			dueToContracts = customerManage.selectByCust(custName, serviceArea, "", "1", null, null, null, order,
-					identifier);
+					identifier,assetAscription);
 			// 保存数据
 			for (Contract contract : selectContracts) {
 				// 合同期限
@@ -747,7 +754,7 @@ public class CustomerManageController extends BaseController {
 		List<Contract> contracts = (List<Contract>) export.get(request.getParameter("username") + "contractManage");
 		// 设置表头
 		String[] Titles = { "客户名称", "主服务区域", "分服务区域", "合同编码", "合同类型", "合同性质", "签约日期", "到期时间", "登记时间", "合同期限(月)",
-				"离到期天数", "备注" };
+				"离到期天数", "执行状态","备注" };
 		// 导出Excel
 		HSSFWorkbook wb = ExcelUtils.exportOrder(res, Titles, tableName);
 		HSSFSheet sheet = wb.getSheet(tableName);
@@ -783,7 +790,8 @@ public class CustomerManageController extends BaseController {
 					.setCellValue(contract.getRegTime() == null ? "" : ExcelUtils.fmt.format(contract.getRegTime()));
 			row.createCell(10).setCellValue(ContractDeadline);
 			row.createCell(11).setCellValue(contract.getDueDays());
-			row.createCell(12).setCellValue("");
+			row.createCell(12).setCellValue(contract.getAssetAscription());
+			row.createCell(13).setCellValue("");
 		}
 		ExcelUtils.download(res, wb, tableName);
 		json.put("code", 0);
@@ -850,7 +858,10 @@ public class CustomerManageController extends BaseController {
 		UserRole userRole = userService.selectByPrimaryKey(request.getParameter("username")); // 当前用户的角色
 		if (userRole.getRoleId().equals("总部客服") || userRole.getRoleId().equals("运维总监")) {
 			user.setCustName("");
-		} else if (user.getCustName().equals("广州乐派数码科技有限公司") || user.getCustName().equals("系统推进部")
+		} else if (userRole.getRoleId().equals("优质运维专员") || userRole.getRoleId().equals("运维管理人员")) {
+			user.setCustName("");
+		}
+		else if (user.getCustName().equals("广州乐派数码科技有限公司") || user.getCustName().equals("系统推进部")
 				|| user.getCustName().equals("行业客户部")) {
 			user.setCustName("");
 			identifier = "1";
@@ -1235,6 +1246,7 @@ public class CustomerManageController extends BaseController {
 		String openingBank = request.getParameter("openingBank"); // 开户行
 		String bankAccount = request.getParameter("bankAccount"); // 账号
 		String taxIden = request.getParameter("taxIden"); // 纳税人识别号
+		String assetAscription = request.getParameter("assetAscription"); // 执行状态
 		// 将传递过来的值存放到Map集合里面
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("客户名称", custName);
@@ -1320,6 +1332,7 @@ public class CustomerManageController extends BaseController {
 		contract.setTaxIden(taxIden);
 		contract.setId(Integer.valueOf(ID));
 		contract.setContractNature(contractNature);
+		contract.setAssetAscription(assetAscription);
 		try {
 			int result = customerManage.updateByPrimaryKeySelective(contract, null);
 			for (Device device : customerManage.selectByDeviceKpi(null, null, oldContract.getContractNo(), null, null,
@@ -2632,20 +2645,29 @@ public class CustomerManageController extends BaseController {
 		return json;
 	}
 
-	@Test
-	public void test() throws IOException {
+	/**
+	 * 初始化图片
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/initPicture", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Map<String, Object> initPicture() throws IOException {
+		Map<String, Object> json = new HashMap<>();
 		List<Device> devices = customerManage.selectByDynamic(null, null, null, null, null, null, null);
 		for (Device device : devices) {
 			String content = "https://open.weixin.qq.com/connect/oauth2/authorize?"
 					+ "appid=wxf31e52205cafba8a&redirect_uri=http%3a%2f%2fsolutionyun.com%2fgetOpenId%3fmachCode%3d"
 					+ device.getMachCode()
 					+ "&response_type=code&scope=snsapi_base&state=123&connect_redirect=1#wechat_redirect";
-			File file = new File("E:/som/src/main/webapp/qrcode/" + device.getMachCode() + ".png");
+			File file = new File("/root/tomcat/apache-tomcat-8.0.53/webapps/som/qrcode/" + device.getMachCode() + ".png");
 			if (!file.exists()) {
 				file.createNewFile();
 			}
-			ZXingUtils.qrCode(content, "E:/som/src/main/webapp/qrcode/" + device.getMachCode() + ".png");
+			ZXingUtils.qrCode(content, "/root/tomcat/apache-tomcat-8.0.53/webapps/som/qrcode/" + device.getMachCode() + ".png");
 		}
+		json.put("code", 0);
+		json.put("msg", "初始化图片成功");
+		return json;
 	}
 
 	@Test
@@ -2837,6 +2859,16 @@ public class CustomerManageController extends BaseController {
 		json.put("code", 0);
 		json.put("msg", "导出成功");
 		return json;
+	}
+
+	@Test
+	public void time() throws ParseException {
+		Date date = ExcelUtils.fmt.parse("2020-1-1");
+		Calendar ca = Calendar.getInstance();
+		ca.setTime(date);
+		ca.add(Calendar.DATE, 730);
+		date = ca.getTime();
+		System.out.println(ExcelUtils.fmt.format(date));
 	}
 
 }

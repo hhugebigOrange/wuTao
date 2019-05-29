@@ -150,6 +150,11 @@ public class UserLoginController extends BaseController {
 		for (User user : users) {
 			// 比对账号和密码,成功跳到首页
 			if (username.equals(user.getUserId()) && password.equals(user.getPassword())) {
+				if(user.getUserName().contains("待审批")){
+					json.put("code", 1);
+					json.put("msg", "对不起，您的账号尚在审批中，请联系运维总监");
+					return json;
+				}
 				String slogan = sloganService.selectSlogan();
 				// 获取登陆客户所属的公司名称
 				String custName = user.getCustName();
@@ -173,7 +178,7 @@ public class UserLoginController extends BaseController {
 				session.setAttribute("userRole", userRoles); // 登陆用户角色
 				if (userRoles.equals("客户")) {
 					List<Contract> contract = customerManage.selectByCust(user.getCustName(), null, null, null, null,
-							null, null, null, null);
+							null, null, null, null,null);
 					if (contract != null && contract.size() > 0) {
 						user.setCustName(contract.get(0).getMainService());
 					}
@@ -346,7 +351,7 @@ public class UserLoginController extends BaseController {
 			return json;
 		}
 		// 客户只能看到自己的合同
-		List<Contract> contracts = customerManage.selectByCust(custName, "", "", "", null, null, null, null, null);
+		List<Contract> contracts = customerManage.selectByCust(custName, "", "", "", null, null, null, null, null,null);
 		// 获取当月所有工单
 		List<ServiceInfo> serviceInfos = serviceInfoService.selectServiceInfoByOrder(custName, "", "", startDate,
 				endDate);
@@ -461,9 +466,9 @@ public class UserLoginController extends BaseController {
 		// 运营总监可以看到所有客户的合同
 		List<Contract> contracts = customerManage.selectByComp("");
 		// 查找已到期合同
-		List<Contract> timeContracts = customerManage.selectByCust("", "", "1", "", null, null, null, null, null);
+		List<Contract> timeContracts = customerManage.selectByCust("", "", "1", "", null, null, null, null, null,null);
 		// 查找一年内到期合同
-		List<Contract> dueToContracts = customerManage.selectByCust("", "", "", "1", null, null, null, null, null);
+		List<Contract> dueToContracts = customerManage.selectByCust("", "", "", "1", null, null, null, null, null,null);
 		// 运营总监可以看到所有工单
 		Calendar cale = null;
 		cale = Calendar.getInstance();
@@ -613,10 +618,10 @@ public class UserLoginController extends BaseController {
 		// 分公司运营总监只能看到属于自己服务区域的合同
 		List<Contract> contracts = customerManage.selectByComp(custName);
 		// 查找到期合同
-		List<Contract> timeContracts = customerManage.selectByCust("", custName, "1", "", null, null, null, null, null);
+		List<Contract> timeContracts = customerManage.selectByCust("", custName, "1", "", null, null, null, null, null,null);
 		// 查找一年内到期合同
 		List<Contract> dueToContracts = customerManage.selectByCust("", custName, "", "1", null, null, null, null,
-				null);
+				null,null);
 		// ****************************************************************
 		// 分公司运营总监只能看到属于自己服务区域的工单
 		Calendar cale = null;
@@ -762,6 +767,7 @@ public class UserLoginController extends BaseController {
 		json.put("客户投诉", complaints);
 		json.put("客户表扬", praise);
 		json.put("待定零件和耗材", partNumber);
+		json.put("前缀", prefix);
 		return json;
 	}
 
@@ -1234,6 +1240,63 @@ public class UserLoginController extends BaseController {
 		// 从前端获取登录人账号
 		Map<String, Object> json = new HashMap<>();
 		json.put("data", calendarService.selectAllCalendar());
+		return json;
+	}
+	
+	/**
+	 * 获得工单提醒
+	 * 
+	 * @param modelAndView
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/orderRemind", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Map<String, Object> orderRemind() throws Exception {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		// 从前端获取登录人账号
+		Map<String, Object> json = new HashMap<>();
+		UserRole userRole = userService.selectByPrimaryKey(request.getParameter("username")); // 当前用户的角色
+		String startDate = ExcelUtils.fmtOne.format(SOMUtils.initDateByMonth()); // 当月开始时间
+		String endDate = ExcelUtils.fmtOne.format(new Date()); // 当前时间
+		String identifier=null;
+		User user = userService.selectByUserId(request.getParameter("username"));
+		List<ServiceInfo> service=null;
+		if (userRole.getRoleId().equals("总部客服")) {
+			String[] faultType={"事故类"};
+			user.setCustName("");
+			service=serviceInfoService.selectServiceInfByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					user.getCustName(), startDate, endDate, null, null, null, null, null, null, faultType, null, null,
+					null, "", identifier);
+		}else if(userRole.getRoleId().equals("运维助理") && user.getCustName().equals("顺德分公司美的集团")){
+			service=serviceInfoService.selectServiceInfByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					user.getCustName(), startDate, endDate, null, null, null, null, null, null, null, null, null,
+					null, "", identifier);
+		}else if (user.getCustName().equals("广州乐派数码科技有限公司") || user.getCustName().equals("系统推进部")
+				|| user.getCustName().equals("行业客户部")) {
+			user.setCustName("");
+			identifier = "1";
+			String[] faultType={"需求类","事件类"};
+			service=serviceInfoService.selectServiceInfByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					user.getCustName(), startDate, endDate, null, null, null, null, null, null, faultType, null, null,
+					null, "", identifier);
+		}else if(userRole.getRoleId().equals("运维助理")){
+			String[] faultType={"需求类","事件类"};
+			service=serviceInfoService.selectServiceInfByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					user.getCustName(), startDate, endDate, null, null, null, null, null, null, faultType, null, null,
+					null, "", identifier);
+		}
+		List<ServiceInfo> services=new ArrayList<>();
+		for (ServiceInfo serviceInfo : service) {
+			if(serviceInfo.getOrderInfo().getSendTime()==null){
+				if(!serviceInfo.getOrderInfo().getOrderAccount().equals(user.getUserId())){
+					services.add(serviceInfo);
+				}
+			}
+		}
+		json.put("code", 0);
+		json.put("count", services.size());
+		json.put("data", services);
 		return json;
 	}
 	

@@ -48,7 +48,7 @@ public interface CustomerManageService {
      */
 	public List<Contract> selectByCust(String custName,String compName,String timeout,String dueTo,
 			Integer page,
-			Integer limit,String contractNature,String order,String identifier);
+			Integer limit,String contractNature,String order,String identifier,String assetAscription);
 	
 	
     /**

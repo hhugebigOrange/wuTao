@@ -471,9 +471,9 @@ public class CalendarTool {
 	 * @throws Exception
 	 */
 	public static Double getDownTime(Date startDate, Date endDate, Date workTime, Date offWorkTime) throws Exception {
-		if (!workTime.before(offWorkTime)) {
+		/*if (!workTime.before(offWorkTime)) {
 			throw new Exception("下班时间应该在上班时间之后");
-		}
+		}*/
 		// 开始日期和结束日期的年月日
 		Date sDate = ExcelUtils.fmt.parse(ExcelUtils.fmtOne.format(startDate).substring(0, 11));
 		Date eDate = ExcelUtils.fmt.parse(ExcelUtils.fmtOne.format(endDate).substring(0, 11));

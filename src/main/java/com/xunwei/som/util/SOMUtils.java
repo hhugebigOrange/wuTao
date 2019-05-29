@@ -50,15 +50,13 @@ import java.util.*;
 public class SOMUtils extends LoggerUtils {
 	public static Map<String, String> urlConfigMap;
 	public static Map<String, Map<String, String>> elementConfigMap = new HashMap<>();
-	/* public static String ipAndPort = "192.168.1.135/som/qrcode/"; */ // ip端口地址
+	/*public static String ipAndPort = "10.52.26.3/som/qrcode/";*/ // ip端口地址
 	public static String ipAndPort = "47.106.110.201/som/qrcode/";
-	/* public static String qrAddr = "E:/som/src/main/webapp/qrcode/"; */ // 二维码文件地址
+	/*public static String qrAddr = "E:/som/src/main/webapp/qrcode/";*/ // 二维码文件地址
 	public static String qrAddr = "/root/tomcat/apache-tomcat-8.0.53/webapps/som/qrcode/";
 	public static String qrAddr1 = "/som/webapp/qrcode/"; // 二维码文件地址
-	/*
-	 * public static String pictureAddr = "E:/som/src/main/webapp/woPicture/";
-	 * public static String pictureAddr1 = "192.168.1.135/som/woPicture/";
-	 */
+	/*public static String pictureAddr = "E:/som/src/main/webapp/woPicture/";
+	public static String pictureAddr1 = "10.52.26.3/som/woPicture/";*/
 	public static String pictureAddr = "/root/tomcat/apache-tomcat-8.0.53/webapps/som/woPicture/"; // 工单图片地址
 	public static String pictureAddr1 = "47.106.110.201/som/woPicture/";
 	protected static String filePath = "/som/src/main/resources/prpo.properties";
@@ -1569,6 +1567,10 @@ public class SOMUtils extends LoggerUtils {
 			return "beefnoodle";
 		case "运维总监":
 			return "uglyman";
+		case "优质运维专员":
+			return "hqoamc";
+		case "运维管理人员":
+			return "oamm";
 		default:
 			return "";
 		}
@@ -1633,25 +1635,34 @@ public class SOMUtils extends LoggerUtils {
 		}
 		// 如果电话响应时间和到达现场时间都为空,则超不超时按最长到达现场时间计算
 		if (a == 0) {
-			if (service.getOrderInfo().getSendTime()!=null && service.getTelRepon() == null && service.getArrTime() == null) {
+			if (service.getOrderInfo().getSendTime() != null && service.getTelRepon() == null
+					&& service.getArrTime() == null) {
+				engineerKpi.setArrTimeSlot((CalendarTool.getDownTime(service.getOrderInfo().getSendTime(), new Date(),
+						workTime, offWorkTime)));
+				if (engineerKpi.getArrTimeSlot() > ParameterSetting.arrTime) {
+					a = 1;
+				}
+			}
+		}
+		// 如果转单时间不为空，看转单前是否超时
+		if (a == 0) {
+			if (service.getOrderInfo().getTurnOrderTime() != null && service.getOrderInfo().getSendTime() != null) {
 				engineerKpi.setArrTimeSlot((CalendarTool.getDownTime(service.getOrderInfo().getSendTime(),
-								new Date(), workTime, offWorkTime)));
+						service.getOrderInfo().getTurnOrderTime(), workTime, offWorkTime)));
 				if (engineerKpi.getArrTimeSlot() > ParameterSetting.arrTime) {
 					a = 1;
 				}
 			}
 		}
 		// 如果电话响应时间不为空，看响应时间是否达标
-		if (a == 0) {
-			if (service.getOrderInfo().getSendTime() != null && service.getTelRepon() != null) {
-				engineerKpi
-						.setResponseTime(SOMUtils.getInt(CalendarTool.getDownTime(service.getOrderInfo().getSendTime(),
-								service.getTelRepon(), workTime, offWorkTime)));
-				if (engineerKpi.getResponseTime() > ParameterSetting.telRepon) {
-					a = 1;
-				}
-			}
-		}
+		/*
+		 * if (a == 0) { if (service.getOrderInfo().getSendTime() != null &&
+		 * service.getTelRepon() != null) { engineerKpi
+		 * .setResponseTime(SOMUtils.getInt(CalendarTool.getDownTime(service.
+		 * getOrderInfo().getSendTime(), service.getTelRepon(), workTime,
+		 * offWorkTime))); if (engineerKpi.getResponseTime() >
+		 * ParameterSetting.telRepon) { a = 1; } } }
+		 */
 		// 如果到达现场时间不为空，看到达现场时间是否达标
 		if (a == 0) {
 			if (service.getOrderInfo().getSendTime() != null && service.getArrTime() != null) {

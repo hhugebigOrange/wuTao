@@ -367,11 +367,11 @@ public class ServiceBoardController extends BaseController {
 			childService = (String) SOMUtils.getCompName(request).get("compname");
 		}
 		// 用来存放每次查询的合同结果集
-		List<Contract> contracts = customerManage.selectByCust(custName, childService, null, null, null, null,null,null,null);
+		List<Contract> contracts = customerManage.selectByCust(custName, childService, null, null, null, null,null,null,null,null);
 		// 查找到期合同
-		List<Contract> timeContracts = customerManage.selectByCust(custName, childService, "1", "", null, null,null,null,null);
+		List<Contract> timeContracts = customerManage.selectByCust(custName, childService, "1", "", null, null,null,null,null,null);
 		// 查找一年内到期合同
-		List<Contract> dueToContracts = customerManage.selectByCust(custName, childService, "", "1", null, null,null,null,null);
+		List<Contract> dueToContracts = customerManage.selectByCust(custName, childService, "", "1", null, null,null,null,null,null);
 		for (Contract contract : contracts) {
 			// 合同期限
 			long a = contract.getEndDate().getTime() - contract.getStartDate().getTime();

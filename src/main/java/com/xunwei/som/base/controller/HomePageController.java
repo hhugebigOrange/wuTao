@@ -852,6 +852,17 @@ public class HomePageController extends BaseController {
 			json.put("msg", "openId不能为空");
 			return json;
 		}
+		// 如果到达时间不为空
+		if (service.getArrTime()!=null){
+			//到达时间+5分钟后的时间
+			Date afterNow=new Date(service.getArrTime().getTime()+300000);
+			Date now=new Date();
+			if(now.before(afterNow)){
+				json.put("code", 1);
+				json.put("msg", "对不起，扫码到达现场后5分钟之内不允许完成反馈");
+				return json;
+			}
+		}
 		String role = "";
 		for (User user : userService.selectAllUser()) {
 			if (user.getOpenId() == null) {

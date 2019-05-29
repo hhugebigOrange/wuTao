@@ -318,6 +318,9 @@
 			<if test="record.contractNature != null">
 				contract_nature = #{record.contractNature},
 			</if>
+			<if test="record.assetAscription != null">
+				asset_ascription = #{record.assetAscription},
+			</if>
 		</set>
 		<where>
 			<if test="record.contractNo != null and record.id !=null">
@@ -411,6 +414,9 @@
 			<if test="contractNature!=null and contractNature!=''">
 				AND contract_nature like
 				concat('%',#{contractNature},'%')
+			</if>
+			<if test="assetAscription!=null and assetAscription!=''">
+				AND asset_ascription = #{assetAscription}
 			</if>
 		</where>
 		<if test="order!=null and order==1">

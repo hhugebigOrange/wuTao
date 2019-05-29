@@ -162,6 +162,8 @@ public class ServiceManageController extends BaseController {
 		}
 		if (userRole.getRoleId().equals("总部客服") || userRole.getRoleId().equals("运维总监")) {
 			user.setCustName(serviceArea);
+		} else if (userRole.getRoleId().equals("优质运维专员") || userRole.getRoleId().equals("运维管理人员")) {
+			user.setCustName(serviceArea);
 		} else if (user.getCustName().equals("广州乐派数码科技有限公司") || user.getCustName().equals("系统推进部")
 				|| user.getCustName().equals("行业客户部")) {
 			user.setCustName(serviceArea);
@@ -677,7 +679,9 @@ public class ServiceManageController extends BaseController {
 		if (SOMUtils.getCompName(request).get("role").equals("客户")) {
 			custName = (String) SOMUtils.getCompName(request).get("compname");
 		} else if (!(SOMUtils.getCompName(request).get("role").equals("运维总监")
-				|| SOMUtils.getCompName(request).get("role").equals("总部客服"))) {
+				|| SOMUtils.getCompName(request).get("role").equals("总部客服")
+				|| SOMUtils.getCompName(request).get("role").equals("优质运维专员")
+				|| SOMUtils.getCompName(request).get("role").equals("运维管理人员"))) {
 			serviceArea = (String) SOMUtils.getCompName(request).get("compname");
 		}
 		if (serviceArea != null) {
@@ -860,7 +864,7 @@ public class ServiceManageController extends BaseController {
 		List<ServiceInfo> serviceInfos = (List<ServiceInfo>) export
 				.get(request.getParameter("username") + "failureAnalysis");
 		// 设置表头
-		String[] Titles = { "客户名称", "服务区域", "机器编码", "设备名称", "故障类型", "停机时间(分钟)", "创建时间" };
+		String[] Titles = { "客户名称", "服务区域", "机器编码", "设备类型", "故障类型", "停机时间(分钟)", "创建时间" };
 		// 导出Excel
 		HSSFWorkbook wb = ExcelUtils.exportOrder(res, Titles, tableName);
 		HSSFSheet sheet = wb.getSheet(tableName);
@@ -2009,10 +2013,16 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "对不起，该员工不是工程师，请重新输入");
 			return json;
 		}
+		if (!enginner.getWorkCond().equals("在岗")) {
+			json.put("code", 1);
+			json.put("msg", "对不起，该工程师正在休假或培训");
+			return json;
+		}
 		UserRole role = userService.selectByPrimaryKey(account);
+		User user = userService.selectByUserId(account);
 		String faultType = serviceManageServiceImpl.selectOrderByOrderNum(woNumber).getFaultType();
 		if (faultType.equals("事故类")) {
-			if (role.getRoleId().equals("运维助理")) {
+			if (role.getRoleId().equals("运维助理") && !user.getCustName().contains("美的")) {
 				json.put("code", 1);
 				json.put("msg", "对不起，运维助理不能受理事故类");
 				return json;

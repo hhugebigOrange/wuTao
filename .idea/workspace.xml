@@ -2,432 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d2eede4b-2217-4f02-81ef-ad6c7f2aeddf" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/css/modules/layer/default/icon-ext.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/css/modules/layer/default/icon.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/css/modules/layer/default/loading-0.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/css/modules/layer/default/loading-1.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/css/modules/layer/default/loading-2.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/font/iconfont.eot" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/font/iconfont.ttf" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/font/iconfont.woff" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/0.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/1.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/10.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/11.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/12.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/13.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/14.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/15.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/16.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/17.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/18.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/19.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/2.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/20.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/21.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/22.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/23.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/24.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/25.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/26.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/27.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/28.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/29.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/3.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/30.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/31.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/32.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/33.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/34.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/35.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/36.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/37.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/38.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/39.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/4.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/40.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/41.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/42.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/43.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/44.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/45.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/46.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/47.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/48.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/49.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/5.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/50.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/51.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/52.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/53.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/54.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/55.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/56.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/57.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/58.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/59.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/6.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/60.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/61.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/62.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/63.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/64.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/65.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/66.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/67.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/68.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/69.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/7.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/70.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/71.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/8.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/images/face/9.gif" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/images/ias_off.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/images/ias_on.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/images/ias_zakladka.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/images/pwd.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/images/user.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/base/controller/BaseController.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/base/controller/BaseInfoController.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/base/controller/ServiceBoardController.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/base/controller/UserLoginController.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/base/model/Machine.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/base/model/PagedIn.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/base/model/PagedList.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/base/model/Result.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/base/model/ValueResult.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/base/model/staffInfo.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/interceptor/LoginInterceptor.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/mapper/MachineMapper.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/mapper/StaffInfoMapper.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/service/MachineService.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/service/StaffInfoService.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/service/impl/MachineServiceImpl.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/service/impl/StaffInfoServiceImpl.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/shiro/KickoutSessionControlFilter.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/shiro/MySessionListener.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/shiro/Realm.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/user/model/User.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/user/model/in/InUser.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/util/DateUtils.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/util/ExportUtils.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/util/FileUtils.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/util/LoggerUtils.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/util/RequestUtil.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/util/SOMUtils$JsonNullException.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/util/SOMUtils.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/util/SqlTools.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/util/WeChatUtils.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/com/xunwei/som/util/XmlUtils.class" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.classpath" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/som.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.project" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/.jsdtscope" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.core.resources.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.jst.j2ee.ejb.annotations.xdoclet.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.ltk.core.refactoring.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.m2e.core.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.component" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.project.facet.core.prefs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.project.facet.core.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.jsdt.ui.superType.container" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.jsdt.ui.superType.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.validation.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.ws.service.policy.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.classpath" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.project" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.settings/.jsdtscope" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.settings/org.eclipse.core.resources.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.settings/org.eclipse.jdt.core.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.settings/org.eclipse.m2e.core.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.settings/org.eclipse.wst.common.component" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.settings/org.eclipse.wst.common.project.facet.core.prefs.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.settings/org.eclipse.wst.common.project.facet.core.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.settings/org.eclipse.wst.jsdt.ui.superType.container" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.settings/org.eclipse.wst.jsdt.ui.superType.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/.settings/org.eclipse.wst.validation.prefs" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/pom.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/base/controller/BaseController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/base/controller/BaseInfoController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/base/controller/ServiceBoardController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/base/controller/UserLoginController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/base/model/Machine.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/base/model/PagedIn.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/base/model/PagedList.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/base/model/Result.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/base/model/ValueResult.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/base/model/staffInfo.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/interceptor/LoginInterceptor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/mapper/MachineMapper.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/mapper/StaffInfoMapper.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/service/MachineService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/service/StaffInfoService.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/service/impl/MachineServiceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/service/impl/StaffInfoServiceImpl.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/shiro/KickoutSessionControlFilter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/shiro/MySessionListener.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/shiro/Realm.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/user/model/User.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/user/model/in/InUser.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/util/DateUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/util/ExportUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/util/FileUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/util/LoggerUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/util/RequestUtil.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/util/SOMUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/util/SqlTools.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/util/WeChatUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/java/com/xunwei/som/util/XmlUtils.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/application.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/config.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/db.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/ehcache.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/exception.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/generatorConfig.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/mapper/MachineMapper.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/mapper/StaffInfoMapper.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/mapper/User.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/myLog4j.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/mybatis/beans-dao.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/mybatis/beans-svc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/mybatis/mybatis.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/security-shiro.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/spring/applicationContext.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/resources/spring/spring-mvc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/WEB-INF/web.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/baseinfo/html/addCustomer.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/baseinfo/html/addManagerRole.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/baseinfo/html/customerInfo.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/baseinfo/html/userManageInfo.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/hello.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/html/orderSituation.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/css/layui.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/css/layui.mobile.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/css/modules/code.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/css/modules/laydate/default/laydate.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/css/modules/layer/default/layer.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/font/iconfont.svg" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/carousel.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/code.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/colorpicker.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/element.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/flow.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/form.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/jquery.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/laydate.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/layedit.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/layer.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/laypage.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/laytpl.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/mobile.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/rate.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/slider.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/table.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/tree.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/upload.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/lay/modules/util.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/layui.all.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/serviceboard/layui/layui.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/css/ccs_menu-css.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/css/ccs_style.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/html/login.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/html/main.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/js/jjs_jquery-1.10.2.min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/src/main/webapp/user/js/jjs_menu_min.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/application.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/config.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/db.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/ehcache.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/exception.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/generatorConfig.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/mapper/MachineMapper.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/mapper/StaffInfoMapper.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/mapper/User.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/myLog4j.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/mybatis/beans-dao.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/mybatis/beans-svc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/mybatis/mybatis.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/security-shiro.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/spring/applicationContext.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/classes/spring/spring-mvc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/META-INF/MANIFEST.MF" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/META-INF/maven/com.xunwei/som/pom.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/META-INF/maven/com.xunwei/som/pom.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/application.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/config.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/db.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/ehcache.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/exception.properties" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/generatorConfig.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/mapper/MachineMapper.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/mapper/StaffInfoMapper.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/mapper/User.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/myLog4j.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/mybatis/beans-dao.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/mybatis/beans-svc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/mybatis/mybatis.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/security-shiro.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/spring/applicationContext.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/som/target/m2e-wtp/web-resources/WEB-INF/classes/spring/spring-mvc.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/qrcode/sdf.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/qrcode/we.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/static/js/vendor.544c011e87cd17743bb3.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/static/js/vendor.544c011e87cd17743bb3.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/css/app.eedbf2551b6db95e96089d68ca4b8cdd.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/css/app.eedbf2551b6db95e96089d68ca4b8cdd.css.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/567227.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/add.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/basic.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/bgblue.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/bggreen.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/bghbgreen.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/bghblue.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/bghbpink.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/bgpink.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/bgred.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/biging.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/client.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/close.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/code-black.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/code.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/e_a.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/exit.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/exit.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/exitPass.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/homepage.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/iconfont-tianjia.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/key.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/line.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/logo-black.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/logo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/maintain.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/people.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/pic.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/property.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/qihoo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/qq.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/refresh.svg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/serve.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/sinaweibo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/speople.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/statement.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/system.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/timg.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/user-photo.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/username.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/weixin.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/working.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/images/xLqBMPL63N.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img.zip" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/3.5178462.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/4.8b11f9d.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/SuperDiscontent.4db7dae.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/commonly.4ba82cd.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/dissatisfied.c08a27b.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/satisfied.c2269bd.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/verySatisfied.5d747d2.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/js.rar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/js/app.13af9332d081744c9879.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/js/app.13af9332d081744c9879.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/layui.rar" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/qrcode/orderTemplate1.xls" afterPath="$PROJECT_DIR$/src/main/webapp/qrcode/orderTemplate1.xls" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/3.jpg" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/3.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/3.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/3.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/4.jpg" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/4.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/4.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/4.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/SuperDiscontent.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/SuperDiscontent.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/arrows.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/arrows.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/blank.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/blank.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/commonly - 副本.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/commonly - 副本.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/commonly.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/commonly.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/dissatisfied.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/dissatisfied.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/fault.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/fault.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/login.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/login.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/received.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/received.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/received01.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/received01.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/received02.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/received02.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/received03.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/received03.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/satisfied.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/satisfied.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/strat-01.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/strat-01.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/strat.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/strat.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/timg.jpg" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/timg.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/very-satisfied.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/very-satisfied.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/verySatisfied.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/verySatisfied.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/一般 (2).png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/一般 (2).png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/一般.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/一般.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/星星.png" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/img/星星.png" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/static/css/app.746cdbd6fba55388ace502ac20330e2e.css" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/static/css/app.746cdbd6fba55388ace502ac20330e2e.css.map" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/static/js/app.b602f83e60e7ebd52bd5.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/static/js/app.b602f83e60e7ebd52bd5.js.map" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/qrcode/FTZ122001.png" afterPath="$PROJECT_DIR$/src/main/webapp/qrcode/FTZ122001.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/AssetManageController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/AssetManageController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/BaseInfoController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/BaseInfoController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/CustomerManageController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/CustomerManageController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/HomePageController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/HomePageController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/JumpController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/JumpController.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/KpiController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/KpiController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/MaintenanceManaController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/MaintenanceManaController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/ReportManageController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/ReportManageController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/ServiceBoardController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/ServiceBoardController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/ServiceManageController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/ServiceManageController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/SystemManageController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/SystemManageController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/UserLoginController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/UserLoginController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/WeChatController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/WeChatController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/WeChatCustomer.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/WeChatCustomer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/WeChatTechnical.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/WeChatTechnical.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/WorkingStatusController.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/base/controller/WorkingStatusController.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/calendar/CalendarTool.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/calendar/CalendarTool.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/AssetNumberMapper.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/AssetNumberMapper.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/ContractMapper.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/ContractMapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/CustInfoMapper.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/CustInfoMapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/DeviceMapper.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/DeviceMapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/MaintenanceMapper.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/MaintenanceMapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/ServiceInfoMapper.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/ServiceInfoMapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/StaffInfoMapper.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/mapper/StaffInfoMapper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/CustInfo.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/CustInfo.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/CustomerKpi.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/CustomerKpi.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/Device.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/Device.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/EngineerKpi.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/EngineerKpi.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/Maintenance.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/Maintenance.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/StandardRate.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/StandardRate.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/front/DeviceBasic.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/front/DeviceBasic.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/front/OrderManage.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/front/OrderManage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/permissions/User.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/pojo/permissions/User.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/AsAetNumberService.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/AsAetNumberService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/CustInfoService.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/CustInfoService.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/CustomerManageService.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/CustomerManageService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/Maintenanceservice.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/Maintenanceservice.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/ServiceInfoService.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/ServiceInfoService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/StaffInfoService.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/StaffInfoService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/UserService.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/UserService.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/AsAetNumberServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/AsAetNumberServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/CustInfoServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/CustInfoServiceImpl.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/CustomerManageServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/CustomerManageServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/MaintenanceserviceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/MaintenanceserviceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/ServiceInfoServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/ServiceInfoServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/StaffInfoServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/StaffInfoServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/UserServiceImpl.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/service/impl/UserServiceImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/util/ExcelUtils.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/util/ExcelUtils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/com/xunwei/som/util/SOMUtils.java" afterPath="$PROJECT_DIR$/src/main/java/com/xunwei/som/util/SOMUtils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/db.properties" afterPath="$PROJECT_DIR$/src/main/resources/db.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/AssetNumberMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/AssetNumberMapper.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/ContractMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/ContractMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/CustInfoMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/CustInfoMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/DeviceMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/DeviceMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/MaintenanceMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/MaintenanceMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/OrderInfoMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/OrderInfoMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/ServiceInfoMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/ServiceInfoMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/StaffInfoMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/StaffInfoMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/UserMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/UserMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/resources/mapper/UserRoleMapper.xml" afterPath="$PROJECT_DIR$/src/main/resources/mapper/UserRoleMapper.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/index.html" afterPath="$PROJECT_DIR$/src/main/webapp/user/html/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/static/css/body.css" afterPath="$PROJECT_DIR$/src/main/webapp/user/html/static/css/body.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/static/css/leftnav.css" afterPath="$PROJECT_DIR$/src/main/webapp/user/html/static/css/leftnav.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/static/css/loginhomepage.css" afterPath="$PROJECT_DIR$/src/main/webapp/user/html/static/css/loginhomepage.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/user/html/static/js/manifest.3ad1d5771e9b13dbdad2.js.map" afterPath="$PROJECT_DIR$/src/main/webapp/user/html/static/js/manifest.3ad1d5771e9b13dbdad2.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/index.html" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/css/index.css" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/css/index.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/webapp/weChat/static/js/manifest.3ad1d5771e9b13dbdad2.js.map" afterPath="$PROJECT_DIR$/src/main/webapp/weChat/static/js/manifest.3ad1d5771e9b13dbdad2.js.map" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -475,8 +73,10 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="AndroidView" />
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -567,8 +167,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -685,6 +283,7 @@
       <updated>1551696514381</updated>
       <workItem from="1551696537985" duration="4017000" />
       <workItem from="1554174439321" duration="347000" />
+      <workItem from="1559015047747" duration="525000" />
     </task>
     <task id="LOCAL-00001" summary="2019.3.4更新">
       <created>1551696883497</created>
@@ -704,7 +303,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="4364000" />
+    <option name="totallyTimeSpent" value="4889000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -721,7 +320,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.35854766" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.36384267" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />

@@ -83,7 +83,9 @@ public class WorkingStatusController extends BaseController {
 			return json;
 		}
 		if (!(SOMUtils.getCompName(request).get("role").equals("运维总监")
-				|| SOMUtils.getCompName(request).get("role").equals("总部客服"))) {
+				|| SOMUtils.getCompName(request).get("role").equals("总部客服")
+				|| SOMUtils.getCompName(request).get("role").equals("优质运维专员")
+				|| SOMUtils.getCompName(request).get("role").equals("运维管理人员"))) {
 			serviceArea = (String) SOMUtils.getCompName(request).get("compname");
 		}
 		if (serviceArea != null) {

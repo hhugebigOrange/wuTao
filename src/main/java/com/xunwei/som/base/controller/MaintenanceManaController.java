@@ -121,6 +121,8 @@ public class MaintenanceManaController extends BaseController {
 			user.setCustName("");
 		} else if (userRole.getRoleId().equals("总部客服") || userRole.getRoleId().equals("运维总监")) {
 			user.setCustName(serviceArea);
+		} else if (userRole.getRoleId().equals("优质运维专员") || userRole.getRoleId().equals("运维管理人员")) {
+			user.setCustName(serviceArea);
 		} else if (user.getCustName().equals("广州乐派数码科技有限公司") || user.getCustName().equals("系统推进部")
 				|| user.getCustName().equals("行业客户部")) {
 			user.setCustName(serviceArea);
@@ -133,7 +135,7 @@ public class MaintenanceManaController extends BaseController {
 				enginnerName, "", "", "", page, limit, identifier);
 		// 遍历保养执行
 		for (Maintenance maintenance : maintenances) {
-			maintenance.setMaintenStatus(maintenance.getMaintenanceState()==0?"未完成":"已完成");
+			maintenance.setMaintenStatus(maintenance.getMaintenanceState() == 0 ? "未完成" : "已完成");
 		}
 		export.put(request.getParameter("username") + "maintenancePerformer", maintenancePerforms);
 		json.put("code", 0);
@@ -143,9 +145,8 @@ public class MaintenanceManaController extends BaseController {
 		return json;
 	}
 
-	
 	/**
-	 *  定时方法，每分钟刷新保养执行的状态
+	 * 定时方法，每5分钟刷新保养执行的状态
 	 */
 	@Scheduled(fixedRate = 1000 * 60 * 5)
 	public void autoRefreshMaintenancePerform() {
@@ -166,6 +167,26 @@ public class MaintenanceManaController extends BaseController {
 				maintenanceTime.setTime(maintenance.getLastTime());
 				// 判断最近维修的时间是否是在当月，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (maintenanceTime.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH)) {
+					maintenance.setMaintenanceState(1);
+					maintenanceserviceImpl.updateMaintenance(maintenance);
+					continue;
+				} else {
+					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+							0, "");
+					continue;
+				}
+			}
+			// 如果周期是月
+			if (maintenance.getMainFrequency().equals("双月")) {
+				// 如果最近维修时间没有
+				if (maintenance.getLastTime() == null) {
+					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+							0, "");
+					continue;
+				}
+				maintenanceTime.setTime(maintenance.getLastTime());
+				// 判断最近维修的时间是否是超过两个月，如果不是，则添加进当前的集合中，顺便修改保养状态
+				if (currentTime.get(Calendar.MONTH)-maintenanceTime.get(Calendar.MONTH)<3) {
 					maintenance.setMaintenanceState(1);
 					maintenanceserviceImpl.updateMaintenance(maintenance);
 					continue;
@@ -321,6 +342,8 @@ public class MaintenanceManaController extends BaseController {
 			custName = user.getCustName();
 			user.setCustName("");
 		} else if (userRole.getRoleId().equals("总部客服") || userRole.getRoleId().equals("运维总监")) {
+			user.setCustName(serviceArea);
+		} else if (userRole.getRoleId().equals("优质运维专员") || userRole.getRoleId().equals("运维管理人员")) {
 			user.setCustName(serviceArea);
 		} else if (user.getCustName().equals("广州乐派数码科技有限公司") || user.getCustName().equals("系统推进部")
 				|| user.getCustName().equals("行业客户部")) {
@@ -852,7 +875,7 @@ public class MaintenanceManaController extends BaseController {
 		}
 		List<Maintenance> maintenances = maintenanceserviceImpl.selectByCycle(Cycle, staffId, null, contractNo);
 		for (Maintenance maintenance : maintenances) {
-			maintenance.setMaintenStatus(maintenance.getMaintenanceState()==0?"未完成":"已完成");
+			maintenance.setMaintenStatus(maintenance.getMaintenanceState() == 0 ? "未完成" : "已完成");
 		}
 		List<MaintenanceEnginner> maintenanceEnginners = new ArrayList<>();
 		if (Cycle != null && !Cycle.trim().equals("")) {

@@ -57,8 +57,8 @@ public class BaseInfoController extends BaseController {
 	private CustInfoService custInfoService = new CustInfoServiceImpl();
 	// 用于每次查询后，保存查询后的客户信息
 	private List<CustInfo> custInfos;
-	//用于保存每个用户的查询记录
-	private Map<String,Object> export=new HashMap<>();
+	// 用于保存每个用户的查询记录
+	private Map<String, Object> export = new HashMap<>();
 
 	private UserService userService = new UserServiceImpl();
 
@@ -93,14 +93,16 @@ public class BaseInfoController extends BaseController {
 			page = para[0];
 			limit = para[1];
 		}
-		if(serviceArea==null || serviceArea.equals("")){
-			serviceArea="";
+		if (serviceArea == null || serviceArea.equals("")) {
+			serviceArea = "";
 		}
 		// 当前登录用户
 		String identifier = null;
 		User user = userService.selectByUserId(request.getParameter("username"));
 		UserRole userRole = userService.selectByPrimaryKey(request.getParameter("username")); // 当前用户的角色
 		if (userRole.getRoleId().equals("总部客服") || userRole.getRoleId().equals("运维总监")) {
+			user.setCustName(serviceArea);
+		} else if (userRole.getRoleId().equals("优质运维专员") || userRole.getRoleId().equals("运维管理人员")) {
 			user.setCustName(serviceArea);
 		} else if (user.getCustName().equals("广州乐派数码科技有限公司") || user.getCustName().equals("系统推进部")
 				|| user.getCustName().equals("行业客户部")) {
@@ -110,7 +112,7 @@ public class BaseInfoController extends BaseController {
 		List<CustInfo> custInfo = custInfoService.selectCustByBaseInfo(custName, user.getCustName(), page, limit,
 				identifier);
 		custInfos = custInfoService.selectCustByBaseInfo(custName, user.getCustName(), null, null, identifier);
-		export.put(request.getParameter("username")+"customerInfo", custInfos);
+		export.put(request.getParameter("username") + "customerInfo", custInfos);
 		json.put("code", 0);
 		json.put("msg", "客户信息");
 		json.put("data", custInfo);
@@ -273,14 +275,15 @@ public class BaseInfoController extends BaseController {
 				contract.setCustLinkman(linkMan);
 				contract.setLinkmanPhone(phone);
 				int result2 = customerManageService.updateByPrimaryKeySelective(contract, oldCust.getCustName());
-				//同步设备信息里面的客户信息
-				for (Device device : customerManageService.selectByDevice(oldCust.getCustName(), null, null, null, null, null)) {
+				// 同步设备信息里面的客户信息
+				for (Device device : customerManageService.selectByDevice(oldCust.getCustName(), null, null, null, null,
+						null)) {
 					device.setCustArea(custName);
 					customerManageService.updateByPrimaryKeySelective(device);
 				}
-				//同步账号管理里面的客户信息
+				// 同步账号管理里面的客户信息
 				for (User user : userService.selectAllUser()) {
-					if(user.getCustName().equals(oldCust.getCustName())){
+					if (user.getCustName().equals(oldCust.getCustName())) {
 						user.setCustName(custName);
 						userService.updateByPrimaryKeySelective(user);
 					}
@@ -341,8 +344,8 @@ public class BaseInfoController extends BaseController {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		// 查看登陆人是否有权限
 		Map<String, Object> json = new HashMap<>();
-		String username=request.getParameter("username");
-		List<CustInfo> custInfos=(List<CustInfo>) export.get(username+"customerInfo");
+		String username = request.getParameter("username");
+		List<CustInfo> custInfos = (List<CustInfo>) export.get(username + "customerInfo");
 		String tableName = "客户信息表";
 		// 设置表头
 		String[] Titles = { "客户名称", "客户地址", "联系人", "联系电话", "上班时间", "下班时间" };
@@ -409,7 +412,9 @@ public class BaseInfoController extends BaseController {
 		String identifier = null;
 		// 判断是用户还是公司账号
 		if (!(SOMUtils.getCompName(request).get("role").equals("运维总监")
-				|| SOMUtils.getCompName(request).get("role").equals("总部客服"))) {
+				|| SOMUtils.getCompName(request).get("role").equals("总部客服")
+				|| SOMUtils.getCompName(request).get("role").equals("优质运维专员")
+				|| SOMUtils.getCompName(request).get("role").equals("运维管理人员"))) {
 			branceName = (String) SOMUtils.getCompName(request).get("compname");
 		}
 		if (branceName != null) {
@@ -422,7 +427,7 @@ public class BaseInfoController extends BaseController {
 				null, identifier);
 		staffInfos = staffInfoServiceImplnew.getStaffByDynamic(name, branceName, role, "", null, null, null,
 				identifier);
-		export.put(request.getParameter("username")+"userManageInfo", staffInfos);
+		export.put(request.getParameter("username") + "userManageInfo", staffInfos);
 		json.put("code", 0);
 		json.put("msg", "员工数据");
 		json.put("data", staffInfo);
@@ -515,6 +520,9 @@ public class BaseInfoController extends BaseController {
 			json.put("msg", "对不起，分公司名称不存在，请重新输入");
 			return json;
 		}
+		if (post.equals("优质运维专员") || post.equals("运维管理人员")) {
+			staffName = staffName + "(待审批)";
+		}
 		// 获得传递过来公司名对应的公司ID
 		int comperNumber = staffInfoServiceImplnew.selectCompIdByName(serviceArea);
 		Date createDate = new Date();
@@ -558,6 +566,74 @@ public class BaseInfoController extends BaseController {
 		}
 		json.put("code", 1);
 		json.put("msg", "增加失败");
+		return json;
+	}
+
+	/**
+	 * 返回所有待审批的员工信息
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/apProvalStaff", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Map<String, Object> apProvalStaff() {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		// 查看登陆人是否有权限
+		Map<String, Object> json = new HashMap<>();
+		// 分页
+		Integer page = null; // 页数
+		Integer limit = null; // 每页显示的条目数
+		Integer[] para = SOMUtils.pageWithLimit(request, page, limit);
+		if (para[0] == null) {
+			// 默认显示第一页数据
+			page = 0;
+			limit = 10;
+		} else {
+			page = para[0];
+			limit = para[1];
+		}
+		json.put("code", 0);
+		json.put("data", staffInfoServiceImplnew.getStaffByDynamic("待审批", null, null, null, page, limit, null, null));
+		return json;
+	}
+
+	/**
+	 * 通过审批
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/throughApprovalStaff", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Map<String, Object> throughApprovalStaff() {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		// 查看登陆人是否有权限
+		Map<String, Object> json = new HashMap<>();
+		String staffId = request.getParameter("staffId");
+		if (staffId == null || staffId.trim().equals("")) {
+			json.put("code", 1);
+			json.put("msg", "请输入要审批员工的员工编码");
+			return json;
+		}
+		StaffInfo staff = staffInfoServiceImplnew.selectStaffByNum(staffId);
+		if (staff == null) {
+			json.put("code", 1);
+			json.put("msg", "对不起，该员工不存在");
+			return json;
+		}
+		if (!staff.getName().contains("待审批")) {
+			json.put("code", 1);
+			json.put("msg", "对不起，该员工已经审批过");
+			return json;
+		}
+		staff.setName(staff.getName().split("\\(")[0]);
+		System.out.println(staff.getName());
+		staffInfoServiceImplnew.updateStaff(staff);
+		User user = new User();
+		user.setUserId(staff.getPhone());
+		user.setUserName(staff.getName());
+		userService.updateByPrimaryKeySelective(user);
+		json.put("code", 1);
+		json.put("data", "审批通过");
 		return json;
 	}
 
@@ -686,7 +762,7 @@ public class BaseInfoController extends BaseController {
 			staff.setRemark(remark);
 		}
 		int result = staffInfoServiceImplnew.updateStaff(staff); // 修改基本信息
-		userService.updateByPrimaryKeySelective(user);     // 修改对应用户信息
+		userService.updateByPrimaryKeySelective(user); // 修改对应用户信息
 		userService.updateByPrimaryKeySelective(userRole); // 修改对应角色信息
 		if (result > 0) {
 			json.put("code", 0);
@@ -698,7 +774,7 @@ public class BaseInfoController extends BaseController {
 		json.put("msg", "修改失败");
 		return json;
 	}
-	
+
 	/**
 	 * 方法：删除用户信息,成功返回true(数据库里实际并未删除，只是修改了显示参数)
 	 */
@@ -790,7 +866,7 @@ public class BaseInfoController extends BaseController {
 		// 查看登陆人是否有权限
 		Map<String, Object> json = new HashMap<>();
 		String tableName = "用户表";
-		List<StaffInfo> staffInfos=(List<StaffInfo>) export.get(request.getParameter("username")+"userManageInfo");
+		List<StaffInfo> staffInfos = (List<StaffInfo>) export.get(request.getParameter("username") + "userManageInfo");
 		// 设置表头
 		String[] Titles = { "员工编号", "服务区域", "姓名", "电话", "角色", "是否涉密", "涉密等级", "创建时间", "备注" };
 		// 导出Excel

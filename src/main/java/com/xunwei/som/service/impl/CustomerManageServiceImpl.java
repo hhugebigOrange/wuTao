@@ -130,11 +130,11 @@ public class CustomerManageServiceImpl implements CustomerManageService {
 	 * 根据客户名称查找相应合同
 	 */
 	@Override
-	public List<Contract> selectByCust(String custName, String compName, String timeout, String dueTo,Integer page,Integer limit,String contractNature,String order,String identifier) {
+	public List<Contract> selectByCust(String custName, String compName, String timeout, String dueTo,Integer page,Integer limit,String contractNature,String order,String identifier,String assetAscription) {
 		SqlSession session = SqlTools.getSession();
 		ContractMapper mapper = session.getMapper(ContractMapper.class);
 		try {
-			List<Contract> contracts = mapper.selectByCust(custName, compName, timeout, dueTo,page,limit,contractNature,order,identifier);
+			List<Contract> contracts = mapper.selectByCust(custName, compName, timeout, dueTo,page,limit,contractNature,order,identifier,assetAscription);
 			session.commit();
 			return contracts;
 		} catch (Exception e) {

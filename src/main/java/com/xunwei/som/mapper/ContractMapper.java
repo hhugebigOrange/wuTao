@@ -40,7 +40,8 @@ public interface ContractMapper {
     		@Param("limit")Integer limit,
     		@Param("contractNature")String contractNature,
     		@Param("order")String order,
-    		@Param("identifier")String identifier);
+    		@Param("identifier")String identifier,
+    		@Param("assetAscription")String assetAscription);
     
     /**
      * 根据条件，统计总客户数

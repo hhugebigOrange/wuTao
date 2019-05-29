@@ -10,9 +10,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellRangeAddress;
 import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,16 +46,16 @@ public class AssetManageController extends BaseController {
 	private CustomerManageServiceImpl customerManage = new CustomerManageServiceImpl();
 
 	private AsAetNumberService asSetNumberService = new AsAetNumberServiceImpl();
-	
+
 	private CustInfoService custInfoService = new CustInfoServiceImpl();
 
 	// 用来保存每次查询的资产属性结果集
 	private List<AssetNumber> assetNumbers;
-	
+
 	private List<Device> devices;
-	
-	//用于保存每个用户的查询记录
-	private Map<String,Object> export=new HashMap<>();
+
+	// 用于保存每个用户的查询记录
+	private Map<String, Object> export = new HashMap<>();
 
 	/**
 	 * 接口：匹配资产管理页面
@@ -68,9 +71,9 @@ public class AssetManageController extends BaseController {
 		// 从前端接受数据
 		String serviceArea = request.getParameter("serviceArea");
 		String custName = request.getParameter("custName");
-	    List<AssetNumber> selectAssetNumbers=new ArrayList<>();
+		List<AssetNumber> selectAssetNumbers = new ArrayList<>();
 		// 判断是用户还是公司账号
-	    String identifier=null;
+		String identifier = null;
 		if (request.getParameter("username") == null || request.getParameter("username").equals("")) {
 			json.put("code", 1);
 			json.put("msg", "请先登录");
@@ -91,24 +94,25 @@ public class AssetManageController extends BaseController {
 		if (SOMUtils.getCompName(request).get("role").equals("客户")) {
 			custName = (String) SOMUtils.getCompName(request).get("compname");
 		} else if (!(SOMUtils.getCompName(request).get("role").equals("运维总监")
-				|| SOMUtils.getCompName(request).get("role").equals("总部客服"))) {
+				|| SOMUtils.getCompName(request).get("role").equals("总部客服")
+				|| SOMUtils.getCompName(request).get("role").equals("优质运维专员")
+				|| SOMUtils.getCompName(request).get("role").equals("运维管理人员"))) {
 			serviceArea = (String) SOMUtils.getCompName(request).get("compname");
 		}
-		if(serviceArea!=null){
-			if(serviceArea.equals("广州乐派数码科技有限公司") || serviceArea.equals("系统推进部") || serviceArea.equals("行业客户部")){
-				serviceArea=request.getParameter("serviceArea");
-				identifier="1";
+		if (serviceArea != null) {
+			if (serviceArea.equals("广州乐派数码科技有限公司") || serviceArea.equals("系统推进部") || serviceArea.equals("行业客户部")) {
+				serviceArea = request.getParameter("serviceArea");
+				identifier = "1";
 			}
 		}
-	    assetNumbers = asSetNumberService.selectByDynamic(serviceArea, custName, "迅维",null,null,identifier);
-		selectAssetNumbers=asSetNumberService.selectByDynamic(serviceArea, custName, "迅维",page,limit,identifier);
+		assetNumbers = asSetNumberService.selectByDynamic(serviceArea, custName, "迅维", null, null, identifier);
+		selectAssetNumbers = asSetNumberService.selectByDynamic(serviceArea, custName, "迅维", page, limit, identifier);
 		List<AssetManage> assetManages = new ArrayList<>();
 		for (AssetNumber assetNumber : selectAssetNumbers) {
-			if(assetNumber.getDevice()==null){
+			if (assetNumber.getDevice() == null) {
 				continue;
 			}
-			AssetManage assetManage = new AssetManage(
-					assetNumber.getDevice().getServiceArea(),
+			AssetManage assetManage = new AssetManage(assetNumber.getDevice().getServiceArea(),
 					assetNumber.getDevice().getCustArea(), assetNumber.getDevice().getAssetAttr(),
 					assetNumber.getDevice().getHoldDepartment(), assetNumber.getDevice().getHoldMan(),
 					assetNumber.getDevice().getDevName(), assetNumber.getDevice().getAssetClass(),
@@ -118,7 +122,7 @@ public class AssetManageController extends BaseController {
 					assetNumber.getUnit(), assetNumber.getNumber());
 			assetManages.add(assetManage);
 		}
-		export.put(request.getParameter("username")+"assetManage", assetNumbers);
+		export.put(request.getParameter("username") + "assetManage", assetNumbers);
 		json.put("code", 0);
 		json.put("msg", "资产属性数据");
 		json.put("data", assetManages);
@@ -143,23 +147,21 @@ public class AssetManageController extends BaseController {
 		Map<String, Object> json = new HashMap<>();
 		String tableName = "资产管理表";
 		System.out.println(request.getParameter("username"));
-		List<AssetNumber> assetNumbers=(List<AssetNumber>)export.get(request.getParameter("username")+"assetManage");
-		// 设置表头
-		String[] Titles = {"客户名称", "服务区域", "资产属性", "保管部门", "保管人", "设备类型", "资产编码", "资产类别", "型号规格", "单位", "数量", "单价",
-				"原值", "累计折旧", "净值", "实盘数", "数量", "金额", "备注" };
+		List<AssetNumber> assetNumbers = (List<AssetNumber>) export
+				.get(request.getParameter("username") + "assetManage");
 		// 导出Excel
-		HSSFWorkbook wb = ExcelUtils.exportOrder(res, Titles, tableName);
+		HSSFWorkbook wb = ExcelUtils.copyExcel(SOMUtils.qrAddr + "kpi/asset.xls");
 		HSSFSheet sheet = wb.getSheet(tableName);
 		HSSFRow row;
-		int i = 1;
+		int i = 2;
 		// 循环将数据写入Excel
 		for (AssetNumber assetNumber : assetNumbers) {
-			if(assetNumber.getDevice()==null){
+			if (assetNumber.getDevice() == null) {
 				continue;
 			}
 			row = sheet.createRow(i);
 			// 创建单元格，设置值
-			row.createCell(0).setCellValue(i++);
+			row.createCell(0).setCellValue(i++-1);
 			row.createCell(1).setCellValue(assetNumber.getDevice().getCustArea());
 			row.createCell(2).setCellValue(assetNumber.getDevice().getServiceArea());
 			row.createCell(3).setCellValue(assetNumber.getDevice().getAssetAttr());
@@ -183,6 +185,27 @@ public class AssetManageController extends BaseController {
 		ExcelUtils.download(res, wb, tableName);
 		json.put("code", 0);
 		json.put("msg", "导出成功");
+		return json;
+	}
+
+	/**
+	 * 导出资产管理页面excel
+	 * 
+	 * @param model
+	 * @param request
+	 * @param res
+	 * @throws IOException
+	 */
+	@RequestMapping(value = "/exportExcel", produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public Map<String, Object> exportExcel(ModelAndView model, HttpServletRequest request, HttpServletResponse res)
+			throws IOException {
+		response.setHeader("Access-Control-Allow-Origin", "*");
+		// 查看登陆人是否有权限
+		Map<String, Object> json = new HashMap<>();
+		String tableName = "资产管理表";
+		HSSFWorkbook wb = ExcelUtils.copyExcel(SOMUtils.qrAddr + "kpi/asset.xls");
+		ExcelUtils.download(res, wb, tableName);
 		return json;
 	}
 
@@ -301,12 +324,12 @@ public class AssetManageController extends BaseController {
 		json.put("msg", "修改失败");
 		return json;
 	}
-	
+
 	@Test
-	public void test(){
-		String custName=null;
+	public void test() {
+		String custName = null;
 		for (CustInfo cust : custInfoService.selectCustByBaseInfo(null, null, null, null, null)) {
-			custName=cust.getCustName();
+			custName = cust.getCustName();
 			cust.setCustName("123");
 			custInfoService.update(cust);
 			cust.setCustName(custName);
