@@ -691,7 +691,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.18</version>
+			<version>8.0.16</version>
 		</dependency>
 		<!-- 数据库连接-end +++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
@@ -791,7 +791,7 @@
 					<dependency>
 						<groupId>mysql</groupId>
 						<artifactId>mysql-connector-java</artifactId>
-						<version>5.1.18</version>
+						<version>8.0.16</version>
 					</dependency>
 				</dependencies>
 			</plugin>
