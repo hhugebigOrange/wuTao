@@ -1,6 +1,6 @@
 package com.xunwei.som.calendar;
 
-import java.io.File;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,12 +8,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.time.DurationFormatUtils;
-import org.junit.Test;
 
 import com.xunwei.som.calendar.impl.CalendarServiceImpl;
 import com.xunwei.som.util.ExcelUtils;
-import com.xunwei.som.util.SOMUtils;
 
 /**
  * 日历工具类
@@ -711,22 +708,5 @@ public class CalendarTool {
 		return -1.0;
 	}
 
-	@Test
-	public void test() {
-		File a=new File("C:/Users/Administrator/Desktop/woPicture");
-		if(a.exists()){
-			SOMUtils.deleteDir(a.toString());
-		}
-		// 日历集合
-		/*
-		 * List<Calendars> Calendars = calendarService.selectAllCalendar(); //
-		 * 假期集合 List<String> weekDays=new ArrayList<>(); // 补班集合 List<String>
-		 * needWordDays=new ArrayList<>(); for (Calendars calendar : Calendars)
-		 * { if (calendar.getSign() == 1) {
-		 * weekDays.add(ExcelUtils.fmt.format(calendar.getCalendar())); }else{
-		 * needWordDays.add(ExcelUtils.fmt.format(calendar.getCalendar())); } }
-		 * System.out.println(weekDays.toString());
-		 */
-	}
 
 }

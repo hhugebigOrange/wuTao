@@ -3,7 +3,6 @@ package com.xunwei.som.service.impl;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.junit.Test;
 
 import com.xunwei.som.mapper.ContractMapper;
 import com.xunwei.som.mapper.DeviceChangeMapper;
@@ -184,22 +183,6 @@ public class CustomerManageServiceImpl implements CustomerManageService {
 			session.close();
 		}
 		return null;
-	}
-
-	@Test
-	public void selectByCust1() {
-		SqlSession session = SqlTools.getSession();
-		DeviceMapper mapper = session.getMapper(DeviceMapper.class);
-		try {
-			Device devices = mapper.selectDeviceById("BAK0001");
-			session.commit();
-			System.out.println(devices);
-		} catch (Exception e) {
-			e.printStackTrace();
-			session.rollback();
-		}finally{
-			session.close();
-		}
 	}
 
 	@Override

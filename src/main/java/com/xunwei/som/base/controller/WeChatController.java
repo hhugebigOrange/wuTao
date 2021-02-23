@@ -15,7 +15,6 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletOutputStream;
-import org.junit.Test;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -289,12 +288,6 @@ public class WeChatController extends BaseController {
 		return modelAndView;
 	}
 
-	@Test
-	public void test() throws UnsupportedEncodingException {
-		String url = "http://solutionyun.com/registeredUser?" + "phone=" + "123" + "&password=" + "123"
-				+ "&newPassword=" + "123" + "&name=" + "张" + "&custName=" + "里";
-		System.out.println(URLEncoder.encode(url, "UTF-8"));
-	}
 
 	/**
 	 * 获取签名

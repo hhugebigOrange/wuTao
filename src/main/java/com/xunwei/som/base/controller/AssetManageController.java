@@ -10,20 +10,15 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.CellRangeAddress;
-import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xunwei.som.pojo.AssetNumber;
-import com.xunwei.som.pojo.CustInfo;
 import com.xunwei.som.pojo.Device;
 import com.xunwei.som.pojo.front.AssetManage;
 import com.xunwei.som.service.AsAetNumberService;
@@ -325,15 +320,4 @@ public class AssetManageController extends BaseController {
 		return json;
 	}
 
-	@Test
-	public void test() {
-		String custName = null;
-		for (CustInfo cust : custInfoService.selectCustByBaseInfo(null, null, null, null, null)) {
-			custName = cust.getCustName();
-			cust.setCustName("123");
-			custInfoService.update(cust);
-			cust.setCustName(custName);
-			custInfoService.update(cust);
-		}
-	}
 }

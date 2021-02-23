@@ -9,7 +9,6 @@ import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 import org.codehaus.jackson.type.JavaType;
 import org.codehaus.jackson.type.TypeReference;
-import org.junit.Test;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
@@ -943,17 +942,6 @@ public class SOMUtils extends LoggerUtils {
 		return "";
 	}
 
-	@Test
-	public void test() throws Exception {
-		String startDate = "2019-03-30 10:32:35";
-		String endDate = "2019-04-01 09:03:12";
-		String workTime = "08:30:00";
-		String offWorkTime = "17:30:00";
-		ExcelUtils.fmtOne.parse(startDate);
-		Double a = CalendarTool.getDownTime(ExcelUtils.fmtOne.parse(startDate), ExcelUtils.fmtOne.parse(endDate),
-				ExcelUtils.fmtHms.parse(workTime), ExcelUtils.fmtHms.parse(offWorkTime));
-		System.out.println(a);
-	}
 
 	/**
 	 * 判断用户是否有相应权限

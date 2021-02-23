@@ -17,14 +17,12 @@ import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.xunwei.som.base.controller.BaseController;
 import com.xunwei.som.calendar.CalendarService;
 import com.xunwei.som.calendar.impl.CalendarServiceImpl;
 import com.xunwei.som.pojo.Contract;
@@ -961,27 +959,6 @@ public class UserLoginController extends BaseController {
 		return modelAndView;
 	}
 
-	@Test
-	public void test() throws IOException {
-		String GETOPENID = "http://solutionyun.com/som/dologin?username=18011446524&password=123456";
-		String path = GETOPENID;
-		StringBuffer buffer = new StringBuffer();
-		URL url = new URL(path);
-		URLConnection httpUrlConn = url.openConnection();
-		// 将返回的输入流转换成字符串
-		InputStream inputStream = httpUrlConn.getInputStream();
-		InputStreamReader inputStreamReader = new InputStreamReader(inputStream, "utf-8");
-		BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-		String str = null;
-		while ((str = bufferedReader.readLine()) != null) {
-			buffer.append(str);
-		}
-		bufferedReader.close();
-		inputStreamReader.close();
-		inputStream.close();
-		inputStream = null;
-		System.out.println(buffer.toString());
-	}
 
 	/**
 	 * 获取OPENID

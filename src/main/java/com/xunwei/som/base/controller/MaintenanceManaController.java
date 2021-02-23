@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.junit.Test;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -1100,12 +1099,6 @@ public class MaintenanceManaController extends BaseController {
 		return json;
 	}
 
-	@Test
-	public void test() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
-		System.out.println(calendar.get(Calendar.MONTH));
-	}
 	/*
 	 * @ResponseBody public Map<String, Object> test() { // 连接本地的 Redis 服务
 	 * Map<String, Object> json = new HashMap<>(); Jedis jedis = new

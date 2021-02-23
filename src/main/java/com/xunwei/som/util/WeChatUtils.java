@@ -21,8 +21,6 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.digest.DigestUtils;
-import org.junit.Test;
-import org.springframework.scheduling.annotation.Scheduled;
 
 import com.xunwei.som.base.controller.BaseController;
 import com.xunwei.som.pojo.WeChatConfig;
@@ -183,19 +181,5 @@ public class WeChatUtils extends BaseController {
 		return buffer.toString();
 	}
 
-	@Test
-	public void test() throws IOException {
-		System.out.println(DigestUtils.sha1Hex("jsapi_ticket=HoagFKDcsGMVCIY2vOjf9uZdyRFQI_Pa_p7AxV1BNtIIa7hXxy97--bQTS9buNPbN4NKD07In1GsBMAbJFJo_Q&noncestr=X8W27HIX5EZ&timestamp=1548120761&url=http://solutionyun.com/accidentScan"));
-	}
 
-	public static void main(String[] args) {
-		Runnable runnable = new Runnable() {
-			public void run() {
-				// task to run goes here
-				System.out.println("Hello !!");
-			}
-		};
-		ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-		service.scheduleAtFixedRate(runnable, 0, 1, TimeUnit.HOURS);
-	}
 }

@@ -3,7 +3,6 @@ package com.xunwei.som.service.impl;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.junit.Test;
 
 import com.xunwei.som.mapper.OrderInfoMapper;
 import com.xunwei.som.mapper.ServiceInfoMapper;
@@ -52,21 +51,6 @@ public class ServiceInfoServiceImpl implements ServiceInfoService{
 		return null;
 	}
 
-	@Test
-	public void selectStaffByNum2() {
-		SqlSession session = SqlTools.getSession();
-		ServiceInfoMapper mapper = session.getMapper(ServiceInfoMapper.class);
-		try {
-			List<ServiceInfo> staffs = mapper.selectServiceInfByDynamic2("宝安", "9", "2018-09-27");
-			System.out.println(staffs);
-			session.commit();
-		} catch (Exception e) {
-			e.printStackTrace();
-			session.rollback();  
-		}finally{
-			session.close();
-		}
-	}
 
 
 	@Override

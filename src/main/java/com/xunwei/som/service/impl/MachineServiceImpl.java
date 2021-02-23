@@ -3,7 +3,6 @@ package com.xunwei.som.service.impl;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.junit.Test;
 
 import com.xunwei.som.base.model.Machine;
 import com.xunwei.som.mapper.MachineMapper;

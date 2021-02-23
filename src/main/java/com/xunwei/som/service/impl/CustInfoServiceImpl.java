@@ -3,7 +3,6 @@ package com.xunwei.som.service.impl;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.junit.Test;
 
 import com.xunwei.som.mapper.CustInfoMapper;
 import com.xunwei.som.pojo.CustInfo;
@@ -57,25 +56,7 @@ public class CustInfoServiceImpl implements CustInfoService{
 		}
 		return -1;
 	}
-	
-	/**
-	 * 单元测试
-	 */
-	@Test
-	public void selectCompIdByNam() {
-		SqlSession session = SqlTools.getSession();
-		CustInfoMapper mapper = session.getMapper(CustInfoMapper.class);
-		try {
-			CustInfo custInfo = mapper.selectCustById(1);
-			session.commit();
-			System.out.println(custInfo);
-		} catch (Exception e) {
-			e.printStackTrace();
-			session.rollback();  
-		}finally{
-			session.close();
-		}
-	}
+
 
 	@Override
 	public CustInfo selectCustById(Integer id) {
