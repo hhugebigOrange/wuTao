@@ -2,12 +2,14 @@ package com.xunwei.som.service;
 
 
 import com.xunwei.som.pojo.permissions.Permission;
+import org.springframework.stereotype.Service;
 
 /**
  * 权限接口
  * @author Administrator
  *
  */
+@Service
 public interface PermissionService {
 
 	/**

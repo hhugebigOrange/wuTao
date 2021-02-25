@@ -1,15 +1,8 @@
 package com.xunwei.som.base.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -17,14 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xunwei.som.service.*;
 import org.apache.commons.lang.time.DurationFormatUtils;
-import org.apache.ecs.storage.Array;
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -33,15 +23,14 @@ import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xunwei.som.calendar.CalendarTool;
 import com.xunwei.som.pojo.Contract;
-import com.xunwei.som.pojo.CustInfo;
 import com.xunwei.som.pojo.CustomerKpi;
 import com.xunwei.som.pojo.Device;
 import com.xunwei.som.pojo.EngineerKpi;
@@ -58,34 +47,28 @@ import com.xunwei.som.pojo.front.MaintenanceService;
 import com.xunwei.som.pojo.permissions.ParameterSetting;
 import com.xunwei.som.pojo.permissions.User;
 import com.xunwei.som.pojo.permissions.UserRole;
-import com.xunwei.som.service.CustomerManageService;
-import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
-import com.xunwei.som.service.impl.MaintenanceserviceImpl;
-import com.xunwei.som.service.impl.ServiceInfoServiceImpl;
-import com.xunwei.som.service.impl.ServiceManageServiceImpl;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
-import com.xunwei.som.service.impl.UserServiceImpl;
 import com.xunwei.som.util.ExcelUtils;
 import com.xunwei.som.util.SOMUtils;
 
-import net.sf.json.JSONObject;
 import sun.misc.BASE64Decoder;
 
 @Controller
 public class KpiController extends BaseController {
 
-	private ServiceManageServiceImpl serviceManageServiceImpl = new ServiceManageServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
 
-	private StaffInfoServiceImpl staffInfoServiceImplnew = new StaffInfoServiceImpl();
+	@Autowired
+	private ServiceInfoService serviceInfoService;
 
-	private ServiceInfoServiceImpl serviceInfoService = new ServiceInfoServiceImpl();
+	@Autowired
+	private Maintenanceservice maintenanceservice;
 
-	private MaintenanceserviceImpl maintenanceserviceImpl = new MaintenanceserviceImpl();
+	@Autowired
+	private CustomerManageService customerManageService;
 
-	private CustomerManageService customerManageService = new CustomerManageServiceImpl();
-
-	private UserService userService = new UserServiceImpl();
+	@Autowired
+	private UserService userService;
 
 	private Map<String, Double> workTimes = new HashMap<>();
 
@@ -237,7 +220,7 @@ public class KpiController extends BaseController {
 		}
 		DecimalFormat df = new DecimalFormat("#.00");
 		List<StandardRate> StandardRates = new ArrayList<>();
-		for (StaffInfo staffInfo : staffInfoServiceImplnew.selectAllStaff()) {
+		for (StaffInfo staffInfo : staffInfoService.selectAllStaff()) {
 			if (!(staffInfo.getPost().equals("工程师") || staffInfo.getPost().equals("技术主管"))) {
 				continue;
 			}
@@ -1735,7 +1718,7 @@ public class KpiController extends BaseController {
 			}
 		}
 		// 先查出相应的保养设备
-		List<Maintenance> maintenancePerform = maintenanceserviceImpl.selectmaintenance(custName, serviceArea,
+		List<Maintenance> maintenancePerform = maintenanceservice.selectmaintenance(custName, serviceArea,
 				enginnerName, "", "", "", null, null, identifier);
 		// 遍历保养执行
 		for (Maintenance maintenance : maintenancePerform) {
@@ -1811,7 +1794,7 @@ public class KpiController extends BaseController {
 			identifier = "1";
 		}
 		// 先查出相应的保养设备
-		List<Maintenance> maintenancePerform = maintenanceserviceImpl.selectmaintenance(custName, serviceArea,
+		List<Maintenance> maintenancePerform = maintenanceservice.selectmaintenance(custName, serviceArea,
 				staffName, "", "", "", null, null, identifier);
 		List<String> custNames = new ArrayList<>();
 		List<Device> Devices = customerManageService.selectByDynamic(null, null, null, null, null, null, null);
@@ -2975,7 +2958,7 @@ public class KpiController extends BaseController {
 				}
 			}
 			OrderStatistics orderStatistic = new OrderStatistics(
-					staffInfoServiceImplnew.selectStaffByNum(string).getName(), engineerWoNumber1, engineerWoNumber2,
+					staffInfoService.selectStaffByNum(string).getName(), engineerWoNumber1, engineerWoNumber2,
 					engineerWoNumber3, enginnerTotalNumber);
 			orderStatistic.setTurnOrderNumber(turnOrderNumber);
 			orderStatistics.add(orderStatistic);
@@ -3133,7 +3116,7 @@ public class KpiController extends BaseController {
 		double avgOrderNumber = 0.0; // 人均单数
 		double avgArrTime = 0.0; // 人均到达现场平均工时
 		double avrProble = 0.0; // 人均解决问题平均工时
-		for (StaffInfo staffInfo : staffInfoServiceImplnew.selectAllStaff()) {
+		for (StaffInfo staffInfo : staffInfoService.selectAllStaff()) {
 			if (!(staffInfo.getPost().equals("工程师") || staffInfo.getPost().equals("技术主管"))) {
 				continue;
 			}

@@ -15,10 +15,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xunwei.som.service.*;
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,14 +37,6 @@ import com.xunwei.som.pojo.front.OrderManage;
 import com.xunwei.som.pojo.permissions.User;
 import com.xunwei.som.pojo.permissions.UserRole;
 import com.xunwei.som.pojo.CustInfo;
-import com.xunwei.som.service.CustInfoService;
-import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.CustInfoServiceImpl;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
-import com.xunwei.som.service.impl.ServiceInfoServiceImpl;
-import com.xunwei.som.service.impl.ServiceManageServiceImpl;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
-import com.xunwei.som.service.impl.UserServiceImpl;
 import com.xunwei.som.util.ExcelUtils;
 import com.xunwei.som.util.SMS;
 import com.xunwei.som.util.SOMUtils;
@@ -59,17 +53,23 @@ import sun.misc.BASE64Decoder;
 @Controller
 public class ServiceManageController extends BaseController {
 
-	private ServiceManageServiceImpl serviceManageServiceImpl = new ServiceManageServiceImpl();
+	@Autowired
+	private ServiceManageService serviceManageService;
 
-	private CustInfoService custInfo = new CustInfoServiceImpl();
+	@Autowired
+	private CustInfoService custInfoService;
 
-	private StaffInfoServiceImpl staffInfoServiceImplnew = new StaffInfoServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
 
-	private ServiceInfoServiceImpl serviceInfoService = new ServiceInfoServiceImpl();
+	@Autowired
+	private ServiceInfoService serviceInfoService;
 
-	private CustomerManageServiceImpl customerManage = new CustomerManageServiceImpl();
+	@Autowired
+	private CustomerManageService customerManageService;
 
-	private UserService userService = new UserServiceImpl();
+	@Autowired
+	private UserService userService;
 
 	// 用来存放每次查询的客户满意度结果集
 	private List<ServiceInfo> serviceInfos = new ArrayList<>();
@@ -647,8 +647,8 @@ public class ServiceManageController extends BaseController {
 		String woNumber = request.getParameter("woNumber");
 		List<ServiceInfo> serviceInfo = serviceInfoService.selectServiceInfByDynamic2("", woNumber, "");
 		for (ServiceInfo service : serviceInfo) {
-			service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(service.getWoNumber()));
-			service.setStaffInfo(staffInfoServiceImplnew.selectStaffByNum(service.getStaffId()));
+			service.setOrderInfo(serviceManageService.selectOrderByOrderNum(service.getWoNumber()));
+			service.setStaffInfo(staffInfoService.selectStaffByNum(service.getStaffId()));
 		}
 		return serviceInfo;
 	}
@@ -770,9 +770,9 @@ public class ServiceManageController extends BaseController {
 		List<FailureAnalysisHistory> FailureAnalysisHistorys = new ArrayList<>();
 		// 循环给orderInfo和staffInfo赋值
 		for (ServiceInfo service : serviceInfo) {
-			service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(service.getWoNumber()));
-			service.setStaffInfo(staffInfoServiceImplnew.selectStaffByNum(service.getStaffId()));
-			service.setDevice(customerManage.selectDeviceById(service.getOrderInfo().getMachCode()));
+			service.setOrderInfo(serviceManageService.selectOrderByOrderNum(service.getWoNumber()));
+			service.setStaffInfo(staffInfoService.selectStaffByNum(service.getStaffId()));
+			service.setDevice(customerManageService.selectDeviceById(service.getOrderInfo().getMachCode()));
 			// 先判断是否解决，只有解决了才设置停机时间
 			if (service.getProbSolve() != null) {
 				FailureAnalysisHistory failureAnalysisHistory = new FailureAnalysisHistory(
@@ -840,7 +840,7 @@ public class ServiceManageController extends BaseController {
 		// 从前端接收参数
 		String workState = request.getParameter("workState");
 		String id = request.getParameter("id");
-		serviceManageServiceImpl.updateFaultType(id, workState);
+		serviceManageService.updateFaultType(id, workState);
 		modelAndView.setViewName("redirect:/failureAnalysis");
 		return modelAndView;
 	}
@@ -900,7 +900,7 @@ public class ServiceManageController extends BaseController {
 			String prefix = SOMUtils.orderNumToComp(compName);
 			System.out.println("前缀为：" + prefix);
 			// 找出前一个工单号
-			String lastOrderNumber = serviceManageServiceImpl.selectLastOrderNumber(prefix);
+			String lastOrderNumber = serviceManageService.selectLastOrderNumber(prefix);
 			// 获取当前系统日期，比对上一个工单号日期，若不是同一天，则工单号直接为0001，若为同一天，则在上一个工单号上+1
 			Date now = new Date();
 			String a = ExcelUtils.fmt.format(now);
@@ -948,7 +948,7 @@ public class ServiceManageController extends BaseController {
 		}
 		machCode = machCode.toUpperCase();
 		// 根据设备号查询相应信息
-		Device device = customerManage.selectByCode(machCode);
+		Device device = customerManageService.selectByCode(machCode);
 		if (device == null) {
 			json.put("code", 1);
 			json.put("msg", "相应机器编码的设备不存在，请检查并重新输入");
@@ -964,7 +964,7 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "对不起，该机器已报废，不能报修");
 			return json;
 		}
-		List<OrderInfo> xixi = serviceManageServiceImpl.selectOrderByDynamic(null, machCode, null, null, null, null,
+		List<OrderInfo> xixi = serviceManageService.selectOrderByDynamic(null, machCode, null, null, null, null,
 				null);
 		for (OrderInfo orderInfo2 : xixi) {
 			if (!orderInfo2.getWoStatus().equals("已完成") && !orderInfo2.getWoStatus().equals("已关单")
@@ -983,7 +983,7 @@ public class ServiceManageController extends BaseController {
 		// 2.客户名称
 		String custName = device.getCustArea();
 		// 4.客户地址
-		String custAddr = custInfo.selectCustByBaseInfo(device.getCustArea(), null, null, null, null).get(0)
+		String custAddr = custInfoService.selectCustByBaseInfo(device.getCustArea(), null, null, null, null).get(0)
 				.getCustAddr();
 		// 5.报修人
 		String repairMan = request.getParameter("repairMan");
@@ -998,7 +998,7 @@ public class ServiceManageController extends BaseController {
 		// 其他
 		String other = request.getParameter("other");
 		// 根据传递过来的客户名称，找到相应的客户id.
-		int custId = custInfo.selectCusIdByName(custName);
+		int custId = custInfoService.selectCusIdByName(custName);
 		// 判断输入的参数是否有空
 		Map<String, Object> args = new HashMap<>();
 		args.put("机器编码", machCode);
@@ -1044,7 +1044,7 @@ public class ServiceManageController extends BaseController {
 		orderinfo.setRemark(remark);
 		orderinfo.setWoStatus("待受理");
 		orderinfo.setOrderAccount(repairService); // 实际派单账号
-		boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+		boolean result = serviceManageService.insertOrder(orderinfo);
 		if (result) {
 			if (!SOMUtils.arrayIsNull(picture)) {
 				// 保存图片
@@ -1072,7 +1072,7 @@ public class ServiceManageController extends BaseController {
 			// 获取默认责任工程师名称
 			serviceInfo.setWoNumber(woNumber);
 			serviceInfo.setStaffId(device.getResponsibleEngineerID());
-			serviceManageServiceImpl.insertSelective(serviceInfo);
+			serviceManageService.insertSelective(serviceInfo);
 			json.put("code", 0);
 			json.put("data", orderinfo);
 			json.put("msg", "报修成功");
@@ -1113,7 +1113,7 @@ public class ServiceManageController extends BaseController {
 		String picture03 = request.getParameter("picture03");
 		String[] picture = { picture01, picture02, picture03 };
 		// 根据设备号查询相应信息
-		Device device = customerManage.selectByCode(machCode);
+		Device device = customerManageService.selectByCode(machCode);
 		// 根据openId查找相应用户
 		User user = null;
 		for (User user2 : userService.selectAllUser()) {
@@ -1140,7 +1140,7 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "对不起，该机器已报废，不能报修");
 			return json;
 		}
-		List<OrderInfo> xixi = serviceManageServiceImpl.selectOrderByDynamic(null, machCode, null, null, null, null,
+		List<OrderInfo> xixi = serviceManageService.selectOrderByDynamic(null, machCode, null, null, null, null,
 				null);
 		for (OrderInfo orderInfo2 : xixi) {
 			if (!orderInfo2.getWoStatus().equals("已完成") && !orderInfo2.getWoStatus().equals("已关单")
@@ -1159,7 +1159,7 @@ public class ServiceManageController extends BaseController {
 		// 2.客户名称
 		String custName = device.getCustArea();
 		// 4.客户地址
-		String custAddr = custInfo.selectCustByBaseInfo(device.getCustArea(), null, null, null, null).get(0)
+		String custAddr = custInfoService.selectCustByBaseInfo(device.getCustArea(), null, null, null, null).get(0)
 				.getCustAddr();
 		// 5.报修人
 		String repairMan = request.getParameter("repairMan");
@@ -1174,7 +1174,7 @@ public class ServiceManageController extends BaseController {
 		// 其他
 		String other = request.getParameter("other");
 		// 根据传递过来的客户名称，找到相应的客户id.
-		int custId = custInfo.selectCusIdByName(custName);
+		int custId = custInfoService.selectCusIdByName(custName);
 		// 判断输入的参数是否有空
 		Map<String, Object> args = new HashMap<>();
 		args.put("机器编码", machCode);
@@ -1215,7 +1215,7 @@ public class ServiceManageController extends BaseController {
 		orderinfo.setRemark(remark);
 		orderinfo.setWoStatus("待受理");
 		orderinfo.setOrderAccount(user.getUserId());
-		boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+		boolean result = serviceManageService.insertOrder(orderinfo);
 		if (result) {
 			if (!SOMUtils.arrayIsNull(picture)) {
 				// 保存图片
@@ -1243,7 +1243,7 @@ public class ServiceManageController extends BaseController {
 			// 获取默认责任工程师名称
 			serviceInfo.setWoNumber(woNumber);
 			serviceInfo.setStaffId(device.getResponsibleEngineerID());
-			serviceManageServiceImpl.insertSelective(serviceInfo);
+			serviceManageService.insertSelective(serviceInfo);
 			json.put("code", 0);
 			json.put("data", orderinfo);
 			json.put("msg", "报修成功");
@@ -1297,14 +1297,14 @@ public class ServiceManageController extends BaseController {
 		// 服务区域
 		String serviceArea = request.getParameter("serviceArea");
 		// 根据客户名称查找客户ID
-		Integer custId = custInfo.selectCusIdByName(custName);
+		Integer custId = custInfoService.selectCusIdByName(custName);
 		if (custId == -1) {
 			json.put("code", 1);
 			json.put("msg", "您输入的客户名称不存在，请检查并重新输入");
 			return json;
 		}
 		// 根据客户ID查询相应信息
-		CustInfo cust = custInfo.selectCustById(custId);
+		CustInfo cust = custInfoService.selectCustById(custId);
 		// 0.工单号
 		String woNumber = newOrderNo(serviceArea);
 		// 4.客户地址
@@ -1413,12 +1413,12 @@ public class ServiceManageController extends BaseController {
 		orderinfo.setMacdType(macdType);
 		orderinfo.setWoStatus("待受理");
 		orderinfo.setOrderAccount(user.getUserId());
-		boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+		boolean result = serviceManageService.insertOrder(orderinfo);
 		if (result) {
 			// 如果工单增加成功，则在增加服务评价
 			ServiceInfo serviceInfo = new ServiceInfo();
 			serviceInfo.setWoNumber(woNumber);
-			serviceManageServiceImpl.insertSelective(serviceInfo);
+			serviceManageService.insertSelective(serviceInfo);
 			json.put("code", 0);
 			json.put("data", orderinfo);
 			json.put("msg", "报修成功");
@@ -1458,7 +1458,7 @@ public class ServiceManageController extends BaseController {
 		}
 		machCode = machCode.toUpperCase();
 		// 根据设备号查询相应信息
-		Device device = customerManage.selectByCode(machCode);
+		Device device = customerManageService.selectByCode(machCode);
 		if (device == null) {
 			json.put("code", 1);
 			json.put("msg", "相应机器编码的设备不存在，请检查并重新输入");
@@ -1474,7 +1474,7 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "对不起，该机器已报废，不能报修");
 			return json;
 		}
-		List<OrderInfo> xixi = serviceManageServiceImpl.selectOrderByDynamic(null, machCode, null, null, null, null,
+		List<OrderInfo> xixi = serviceManageService.selectOrderByDynamic(null, machCode, null, null, null, null,
 				null);
 		for (OrderInfo orderInfo2 : xixi) {
 			if (!orderInfo2.getWoStatus().equals("已完成") && !orderInfo2.getWoStatus().equals("已关单")
@@ -1493,11 +1493,11 @@ public class ServiceManageController extends BaseController {
 		// 2.客户名称
 		String custName = device.getCustArea();
 		// 4.客户地址
-		if (custInfo.selectCustByBaseInfo(device.getCustArea(), null, null, null, null) == null) {
+		if (custInfoService.selectCustByBaseInfo(device.getCustArea(), null, null, null, null) == null) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该机器对应的客户信息不存在");
 		}
-		String custAddr = custInfo.selectCustByBaseInfo(device.getCustArea(), null, null, null, null).get(0)
+		String custAddr = custInfoService.selectCustByBaseInfo(device.getCustArea(), null, null, null, null).get(0)
 				.getCustAddr();
 		// 5.报修人
 		String repairMan = request.getParameter("repairMan"); // 报修人
@@ -1527,7 +1527,7 @@ public class ServiceManageController extends BaseController {
 		// 当前登录人账号
 		String account = request.getParameter("username");
 		// 根据传递过来的客户名称，找到相应的客户id.
-		int custId = custInfo.selectCusIdByName(custName);
+		int custId = custInfoService.selectCusIdByName(custName);
 		// 判断输入的参数是否有空
 		Map<String, Object> args = new HashMap<>();
 		args.put("机器编码", machCode);
@@ -1608,14 +1608,14 @@ public class ServiceManageController extends BaseController {
 		orderinfo.setRemark(remark);
 		orderinfo.setWoStatus("待受理");
 		orderinfo.setOrderAccount(repairService);
-		boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+		boolean result = serviceManageService.insertOrder(orderinfo);
 		if (result) {
 			// 如果工单增加成功，则在增加服务评价
 			ServiceInfo serviceInfo = new ServiceInfo();
 			// 获取默认责任工程师名称
 			serviceInfo.setWoNumber(woNumber);
 			serviceInfo.setStaffId(device.getResponsibleEngineerID());
-			serviceManageServiceImpl.insertSelective(serviceInfo);
+			serviceManageService.insertSelective(serviceInfo);
 			json.put("code", 0);
 			json.put("data", orderinfo);
 			json.put("msg", "添加成功");
@@ -1650,14 +1650,14 @@ public class ServiceManageController extends BaseController {
 		// 服务区域
 		String serviceArea = request.getParameter("serviceArea");
 		// 根据客户名称查找客户ID
-		Integer custId = custInfo.selectCusIdByName(custName);
+		Integer custId = custInfoService.selectCusIdByName(custName);
 		if (custId == -1) {
 			json.put("code", 1);
 			json.put("msg", "您输入的客户名称不存在，请检查并重新输入");
 			return json;
 		}
 		// 根据客户ID查询相应信息
-		CustInfo cust = custInfo.selectCustById(custId);
+		CustInfo cust = custInfoService.selectCustById(custId);
 		// 0.工单号
 		String woNumber = newOrderNo(serviceArea);
 		// 4.客户地址
@@ -1832,12 +1832,12 @@ public class ServiceManageController extends BaseController {
 		orderinfo.setRemark(remark);
 		orderinfo.setWoStatus("待受理");
 		orderinfo.setOrderAccount(repairService);
-		boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+		boolean result = serviceManageService.insertOrder(orderinfo);
 		if (result) {
 			// 如果工单增加成功，则在增加服务评价
 			ServiceInfo serviceInfo = new ServiceInfo();
 			serviceInfo.setWoNumber(woNumber);
-			serviceManageServiceImpl.insertSelective(serviceInfo);
+			serviceManageService.insertSelective(serviceInfo);
 			json.put("code", 0);
 			json.put("data", orderinfo);
 			json.put("msg", "添加成功");
@@ -1869,21 +1869,21 @@ public class ServiceManageController extends BaseController {
 		order.setWoNumber(woNumber);
 		order.setPartsTypeNumber(partsTypeNumber);
 		order.setWoStatus(woStatus);
-		boolean a = serviceManageServiceImpl.updateOrder(order);
+		boolean a = serviceManageService.updateOrder(order);
 		if (a) {
 			// 增加成功，将该条待购零件记录放到工单零件记录表
 			OrderParts orderParts = new OrderParts();
 			orderParts.setWoNumber(woNumber);
 			orderParts.setWoStatus("工程师订件");
-			if (serviceManageServiceImpl.selectSelective(orderParts) == null) {
+			if (serviceManageService.selectSelective(orderParts) == null) {
 				// 没有则将该条工单新增进去
-				serviceManageServiceImpl.insertSelective(orderParts);
+				serviceManageService.insertSelective(orderParts);
 				json.put("code", 0);
 				json.put("msg", "新增零件成功");
 				return json;
 			} else {
 				// 有的话更新该工单零件记录状态
-				serviceManageServiceImpl.updateSelective(orderParts);
+				serviceManageService.updateSelective(orderParts);
 				json.put("code", 0);
 				json.put("msg", "新增零件成功");
 				return json;
@@ -1917,7 +1917,7 @@ public class ServiceManageController extends BaseController {
 		if (confirm.equals("是")) {
 			String woStatus = "确认订件"; // 工单的零件当前审批状态
 			record.setWoStatus(woStatus);
-			int a = serviceManageServiceImpl.updateSelective(record);
+			int a = serviceManageService.updateSelective(record);
 			if (a > 0) {
 				json.put("code", 0);
 				json.put("msg", "技术主管确认订件成功");
@@ -1936,7 +1936,7 @@ public class ServiceManageController extends BaseController {
 			String woStatus = "驳回"; // 工单的零件当前审批状态
 			record.setWoStatus(woStatus);
 			record.setReason(reason);
-			serviceManageServiceImpl.updateSelective(record);
+			serviceManageService.updateSelective(record);
 			json.put("code", 0);
 			json.put("msg", "驳回成功");
 			json.put("data", "");
@@ -1962,7 +1962,7 @@ public class ServiceManageController extends BaseController {
 		OrderParts record = new OrderParts();
 		record.setWoNumber(woNumber);
 		record.setWoStatus(woStatus);
-		int a = serviceManageServiceImpl.updateSelective(record);
+		int a = serviceManageService.updateSelective(record);
 		if (a > 0) {
 			json.put("code", 0);
 			json.put("msg", "确认成功");
@@ -1992,7 +1992,7 @@ public class ServiceManageController extends BaseController {
 		String engineerID = request.getParameter("engineerID"); // 指定工程师姓名
 		String account = request.getParameter("username"); // 指派人账号
 		StaffInfo enginner = null; // 受指派工程师对象
-		for (StaffInfo staff : staffInfoServiceImplnew.selectAllStaff()) {
+		for (StaffInfo staff : staffInfoService.selectAllStaff()) {
 			if (staff.getName().equals(engineerID)) {
 				enginner = staff;
 			}
@@ -2020,7 +2020,7 @@ public class ServiceManageController extends BaseController {
 		}
 		UserRole role = userService.selectByPrimaryKey(account);
 		User user = userService.selectByUserId(account);
-		String faultType = serviceManageServiceImpl.selectOrderByOrderNum(woNumber).getFaultType();
+		String faultType = serviceManageService.selectOrderByOrderNum(woNumber).getFaultType();
 		if (faultType.equals("事故类")) {
 			if (role.getRoleId().equals("运维助理") && !user.getCustName().contains("美的")) {
 				json.put("code", 1);
@@ -2042,7 +2042,7 @@ public class ServiceManageController extends BaseController {
 		serviceInfo.setWoNumber(woNumber);
 		serviceInfo.setStaffId(enginner.getStaffId());
 		// 更新工单信息
-		boolean a = serviceManageServiceImpl.updateOrder(orderInfo);
+		boolean a = serviceManageService.updateOrder(orderInfo);
 		// 更新服务信息
 		boolean b = serviceInfoService.upDateServiceInfo(serviceInfo);
 		if (a && b) {
@@ -2077,7 +2077,7 @@ public class ServiceManageController extends BaseController {
 			return json;
 		}
 		// 找出之前的工单
-		OrderInfo order = serviceManageServiceImpl.selectOrderByOrderNum(woNumber);
+		OrderInfo order = serviceManageService.selectOrderByOrderNum(woNumber);
 		if (order == null) {
 			json.put("code", 1);
 			json.put("msg", "对不起，您要重新指派的工单号不存在");
@@ -2091,16 +2091,16 @@ public class ServiceManageController extends BaseController {
 		String engineerID = request.getParameter("engineerID");
 		String account = request.getParameter("username"); // 指派人账号
 		// 当前工单完结
-		serviceManageServiceImpl.updateWoStatus(serviceManageServiceImpl.selectOrderByOrderNum(woNumber).getWoNumber(),
+		serviceManageService.updateWoStatus(serviceManageService.selectOrderByOrderNum(woNumber).getWoNumber(),
 				"已关单");
 		OrderInfo order1 = new OrderInfo();
 		order1.setWoNumber(woNumber);
 		order1.setWoProgress("已关单");
-		serviceManageServiceImpl.updateOrder(order1);
+		serviceManageService.updateOrder(order1);
 		// 生成新的工单
-		StaffInfo enginner = staffInfoServiceImplnew.selectStaffByNum(engineerID); // 受指派工程师对象
+		StaffInfo enginner = staffInfoService.selectStaffByNum(engineerID); // 受指派工程师对象
 		String staffId = null; // 指派人员工id
-		for (StaffInfo staff : staffInfoServiceImplnew.selectAllStaff()) {
+		for (StaffInfo staff : staffInfoService.selectAllStaff()) {
 			if (staff.getPhone().equals(account)) {
 				staffId = staff.getStaffId();
 				break;
@@ -2127,12 +2127,12 @@ public class ServiceManageController extends BaseController {
 			orderinfo.setWoProgress("已受理");
 			orderinfo.setDistributeMan(staffId);
 			orderinfo.setSendTime(new Date());
-			boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+			boolean result = serviceManageService.insertOrder(orderinfo);
 			if (result) {
 				// 如果工单增加成功，则在增加服务评价
 				ServiceInfo serviceInfo = new ServiceInfo();
 				serviceInfo.setWoNumber(orderinfo.getWoNumber());
-				serviceManageServiceImpl.insertSelective(serviceInfo);
+				serviceManageService.insertSelective(serviceInfo);
 				// 发送短信到相应工程师的手机上
 				SMS.senMessage(SMS.ENGINNER_ACCEPTANCE, enginner.getPhone(), enginner.getName(),
 						orderinfo.getWoNumber());
@@ -2163,13 +2163,13 @@ public class ServiceManageController extends BaseController {
 			orderinfo.setWoProgress("已受理");
 			orderinfo.setDistributeMan(staffId);
 			orderinfo.setSendTime(new Date());
-			boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+			boolean result = serviceManageService.insertOrder(orderinfo);
 			if (result) {
 				// 如果工单增加成功，则在增加服务评价
 				ServiceInfo serviceInfo = new ServiceInfo();
 				serviceInfo.setWoNumber(orderinfo.getWoNumber());
 				serviceInfo.setStaffId(enginner.getStaffId());
-				serviceManageServiceImpl.insertSelective(serviceInfo);
+				serviceManageService.insertSelective(serviceInfo);
 				// 发送短信到相应工程师的手机上
 				SMS.senMessage(SMS.ENGINNER_ACCEPTANCE, enginner.getPhone(), enginner.getName(),
 						orderinfo.getWoNumber());
@@ -2216,19 +2216,19 @@ public class ServiceManageController extends BaseController {
 			return json;
 		}
 		if (userService.selectByPrimaryKey(username).getRoleId().equals("运维助理")) {
-			if (serviceManageServiceImpl.selectOrderByOrderNum(woNumber).getFaultType().equals("事故类")) {
+			if (serviceManageService.selectOrderByOrderNum(woNumber).getFaultType().equals("事故类")) {
 				json.put("code", 1);
 				json.put("msg", "对不起，运维助理不能关闭事故类工单");
 				return json;
 			}
-			if (serviceManageServiceImpl.selectOrderByOrderNum(woNumber).getWoStatus().equals("已转单")) {
+			if (serviceManageService.selectOrderByOrderNum(woNumber).getWoStatus().equals("已转单")) {
 				json.put("code", 1);
 				json.put("msg", "对不起，转单的工单无需关闭");
 				return json;
 			}
 		}
 		// 更新工单信息
-		boolean a = serviceManageServiceImpl.updateOrder(orderInfo);
+		boolean a = serviceManageService.updateOrder(orderInfo);
 		if (a) {
 			json.put("code", 0);
 			json.put("msg", "关单成功");
@@ -2269,7 +2269,7 @@ public class ServiceManageController extends BaseController {
 		if (endDate != null && !"".equals(endDate)) {
 			endDate = endDate + " 23:59:59";
 		}
-		orderInfos = serviceManageServiceImpl.selectOrderByDynamic(custName, machCode, woNumber, startDate, endDate,
+		orderInfos = serviceManageService.selectOrderByDynamic(custName, machCode, woNumber, startDate, endDate,
 				type, woStatus);
 		json.put("code", 0);
 		json.put("msg", "工单管理数据");
@@ -2303,9 +2303,9 @@ public class ServiceManageController extends BaseController {
 		int i = 1;
 		// 循环将数据写入Excel
 		for (ServiceInfo service : serviceInfos) {
-			service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(service.getWoNumber()));
-			service.setStaffInfo(staffInfoServiceImplnew.selectStaffByNum(service.getStaffId()));
-			service.setDevice(customerManage.selectByCode(service.getOrderInfo().getMachCode()));
+			service.setOrderInfo(serviceManageService.selectOrderByOrderNum(service.getWoNumber()));
+			service.setStaffInfo(staffInfoService.selectStaffByNum(service.getStaffId()));
+			service.setDevice(customerManageService.selectByCode(service.getOrderInfo().getMachCode()));
 			row = sheet.createRow(i);
 			// 创建单元格，设置值
 			row.createCell(0).setCellValue(i++);
@@ -2356,7 +2356,7 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "工单号不能为空");
 			return json;
 		}
-		OrderInfo order = serviceManageServiceImpl.selectOrderByOrderNum(woNumber);
+		OrderInfo order = serviceManageService.selectOrderByOrderNum(woNumber);
 
 		if (order == null) {
 			json.put("code", 1);
@@ -2368,7 +2368,7 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "对不起，事故类无法导出工单");
 			return json;
 		}
-		Device device = customerManage.selectByCode(order.getMachCode());
+		Device device = customerManageService.selectByCode(order.getMachCode());
 		ServiceInfo serviceInfo = serviceInfoService.selectServiceInfByDyWoNumber(woNumber);
 		HSSFWorkbook wb = ExcelUtils.copyExcel(SOMUtils.qrAddr + "orderTemplate1.xls");
 		HSSFSheet sheet = wb.getSheet("Sheet1");
@@ -2409,7 +2409,7 @@ public class ServiceManageController extends BaseController {
 		row.getCell(1).setCellValue(device.getEsNumber());
 		// 负责工程师
 		row.getCell(4)
-				.setCellValue(staffInfoServiceImplnew
+				.setCellValue(staffInfoService
 						.selectStaffByNum(
 								serviceInfoService.selectServiceInfByDynamic2("", woNumber, "").get(0).getStaffId())
 						.getName());
@@ -2478,7 +2478,7 @@ public class ServiceManageController extends BaseController {
 			json.put("msg", "请输入要查看图片的工单号");
 			return json;
 		}
-		if (serviceManageServiceImpl.selectOrderByOrderNum(woNumber) == null) {
+		if (serviceManageService.selectOrderByOrderNum(woNumber) == null) {
 			json.put("code", 1);
 			json.put("msg", "该工单不存在");
 			return json;

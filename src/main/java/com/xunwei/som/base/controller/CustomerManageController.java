@@ -12,8 +12,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -23,13 +21,11 @@ import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xunwei.som.service.*;
 import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.hssf.usermodel.HSSFClientAnchor;
-import org.apache.poi.hssf.usermodel.HSSFPatriarch;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -43,6 +39,7 @@ import org.apache.poi.xssf.usermodel.XSSFClientAnchor;
 import org.apache.poi.xssf.usermodel.XSSFDrawing;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -63,21 +60,8 @@ import com.xunwei.som.pojo.front.CustomerSatisfaction;
 import com.xunwei.som.pojo.front.DeviceBasic;
 import com.xunwei.som.pojo.permissions.User;
 import com.xunwei.som.pojo.permissions.UserRole;
-import com.xunwei.som.service.AsAetNumberService;
-import com.xunwei.som.service.CompInfoService;
-import com.xunwei.som.service.CustInfoService;
-import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.AsAetNumberServiceImpl;
-import com.xunwei.som.service.impl.CompInfoServiceImpl;
-import com.xunwei.som.service.impl.CustInfoServiceImpl;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
-import com.xunwei.som.service.impl.ServiceInfoServiceImpl;
-import com.xunwei.som.service.impl.ServiceManageServiceImpl;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
-import com.xunwei.som.service.impl.UserServiceImpl;
 import com.xunwei.som.util.ExcelUtils;
 import com.xunwei.som.util.SOMUtils;
-import com.xunwei.som.util.WeChatUtils;
 import com.xunwei.som.util.ZXingUtils;
 
 import net.sf.json.JSONObject;
@@ -94,21 +78,29 @@ import sun.misc.BASE64Decoder;
 @Transactional(rollbackFor = Exception.class)
 public class CustomerManageController extends BaseController {
 
-	private ServiceManageServiceImpl serviceManageServiceImpl = new ServiceManageServiceImpl();
+	@Autowired
+	private ServiceManageService serviceManageService;
 
-	private CustomerManageServiceImpl customerManage = new CustomerManageServiceImpl();
+	@Autowired
+	private CustomerManageService customerManageService;
 
-	private StaffInfoServiceImpl staffInfoServiceImplnew = new StaffInfoServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
 
-	private ServiceInfoServiceImpl serviceInfoService = new ServiceInfoServiceImpl();
+	@Autowired
+	private ServiceInfoService serviceInfoService;
 
-	private AsAetNumberService asSetNumberService = new AsAetNumberServiceImpl();
+	@Autowired
+	private AsAetNumberService asSetNumberService;
 
-	private CustInfoService custInfoService = new CustInfoServiceImpl();
+	@Autowired
+	private CustInfoService custInfoService;
 
-	private UserService userService = new UserServiceImpl();
+	@Autowired
+	private UserService userService;
 
-	private CompInfoService compInfoService = new CompInfoServiceImpl();
+	@Autowired
+	private CompInfoService compInfoService;
 
 	// 用于保存每个用户的查询记录
 	private Map<String, Object> export = new HashMap<>();
@@ -390,7 +382,7 @@ public class CustomerManageController extends BaseController {
 		OrderInfo order = new OrderInfo();
 		order.setWoNumber(woNumber);
 		order.setWoProgress(WoProgress);
-		serviceManageServiceImpl.updateOrder(order);
+		serviceManageService.updateOrder(order);
 		// 1.判断工单号是否存在
 		ServiceInfo service = serviceInfoService.selectServiceInfByDyWoNumber(woNumber);
 		// 如果工单号不存在，返回评价页面
@@ -563,26 +555,26 @@ public class CustomerManageController extends BaseController {
 		if (woStatus != null && !"".equals(woStatus.trim())) {
 			if (woStatus.equals("a")) {
 				if (userRole.getRoleId().equals("客户")) {
-					contracts = customerManage.selectByCust(user.getCustName(), null, "", "", null, null, null, order,
+					contracts = customerManageService.selectByCust(user.getCustName(), null, "", "", null, null, null, order,
 							identifier,assetAscription);
-					selectContracts = customerManage.selectByCust(user.getCustName(), null, "", "", page, limit, null,
+					selectContracts = customerManageService.selectByCust(user.getCustName(), null, "", "", page, limit, null,
 							order, identifier,assetAscription);
 					// 查找到期合同
-					timeContracts = customerManage.selectByCust(user.getCustName(), null, "1", "", null, null, null,
+					timeContracts = customerManageService.selectByCust(user.getCustName(), null, "1", "", null, null, null,
 							order, identifier,assetAscription);
 					// 查找一年内到期合同
-					dueToContracts = customerManage.selectByCust(user.getCustName(), null, "", "1", null, null, null,
+					dueToContracts = customerManageService.selectByCust(user.getCustName(), null, "", "1", null, null, null,
 							order, identifier,assetAscription);
 				} else {
-					contracts = customerManage.selectByCust(null, user.getCustName(), "", "", null, null, null, order,
+					contracts = customerManageService.selectByCust(null, user.getCustName(), "", "", null, null, null, order,
 							identifier,assetAscription);
-					selectContracts = customerManage.selectByCust(null, user.getCustName(), "", "", page, limit, null,
+					selectContracts = customerManageService.selectByCust(null, user.getCustName(), "", "", page, limit, null,
 							order, identifier,assetAscription);
 					// 查找到期合同
-					timeContracts = customerManage.selectByCust(null, user.getCustName(), "1", "", null, null, null,
+					timeContracts = customerManageService.selectByCust(null, user.getCustName(), "1", "", null, null, null,
 							order, identifier,assetAscription);
 					// 查找一年内到期合同
-					dueToContracts = customerManage.selectByCust(null, user.getCustName(), "", "1", null, null, null,
+					dueToContracts = customerManageService.selectByCust(null, user.getCustName(), "", "1", null, null, null,
 							order, identifier,assetAscription);
 				}
 				// 保存数据
@@ -603,26 +595,26 @@ public class CustomerManageController extends BaseController {
 				}
 			} else if (woStatus.equals("b")) {
 				if (userRole.getRoleId().equals("客户")) {
-					contracts = customerManage.selectByCust(user.getCustName(), null, "1", "", null, null, null, order,
+					contracts = customerManageService.selectByCust(user.getCustName(), null, "1", "", null, null, null, order,
 							identifier,assetAscription);
-					selectContracts = customerManage.selectByCust(null, user.getCustName(), "", "", page, limit, null,
+					selectContracts = customerManageService.selectByCust(null, user.getCustName(), "", "", page, limit, null,
 							order, identifier,assetAscription);
 					// 查找到期合同
-					timeContracts = customerManage.selectByCust(user.getCustName(), null, "1", "", null, null, null,
+					timeContracts = customerManageService.selectByCust(user.getCustName(), null, "1", "", null, null, null,
 							order, identifier,assetAscription);
 					// 查找一年内到期合同
-					dueToContracts = customerManage.selectByCust(user.getCustName(), null, "", "1", null, null, null,
+					dueToContracts = customerManageService.selectByCust(user.getCustName(), null, "", "1", null, null, null,
 							order, identifier,assetAscription);
 				} else {
-					contracts = customerManage.selectByCust(null, user.getCustName(), "1", "", null, null, null, order,
+					contracts = customerManageService.selectByCust(null, user.getCustName(), "1", "", null, null, null, order,
 							identifier,assetAscription);
-					selectContracts = customerManage.selectByCust(null, user.getCustName(), "1", "", page, limit, null,
+					selectContracts = customerManageService.selectByCust(null, user.getCustName(), "1", "", page, limit, null,
 							order, identifier,assetAscription);
 					// 查找到期合同
-					timeContracts = customerManage.selectByCust(null, user.getCustName(), "1", "", null, null, null,
+					timeContracts = customerManageService.selectByCust(null, user.getCustName(), "1", "", null, null, null,
 							order, identifier,assetAscription);
 					// 查找一年内到期合同
-					dueToContracts = customerManage.selectByCust(null, user.getCustName(), "", "1", null, null, null,
+					dueToContracts = customerManageService.selectByCust(null, user.getCustName(), "", "1", null, null, null,
 							order, identifier,assetAscription);
 				}
 				// 保存数据
@@ -645,24 +637,24 @@ public class CustomerManageController extends BaseController {
 				timeContracts = contracts;
 			} else if (woStatus.equals("c")) {
 				if (userRole.getRoleId().equals("客户")) {
-					contracts = customerManage.selectByCust(user.getCustName(), null, "", "1", null, null, null, order,
+					contracts = customerManageService.selectByCust(user.getCustName(), null, "", "1", null, null, null, order,
 							identifier,assetAscription);
-					selectContracts = customerManage.selectByCust(user.getCustName(), null, "", "1", page, limit, null,
+					selectContracts = customerManageService.selectByCust(user.getCustName(), null, "", "1", page, limit, null,
 							order, identifier,assetAscription);
-					timeContracts = customerManage.selectByCust(user.getCustName(), null, "1", "", null, null, null,
+					timeContracts = customerManageService.selectByCust(user.getCustName(), null, "1", "", null, null, null,
 							order, identifier,assetAscription);
 					// 查找一年内到期合同
-					dueToContracts = customerManage.selectByCust(user.getCustName(), null, "", "1", null, null, null,
+					dueToContracts = customerManageService.selectByCust(user.getCustName(), null, "", "1", null, null, null,
 							order, identifier,assetAscription);
 				} else {
-					contracts = customerManage.selectByCust(null, user.getCustName(), "", "1", null, null, null, order,
+					contracts = customerManageService.selectByCust(null, user.getCustName(), "", "1", null, null, null, order,
 							identifier,assetAscription);
-					selectContracts = customerManage.selectByCust(null, user.getCustName(), "", "1", page, limit, null,
+					selectContracts = customerManageService.selectByCust(null, user.getCustName(), "", "1", page, limit, null,
 							order, identifier,assetAscription);
-					timeContracts = customerManage.selectByCust(null, user.getCustName(), "1", "", null, null, null,
+					timeContracts = customerManageService.selectByCust(null, user.getCustName(), "1", "", null, null, null,
 							order, identifier,assetAscription);
 					// 查找一年内到期合同
-					dueToContracts = customerManage.selectByCust(null, user.getCustName(), "", "1", null, null, null,
+					dueToContracts = customerManageService.selectByCust(null, user.getCustName(), "", "1", null, null, null,
 							order, identifier,assetAscription);
 
 				}
@@ -699,15 +691,15 @@ public class CustomerManageController extends BaseController {
 				}
 			}
 			// 查询相应的合同
-			selectContracts = customerManage.selectByCust(custName, serviceArea, "", "", page, limit, contractNature,
+			selectContracts = customerManageService.selectByCust(custName, serviceArea, "", "", page, limit, contractNature,
 					order, identifier,assetAscription);
-			contracts = customerManage.selectByCust(custName, serviceArea, "", "", null, null, contractNature, order,
+			contracts = customerManageService.selectByCust(custName, serviceArea, "", "", null, null, contractNature, order,
 					identifier,assetAscription);
 			// 查找到期合同
-			timeContracts = customerManage.selectByCust(custName, serviceArea, "1", "", null, null, null, order,
+			timeContracts = customerManageService.selectByCust(custName, serviceArea, "1", "", null, null, null, order,
 					identifier,assetAscription);
 			// 查找一年内到期合同
-			dueToContracts = customerManage.selectByCust(custName, serviceArea, "", "1", null, null, null, order,
+			dueToContracts = customerManageService.selectByCust(custName, serviceArea, "", "1", null, null, null, order,
 					identifier,assetAscription);
 			// 保存数据
 			for (Contract contract : selectContracts) {
@@ -806,7 +798,7 @@ public class CustomerManageController extends BaseController {
 	 */
 	@RequestMapping("/addContract")
 	public ModelAndView addContract(ModelAndView modelAndView) {
-		modelAndView.setViewName("/customerManage/html/addContract");
+		modelAndView.setViewName("/customerManageService/html/addContract");
 		return modelAndView;
 	}
 
@@ -868,35 +860,35 @@ public class CustomerManageController extends BaseController {
 		if (woStatus != null && !"".equals(woStatus.trim())) {
 			if (woStatus.equals("a")) {
 				if (userRole.getRoleId().equals("客户")) {
-					devices = customerManage.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					devices = customerManageService.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
 							user.getCustName(), null, null, null, null, identifier);
-					selectDevices = customerManage.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					selectDevices = customerManageService.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
 							user.getCustName(), null, null, page, limit, identifier);
 				} else {
-					devices = customerManage.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()), null, null,
+					devices = customerManageService.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()), null, null,
 							null, null, null, identifier);
-					selectDevices = customerManage.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					selectDevices = customerManageService.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
 							user.getCustName(), null, null, page, limit, identifier);
 				}
 			} else if (woStatus.equals("b")) {
 				if (userRole.getRoleId().equals("客户")) {
-					devices = customerManage.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					devices = customerManageService.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
 							user.getCustName(), "客户", null, null, null, identifier);
-					selectDevices = customerManage.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					selectDevices = customerManageService.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
 							user.getCustName(), null, null, page, limit, identifier);
 				} else {
-					devices = customerManage.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()), null, "客户",
+					devices = customerManageService.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()), null, "客户",
 							null, null, null, identifier);
-					selectDevices = customerManage.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					selectDevices = customerManageService.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
 							user.getCustName(), null, null, page, limit, identifier);
 				}
 			} else if (woStatus.equals("c")) {
 				List<Device> devicess = new ArrayList<>();
 				if (userRole.getRoleId().equals("客户")) {
-					devicess = customerManage.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
+					devicess = customerManageService.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()),
 							user.getCustName(), null, null, null, null, identifier);
 				} else {
-					devicess = customerManage.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()), null, null,
+					devicess = customerManageService.selectByDynamic(SOMUtils.orderNumToComp(user.getCustName()), null, null,
 							null, null, null, identifier);
 				}
 				int a = 1;
@@ -923,9 +915,9 @@ public class CustomerManageController extends BaseController {
 					identifier = "1";
 				}
 			}
-			devices = customerManage.selectByDynamic(serviceArea, custName, assetAscription, machCode, null, null,
+			devices = customerManageService.selectByDynamic(serviceArea, custName, assetAscription, machCode, null, null,
 					identifier);
-			selectDevices = customerManage.selectByDynamic(serviceArea, custName, assetAscription, machCode, page,
+			selectDevices = customerManageService.selectByDynamic(serviceArea, custName, assetAscription, machCode, page,
 					limit, identifier);
 		}
 		export.put(request.getParameter("username") + "equipmentInfo", devices);
@@ -944,7 +936,7 @@ public class CustomerManageController extends BaseController {
 	 */
 	@RequestMapping("/addEquipment")
 	public ModelAndView addEquipment(ModelAndView modelAndView) {
-		modelAndView.setViewName("/customerManage/html/addEquipment");
+		modelAndView.setViewName("/customerManageService/html/addEquipment");
 		return modelAndView;
 	}
 
@@ -964,7 +956,7 @@ public class CustomerManageController extends BaseController {
 		if (machCode == null || machCode.equals("")) {
 			return "机器编码不能为空";
 		}
-		if (customerManage.selectByCode(machCode) == null) {
+		if (customerManageService.selectByCode(machCode) == null) {
 			return "该机器不存在";
 		}
 		String a = SOMUtils.ipAndPort + machCode + ".png";
@@ -1064,7 +1056,7 @@ public class CustomerManageController extends BaseController {
 	 */
 	@RequestMapping("/equipmentChange")
 	public ModelAndView equipmentChange(ModelAndView modelAndView) {
-		modelAndView.setViewName("/customerManage/html/equipmentChange");
+		modelAndView.setViewName("/customerManageService/html/equipmentChange");
 		return modelAndView;
 	}
 
@@ -1132,7 +1124,7 @@ public class CustomerManageController extends BaseController {
 			return json;
 		}
 		// 先判断合同编码是否重复。
-		if (customerManage.selectByPrimaryKey(contractNo) != null) {
+		if (customerManageService.selectByPrimaryKey(contractNo) != null) {
 			json.put("code", 1);
 			json.put("msg", "对不起，您输入的合同编码已经存在");
 			return json;
@@ -1195,7 +1187,7 @@ public class CustomerManageController extends BaseController {
 		contract.setBankAccount(bankAccount);
 		contract.setTaxIden(taxIden);
 		contract.setContractNature(contractNature);
-		int result = customerManage.insert(contract);
+		int result = customerManageService.insert(contract);
 		if (result > 0) {
 			json.put("code", 0);
 			json.put("msg", "添加成功");
@@ -1260,9 +1252,9 @@ public class CustomerManageController extends BaseController {
 		params.put("签约日期", startDate);
 		params.put("到期日期", endDate);
 		// 先找出该序号之前的合同
-		Contract oldContract = customerManage.selectByID(Integer.valueOf(ID));
+		Contract oldContract = customerManageService.selectByID(Integer.valueOf(ID));
 		/*
-		 * List<Device> a = customerManage.selectByDeviceKpi("", "",
+		 * List<Device> a = customerManageService.selectByDeviceKpi("", "",
 		 * oldContract.getContractNo(), null, null, null);
 		 */
 		// 如果老合同下有绑定设备，则提示不能修改
@@ -1278,7 +1270,7 @@ public class CustomerManageController extends BaseController {
 			return json;
 		}
 		// 修改后的合同编码不能与其他合同冲突
-		if (customerManage.selectByPrimaryKey(contractNo) != null && !oldContract.getContractNo().equals(contractNo)) {
+		if (customerManageService.selectByPrimaryKey(contractNo) != null && !oldContract.getContractNo().equals(contractNo)) {
 			json.put("code", 1);
 			json.put("msg", "对不起，您输入的合同编码已经存在");
 			return json;
@@ -1333,11 +1325,11 @@ public class CustomerManageController extends BaseController {
 		contract.setContractNature(contractNature);
 		contract.setAssetAscription(assetAscription);
 		try {
-			int result = customerManage.updateByPrimaryKeySelective(contract, null);
-			for (Device device : customerManage.selectByDeviceKpi(null, null, oldContract.getContractNo(), null, null,
+			int result = customerManageService.updateByPrimaryKeySelective(contract, null);
+			for (Device device : customerManageService.selectByDeviceKpi(null, null, oldContract.getContractNo(), null, null,
 					null)) {
 				device.setContractNo(contractNo);
-				customerManage.updateByPrimaryKeySelective(device);
+				customerManageService.updateByPrimaryKeySelective(device);
 			}
 			if (result > 0) {
 				json.put("code", 0);
@@ -1369,7 +1361,7 @@ public class CustomerManageController extends BaseController {
 		Map<String, Object> json = new HashMap<>();
 		// 从前端接收数据
 		String machCode = request.getParameter("machCode"); // 机器编码
-		Device device = customerManage.selectByCode(machCode);
+		Device device = customerManageService.selectByCode(machCode);
 		DeviceBasic deviceBasic = null;
 		if (device != null) {
 			String assetClass = device.getAssetClass();
@@ -1424,7 +1416,7 @@ public class CustomerManageController extends BaseController {
 		String contractNo = request.getParameter("contractNo"); // 合同编号
 		String machCode = request.getParameter("machCode"); // 机器编码
 		// 判断合同号是否存在
-		Contract contract = customerManage.selectByPrimaryKey(contractNo);
+		Contract contract = customerManageService.selectByPrimaryKey(contractNo);
 		if (contract == null) {
 			json.put("code", 1);
 			json.put("msg", "合同号不存在，请检查并重新输入");
@@ -1432,8 +1424,8 @@ public class CustomerManageController extends BaseController {
 		}
 		// 查找相应合同
 		// 先判断机器是否有绑定合同，如果没有合同，才可以绑定
-		if (customerManage.selectDeviceById(machCode).getContractNo() == null
-				|| customerManage.selectDeviceById(machCode).getContractNo().equals("")) {
+		if (customerManageService.selectDeviceById(machCode).getContractNo() == null
+				|| customerManageService.selectDeviceById(machCode).getContractNo().equals("")) {
 			// 在增加机器的服务属性
 			String secret = request.getParameter("secret"); // 是否涉密
 			String secretLevel = request.getParameter("secretLevel"); // 涉密等级
@@ -1475,7 +1467,7 @@ public class CustomerManageController extends BaseController {
 			}
 			StaffInfo responsibleEngineer = null;
 			StaffInfo reserveEnginner = null;
-			for (StaffInfo staff : staffInfoServiceImplnew.selectAllStaff()) {
+			for (StaffInfo staff : staffInfoService.selectAllStaff()) {
 
 				if (staff.getName().equals(responsibleEngineerID)) {
 					responsibleEngineer = staff;
@@ -1541,7 +1533,7 @@ public class CustomerManageController extends BaseController {
 			device.setSecretLevel(secretLevel);
 			device.setIP(IP);
 			// 执行变动方法
-			int result = customerManage.updateByPrimaryKeySelective(device);
+			int result = customerManageService.updateByPrimaryKeySelective(device);
 			if (result > 0) {
 				json.put("code", 0);
 				json.put("msg", "绑定成功");
@@ -1626,7 +1618,7 @@ public class CustomerManageController extends BaseController {
 			}
 		}
 		// 先查找出修改之前的设备基础信息
-		Device oldDevice = customerManage.selectDeviceById(Integer.valueOf(ID));
+		Device oldDevice = customerManageService.selectDeviceById(Integer.valueOf(ID));
 		Device newDevice = new Device();
 		newDevice.setId(ID);
 		newDevice.setAssetAttr(assetAttr);
@@ -1647,7 +1639,7 @@ public class CustomerManageController extends BaseController {
 		newDevice.setId(ID);
 		int a = -1;
 		try {
-			a = customerManage.updateByPrimaryKeySelective(newDevice);
+			a = customerManageService.updateByPrimaryKeySelective(newDevice);
 			// 资产编码没变
 			if (oldDevice.getAssetNumber().equals(assetNumber)) {
 				// 如果是迅维变为客户
@@ -1780,13 +1772,13 @@ public class CustomerManageController extends BaseController {
 			}
 		}
 		// 判断机器编码是否已经存在
-		if (customerManage.selectDeviceById(machCode) != null) {
+		if (customerManageService.selectDeviceById(machCode) != null) {
 			json.put("code", 1);
 			json.put("msg", "您输入的机器编码已经存在，请重新输入");
 			return json;
 		}
 		if (assetNumber != null && !assetNumber.trim().equals("")) {
-			if (!customerManage.selectDeviceByAsSetNumber(assetNumber).isEmpty()) {
+			if (!customerManageService.selectDeviceByAsSetNumber(assetNumber).isEmpty()) {
 				json.put("code", 1);
 				json.put("msg", "资产编码不能重复");
 				return json;
@@ -1809,12 +1801,12 @@ public class CustomerManageController extends BaseController {
 		device.setOutputSpec(outputSpec);
 		device.setEsNumber(esNumber);
 		device.setServiceArea(user.getCustName());
-		int result = customerManage.insert(device);
+		int result = customerManageService.insert(device);
 		System.out.println(result > 0 ? "添加成功" : "添加失败");
 		// 如果资产是迅维，则生成一条资产记录到数据库
 		if (assetAttr.equals("迅维")) {
 			device.setAssetStatus("使用中");
-			customerManage.updateByPrimaryKeySelective(device);
+			customerManageService.updateByPrimaryKeySelective(device);
 			AssetNumber asset = new AssetNumber();
 			asset.setAssetNumber(assetNumber);
 			asSetNumberService.insert(asset);
@@ -1887,7 +1879,7 @@ public class CustomerManageController extends BaseController {
 			json.put("msg", param + "不能为空");
 			return json;
 		}
-		if (customerManage.selectByCode(machCode) == null) {
+		if (customerManageService.selectByCode(machCode) == null) {
 			json.put("code", 1);
 			json.put("msg", "您输入的机器编码不存在");
 			return json;
@@ -1925,7 +1917,7 @@ public class CustomerManageController extends BaseController {
 		StaffInfo responsibleEngineer = null;
 		StaffInfo reserveEnginner = null;
 		// 将传递过来的责任工程师ID和后备工程师ID转换为姓名
-		for (StaffInfo staff : staffInfoServiceImplnew.selectAllStaff()) {
+		for (StaffInfo staff : staffInfoService.selectAllStaff()) {
 			if (staff.getName().equals(responsibleEngineerID)) {
 				responsibleEngineer = staff;
 			}
@@ -1970,13 +1962,13 @@ public class CustomerManageController extends BaseController {
 		// 如果变动类型为撤除，则清空设备的服务属性，只保留初始黑白读数和初始彩色读数
 		if (changeType.equals("撤除")) {
 			// 清空服务属性
-			if (customerManage.cleanDeviceAttribute(machCode) > 0) {
+			if (customerManageService.cleanDeviceAttribute(machCode) > 0) {
 				// 设置初始黑白读数和彩色读数
 				device.setMachCode(machCode);
 				device.setBwReader(bwReader);
 				device.setColorReader(colorReader);
-				customerManage.updateByPrimaryKeySelective(device);
-				/* customerManage.insertSelective(deviceChange); */
+				customerManageService.updateByPrimaryKeySelective(device);
+				/* customerManageService.insertSelective(deviceChange); */
 				json.put("code", 0);
 				json.put("msg", "变动成功");
 				return json;
@@ -2000,7 +1992,7 @@ public class CustomerManageController extends BaseController {
 			device.setSecretLevel(secretLevel);
 			device.setIP(IP);
 			// 执行变动方法
-			int result = customerManage.updateByPrimaryKeySelective(device);
+			int result = customerManageService.updateByPrimaryKeySelective(device);
 			if (result > 0) {
 				json.put("code", 0);
 				json.put("msg", "变动成功");
@@ -2037,7 +2029,7 @@ public class CustomerManageController extends BaseController {
 		}
 		String woNumber = request.getParameter("woNumber"); // 获取工单号
 		boolean a = serviceInfoService.deleteServiceInfo(woNumber);
-		boolean b = customerManage.deleteOrder(woNumber);
+		boolean b = customerManageService.deleteOrder(woNumber);
 		if (a && b) {
 			// 删除该工单对应的图片
 			File file = new File(SOMUtils.pictureAddr + woNumber);
@@ -2073,7 +2065,7 @@ public class CustomerManageController extends BaseController {
 			return json;
 		}
 		String woNumber = request.getParameter("woNumber"); // 获取工单号
-		OrderInfo orderInfo = serviceManageServiceImpl.selectOrderByOrderNum(woNumber);
+		OrderInfo orderInfo = serviceManageService.selectOrderByOrderNum(woNumber);
 		ServiceInfo service = serviceInfoService.selectServiceInfByDyWoNumber(woNumber);
 		if (orderInfo == null) {
 			json.put("code", 0);
@@ -2081,7 +2073,7 @@ public class CustomerManageController extends BaseController {
 			return json;
 		}
 		serviceInfoService.deleteServiceInfo(woNumber);
-		customerManage.deleteOrder(woNumber);
+		customerManageService.deleteOrder(woNumber);
 		OrderInfo orderinfo = new OrderInfo();
 		if (orderInfo.getMachCode() != null) {
 			// 执行插入方法
@@ -2103,14 +2095,14 @@ public class CustomerManageController extends BaseController {
 			orderinfo.setWoStatus("待受理");
 			orderinfo.setWoProgress("待受理");
 			orderinfo.setOrderAccount(orderInfo.getOrderAccount());
-			boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+			boolean result = serviceManageService.insertOrder(orderinfo);
 			if (result) {
 				// 如果工单增加成功，则在增加服务评价
 				ServiceInfo serviceInfo = new ServiceInfo();
 				// 获取默认责任工程师名称
 				serviceInfo.setWoNumber(woNumber);
 				serviceInfo.setStaffId(service.getStaffId());
-				serviceManageServiceImpl.insertSelective(serviceInfo);
+				serviceManageService.insertSelective(serviceInfo);
 				json.put("code", 0);
 				json.put("data", orderinfo);
 				json.put("msg", "撤除成功");
@@ -2136,12 +2128,12 @@ public class CustomerManageController extends BaseController {
 			orderinfo.setWoStatus("待受理");
 			orderinfo.setWoProgress("待受理");
 			orderinfo.setOrderAccount(orderInfo.getOrderAccount());
-			boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+			boolean result = serviceManageService.insertOrder(orderinfo);
 			if (result) {
 				// 如果工单增加成功，则在增加服务评价
 				ServiceInfo serviceInfo = new ServiceInfo();
 				serviceInfo.setWoNumber(woNumber);
-				serviceManageServiceImpl.insertSelective(serviceInfo);
+				serviceManageService.insertSelective(serviceInfo);
 				json.put("code", 0);
 				json.put("data", orderinfo);
 				json.put("msg", "撤除成功");
@@ -2174,7 +2166,7 @@ public class CustomerManageController extends BaseController {
 			return json;
 		}
 		String woNumber = request.getParameter("woNumber"); // 获取工单号
-		OrderInfo orderInfo = serviceManageServiceImpl.selectOrderByOrderNum(woNumber);
+		OrderInfo orderInfo = serviceManageService.selectOrderByOrderNum(woNumber);
 		if (orderInfo == null) {
 			json.put("code", 1);
 			json.put("msg", "对不起，要修改的工单不存在");
@@ -2190,7 +2182,7 @@ public class CustomerManageController extends BaseController {
 			}
 			machCode = machCode.toUpperCase();
 			// 根据设备号查询相应信息
-			Device device = customerManage.selectByCode(machCode);
+			Device device = customerManageService.selectByCode(machCode);
 			if (device == null) {
 				json.put("code", 1);
 				json.put("msg", "相应机器编码的设备不存在，请检查并重新输入");
@@ -2201,7 +2193,7 @@ public class CustomerManageController extends BaseController {
 				json.put("msg", "对不起，该机器尚未绑定合同，不能报修");
 				return json;
 			}
-			List<OrderInfo> xixi = serviceManageServiceImpl.selectOrderByDynamic(null, machCode, null, null, null, null,
+			List<OrderInfo> xixi = serviceManageService.selectOrderByDynamic(null, machCode, null, null, null, null,
 					null);
 			for (OrderInfo orderInfo2 : xixi) {
 				if (!orderInfo2.getWoStatus().equals("已关单") && !orderInfo2.getWoStatus().equals("已转单")
@@ -2331,7 +2323,7 @@ public class CustomerManageController extends BaseController {
 			upOrder.setServiceType(serviceType);
 			upOrder.setRepairType(repairType);
 			upOrder.setRemark(remark);
-			if (serviceManageServiceImpl.updateOrder(upOrder)) {
+			if (serviceManageService.updateOrder(upOrder)) {
 				json.put("code", 0);
 				json.put("msg", "修改工单成功");
 				return json;
@@ -2491,7 +2483,7 @@ public class CustomerManageController extends BaseController {
 			upOrder.setServiceType(serviceType);
 			upOrder.setRepairType(repairType);
 			upOrder.setRemark(remark);
-			if (serviceManageServiceImpl.updateOrder(upOrder)) {
+			if (serviceManageService.updateOrder(upOrder)) {
 				json.put("code", 0);
 				json.put("msg", "修改工单成功");
 				return json;
@@ -2622,7 +2614,7 @@ public class CustomerManageController extends BaseController {
 			device.setBwReader(object[21]);
 			device.setColorReader(object[22]);
 			device.setInstalledTime(ExcelUtils.fmt.parse(object[23]));
-			int result = customerManage.insert(device);
+			int result = customerManageService.insert(device);
 			if (result <= 0) {
 				json.put("code", 1);
 				json.put("msg", "添加失败");
@@ -2652,7 +2644,7 @@ public class CustomerManageController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> initPicture() throws IOException {
 		Map<String, Object> json = new HashMap<>();
-		List<Device> devices = customerManage.selectByDynamic(null, null, null, null, null, null, null);
+		List<Device> devices = customerManageService.selectByDynamic(null, null, null, null, null, null, null);
 		for (Device device : devices) {
 			String content = "https://open.weixin.qq.com/connect/oauth2/authorize?"
 					+ "appid=wxf31e52205cafba8a&redirect_uri=http%3a%2f%2fsolutionyun.com%2fgetOpenId%3fmachCode%3d"
@@ -2771,7 +2763,7 @@ public class CustomerManageController extends BaseController {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		// 查看登陆人是否有权限
 		Map<String, Object> json = new HashMap<>();
-		List<Device> devices = customerManage.selectByDevice(null, "深圳分公司", null, null, null, null);
+		List<Device> devices = customerManageService.selectByDevice(null, "深圳分公司", null, null, null, null);
 		String tableName = "设备表";
 		// 设置表头
 		String[] Titles = { "二维码内容", "机器编码" };

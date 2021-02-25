@@ -12,17 +12,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xunwei.som.service.*;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.xunwei.som.pojo.Contract;
-import com.xunwei.som.pojo.CustInfo;
 import com.xunwei.som.pojo.Device;
 import com.xunwei.som.pojo.MaintenancePerform;
 import com.xunwei.som.pojo.Maintenance;
@@ -31,20 +31,8 @@ import com.xunwei.som.pojo.front.MaintenanceContract;
 import com.xunwei.som.pojo.front.MaintenanceEnginner;
 import com.xunwei.som.pojo.permissions.User;
 import com.xunwei.som.pojo.permissions.UserRole;
-import com.xunwei.som.service.CustInfoService;
-import com.xunwei.som.service.CustomerManageService;
-import com.xunwei.som.service.StaffInfoService;
-import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.CustInfoServiceImpl;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
-import com.xunwei.som.service.impl.MaintenanceserviceImpl;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
-import com.xunwei.som.service.impl.UserServiceImpl;
 import com.xunwei.som.util.ExcelUtils;
 import com.xunwei.som.util.SOMUtils;
-
-import net.sf.json.JSONArray;
-import redis.clients.jedis.Jedis;
 
 /**
  * 保养管理模块
@@ -55,15 +43,17 @@ import redis.clients.jedis.Jedis;
 @Controller
 public class MaintenanceManaController extends BaseController {
 
-	private MaintenanceserviceImpl maintenanceserviceImpl = new MaintenanceserviceImpl();
+	@Autowired
+	private Maintenanceservice maintenanceservice;
 
-	private CustomerManageService customerManageService = new CustomerManageServiceImpl();
+	@Autowired
+	private CustomerManageService customerManageService;
 
-	private StaffInfoService staffInfoService = new StaffInfoServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
 
-	private CustInfoService custInfo = new CustInfoServiceImpl();
-
-	private UserService userService = new UserServiceImpl();
+	@Autowired
+	private UserService userService;
 
 	// 存放查询出来的保养报表的结果
 	private List<Maintenance> maintenances;
@@ -128,9 +118,9 @@ public class MaintenanceManaController extends BaseController {
 			identifier = "1";
 		}
 		// 先查出相应的保养设备
-		maintenancePerforms = maintenanceserviceImpl.selectmaintenance(custName, user.getCustName(), enginnerName, "",
+		maintenancePerforms = maintenanceservice.selectmaintenance(custName, user.getCustName(), enginnerName, "",
 				"", "", null, null, identifier);
-		List<Maintenance> maintenances = maintenanceserviceImpl.selectmaintenance(custName, user.getCustName(),
+		List<Maintenance> maintenances = maintenanceservice.selectmaintenance(custName, user.getCustName(),
 				enginnerName, "", "", "", page, limit, identifier);
 		// 遍历保养执行
 		for (Maintenance maintenance : maintenances) {
@@ -149,7 +139,7 @@ public class MaintenanceManaController extends BaseController {
 	 */
 	@Scheduled(fixedRate = 1000 * 60 * 5)
 	public void autoRefreshMaintenancePerform() {
-		List<Maintenance> maintenances = maintenanceserviceImpl.selectmaintenance(null, null, null, null, null, null,
+		List<Maintenance> maintenances = maintenanceservice.selectmaintenance(null, null, null, null, null, null,
 				null, null, null);
 		Calendar currentTime = Calendar.getInstance();// 当前时间的年月日：时分秒
 		currentTime.setTime(new Date());
@@ -159,7 +149,7 @@ public class MaintenanceManaController extends BaseController {
 			if (maintenance.getMainFrequency().equals("月")) {
 				// 如果最近维修时间没有
 				if (maintenance.getLastTime() == null) {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -167,10 +157,10 @@ public class MaintenanceManaController extends BaseController {
 				// 判断最近维修的时间是否是在当月，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (maintenanceTime.get(Calendar.MONTH) == currentTime.get(Calendar.MONTH)) {
 					maintenance.setMaintenanceState(1);
-					maintenanceserviceImpl.updateMaintenance(maintenance);
+					maintenanceservice.updateMaintenance(maintenance);
 					continue;
 				} else {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -179,7 +169,7 @@ public class MaintenanceManaController extends BaseController {
 			if (maintenance.getMainFrequency().equals("双月")) {
 				// 如果最近维修时间没有
 				if (maintenance.getLastTime() == null) {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -187,10 +177,10 @@ public class MaintenanceManaController extends BaseController {
 				// 判断最近维修的时间是否是超过两个月，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (currentTime.get(Calendar.MONTH)-maintenanceTime.get(Calendar.MONTH)<3) {
 					maintenance.setMaintenanceState(1);
-					maintenanceserviceImpl.updateMaintenance(maintenance);
+					maintenanceservice.updateMaintenance(maintenance);
 					continue;
 				} else {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -199,7 +189,7 @@ public class MaintenanceManaController extends BaseController {
 			if (maintenance.getMainFrequency().equals("季度")) {
 				// 如果最近维修时间没有
 				if (maintenance.getLastTime() == null) {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -208,10 +198,10 @@ public class MaintenanceManaController extends BaseController {
 				if (SOMUtils.isWhichQuarter(maintenanceTime.get(Calendar.MONTH) + 1) == SOMUtils
 						.isWhichQuarter(currentTime.get(Calendar.MONTH) + 1)) {
 					maintenance.setMaintenanceState(1);
-					maintenanceserviceImpl.updateMaintenance(maintenance);
+					maintenanceservice.updateMaintenance(maintenance);
 					continue;
 				} else {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -220,7 +210,7 @@ public class MaintenanceManaController extends BaseController {
 			if (maintenance.getMainFrequency().equals("年")) {
 				// 如果最近维修的时间为空
 				if (maintenance.getLastTime() == null) {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -228,10 +218,10 @@ public class MaintenanceManaController extends BaseController {
 				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (maintenanceTime.get(Calendar.YEAR) == currentTime.get(Calendar.YEAR)) {
 					maintenance.setMaintenanceState(1);
-					maintenanceserviceImpl.updateMaintenance(maintenance);
+					maintenanceservice.updateMaintenance(maintenance);
 					continue;
 				} else {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -240,7 +230,7 @@ public class MaintenanceManaController extends BaseController {
 			if (maintenance.getMainFrequency().equals("半年")) {
 				// 如果最近维修的时间为空
 				if (maintenance.getLastTime() == null) {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -248,10 +238,10 @@ public class MaintenanceManaController extends BaseController {
 				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (currentTime.get(Calendar.DAY_OF_YEAR) - maintenanceTime.get(Calendar.DAY_OF_YEAR) <= 183) {
 					maintenance.setMaintenanceState(1);
-					maintenanceserviceImpl.updateMaintenance(maintenance);
+					maintenanceservice.updateMaintenance(maintenance);
 					continue;
 				} else {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -260,7 +250,7 @@ public class MaintenanceManaController extends BaseController {
 			if (maintenance.getMainFrequency().equals("周")) {
 				// 如果最近维修的时间为空
 				if (maintenance.getLastTime() == null) {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -268,10 +258,10 @@ public class MaintenanceManaController extends BaseController {
 				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (maintenanceTime.get(Calendar.WEEK_OF_YEAR) == currentTime.get(Calendar.WEEK_OF_YEAR)) {
 					maintenance.setMaintenanceState(1);
-					maintenanceserviceImpl.updateMaintenance(maintenance);
+					maintenanceservice.updateMaintenance(maintenance);
 					continue;
 				} else {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -280,7 +270,7 @@ public class MaintenanceManaController extends BaseController {
 			if (maintenance.getMainFrequency().equals("日")) {
 				// 如果最近维修的时间为空
 				if (maintenance.getLastTime() == null) {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -288,10 +278,10 @@ public class MaintenanceManaController extends BaseController {
 				// 判断最近维修的时间是否是在季度，如果不是，则添加进当前的集合中，顺便修改保养状态
 				if (maintenanceTime.get(Calendar.DAY_OF_YEAR) == currentTime.get(Calendar.DAY_OF_YEAR)) {
 					maintenance.setMaintenanceState(1);
-					maintenanceserviceImpl.updateMaintenance(maintenance);
+					maintenanceservice.updateMaintenance(maintenance);
 					continue;
 				} else {
-					maintenanceserviceImpl.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
+					maintenanceservice.updateMaintenance(maintenance.getContractCode(), maintenance.getMachCode(),
 							0, "");
 					continue;
 				}
@@ -349,9 +339,9 @@ public class MaintenanceManaController extends BaseController {
 			user.setCustName(serviceArea);
 			identifier = "1";
 		}
-		maintenances = maintenanceserviceImpl.selectmaintenance(custName, user.getCustName(), "", "", "", "", null,
+		maintenances = maintenanceservice.selectmaintenance(custName, user.getCustName(), "", "", "", "", null,
 				null, identifier);
-		List<Maintenance> maintenance = maintenanceserviceImpl.selectmaintenance(custName, user.getCustName(), "", "",
+		List<Maintenance> maintenance = maintenanceservice.selectmaintenance(custName, user.getCustName(), "", "",
 				"", "", page, limit, identifier);
 		// 分页
 		export.put(request.getParameter("username") + "maintenancePlan", maintenances);
@@ -438,7 +428,7 @@ public class MaintenanceManaController extends BaseController {
 			json.put("msg", "对不起，该机器还没有绑定合同，不能进行保养");
 			return json;
 		}
-		if (maintenanceserviceImpl.selectOneMaintenance(null, machCode) != null) {
+		if (maintenanceservice.selectOneMaintenance(null, machCode) != null) {
 			json.put("code", 1);
 			json.put("msg", "该机器已经添加过保养计划，请输入还未添加保养计划的机器");
 			return json;
@@ -490,7 +480,7 @@ public class MaintenanceManaController extends BaseController {
 		Maintenance tenance = new Maintenance(contractCode, custName, repairMan, repairService, mainFrequency,
 				responsible.getName(), responsible.getStaffId(), reserveEnginner.getName(),
 				reserveEnginner.getStaffId(), compName, machCode, null, null, null, 0, null, null, new Date());
-		boolean result = maintenanceserviceImpl.insertOrder(tenance);
+		boolean result = maintenanceservice.insertOrder(tenance);
 		if (result) {
 			json.put("code", 0);
 			json.put("msg", "添加成功");
@@ -521,7 +511,7 @@ public class MaintenanceManaController extends BaseController {
 			json.put("msg", "机器编码不能为空");
 			return json;
 		}
-		if (maintenanceserviceImpl.deleteMaintenance(machCode) > 0) {
+		if (maintenanceservice.deleteMaintenance(machCode) > 0) {
 			json.put("code", 1);
 			json.put("msg", "删除成功");
 			return json;
@@ -601,7 +591,7 @@ public class MaintenanceManaController extends BaseController {
 		Maintenance tenance = new Maintenance(contractCode, custName, repairMan, repairService, mainFrequency,
 				responsible.getName(), responsible.getStaffId(), reserveEnginner.getName(),
 				reserveEnginner.getStaffId(), compName, machCode, null, null, null, 0, null, null, new Date());
-		int result = maintenanceserviceImpl.updateMaintenance(tenance);
+		int result = maintenanceservice.updateMaintenance(tenance);
 		if (result > 0) {
 			json.put("code", 0);
 			json.put("msg", "修改成功");
@@ -617,7 +607,7 @@ public class MaintenanceManaController extends BaseController {
 	 */
 	@RequestMapping("/selectMaintenace")
 	public Map<String, Object> slectMaintenance(ModelAndView modelAndView) {
-		maintenances = maintenanceserviceImpl.select();
+		maintenances = maintenanceservice.select();
 		Map<String, Object> json = new HashMap<>();
 		modelAndView.addObject("maintenances", maintenances);
 		modelAndView.setViewName("/maintenanceManage/html/maintenancePlan");
@@ -636,7 +626,7 @@ public class MaintenanceManaController extends BaseController {
 	 * selcetmaintenances(ModelAndView modelAndView, HttpServletRequest
 	 * request){ String compName=request.getParameter("compName");
 	 * if(compName==null || "".equals(compName.trim())){ compName=""; }
-	 * maintenances =maintenanceserviceImpl.selectmaintenance(compName);
+	 * maintenances =maintenanceservice.selectmaintenance(compName);
 	 * modelAndView.addObject("maintenances", maintenances);
 	 * modelAndView.setViewName("/maintenanceManage/html/maintenancePlan");
 	 * return modelAndView;
@@ -808,7 +798,7 @@ public class MaintenanceManaController extends BaseController {
 			json.put("msg", "openId不存在，请重新输入");
 			return json;
 		}
-		List<Maintenance> maintenances = maintenanceserviceImpl.selectByContract(staffId);
+		List<Maintenance> maintenances = maintenanceservice.selectByContract(staffId);
 		List<MaintenanceContract> maintenanceContracts = new ArrayList<>();
 		for (Maintenance maintenance : maintenances) {
 			MaintenanceContract maintenanceContract = new MaintenanceContract();
@@ -872,7 +862,7 @@ public class MaintenanceManaController extends BaseController {
 			json.put("msg", "openId不存在，请重新输入");
 			return json;
 		}
-		List<Maintenance> maintenances = maintenanceserviceImpl.selectByCycle(Cycle, staffId, null, contractNo);
+		List<Maintenance> maintenances = maintenanceservice.selectByCycle(Cycle, staffId, null, contractNo);
 		for (Maintenance maintenance : maintenances) {
 			maintenance.setMaintenStatus(maintenance.getMaintenanceState() == 0 ? "未完成" : "已完成");
 		}
@@ -960,7 +950,7 @@ public class MaintenanceManaController extends BaseController {
 		// 从前端接收参数
 		String responsibleId = request.getParameter("responsibleId");// 工程师id
 		Map<String, Object> json = new HashMap<>();
-		maintenances = maintenanceserviceImpl.selectByCycle("", responsibleId, "", "");
+		maintenances = maintenanceservice.selectByCycle("", responsibleId, "", "");
 		json.put("code", 0);
 		json.put("msg", "需要保养的设备信息");
 		json.put("count", maintenances.size());
@@ -982,7 +972,7 @@ public class MaintenanceManaController extends BaseController {
 		Map<String, Object> json = new HashMap<>();
 		String contractNo = request.getParameter("contractNo");
 		String machCode = request.getParameter("machCode");
-		Maintenance maintenance = maintenanceserviceImpl.selectOneMaintenance(contractNo, machCode);
+		Maintenance maintenance = maintenanceservice.selectOneMaintenance(contractNo, machCode);
 		json.put("code", 0);
 		json.put("msg", "保养的设备信息");
 		json.put("count", 1);
@@ -1036,7 +1026,7 @@ public class MaintenanceManaController extends BaseController {
 			return json;
 		}
 		// 查找出相应的保养
-		Maintenance maintenan = maintenanceserviceImpl.selectOneMaintenance(null, machCode);
+		Maintenance maintenan = maintenanceservice.selectOneMaintenance(null, machCode);
 		if (maintenan == null) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该机器尚未添加到保养计划，无法进行保养");
@@ -1053,7 +1043,7 @@ public class MaintenanceManaController extends BaseController {
 		maintenance.setMaterialNumber(materialNumber);
 		maintenance.setCoverage(coverage);
 		maintenance.setLastTime(date);
-		int result = maintenanceserviceImpl.updateMaintenance(maintenance);
+		int result = maintenanceservice.updateMaintenance(maintenance);
 		if (result > 0) {
 			json.put("code", 0);
 			json.put("msg", "保养执行提交成功");
@@ -1090,7 +1080,7 @@ public class MaintenanceManaController extends BaseController {
 		maintenancePerform.setResponsibleId(responsibleId);
 		maintenancePerform.setMachCode(machCode);
 		maintenancePerform.setContractCode(contractCode);
-		List<MaintenancePerform> result = maintenanceserviceImpl.selectByDynamic(maintenancePerform, startDate,
+		List<MaintenancePerform> result = maintenanceservice.selectByDynamic(maintenancePerform, startDate,
 				endDate);
 		json.put("code", 0);
 		json.put("msg", "保养执行情况");

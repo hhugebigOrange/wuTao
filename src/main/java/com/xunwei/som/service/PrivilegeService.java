@@ -3,7 +3,9 @@ package com.xunwei.som.service;
 import java.util.List;
 
 import com.xunwei.som.pojo.PrivilegeTable;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface PrivilegeService {
 
 	/**

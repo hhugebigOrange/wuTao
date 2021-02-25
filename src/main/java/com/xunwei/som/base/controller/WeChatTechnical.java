@@ -2,12 +2,13 @@ package com.xunwei.som.base.controller;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.xunwei.som.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,16 +22,6 @@ import com.xunwei.som.pojo.front.MaintenanceContract;
 import com.xunwei.som.pojo.front.MaintenanceEnginner;
 import com.xunwei.som.pojo.front.OrderManage;
 import com.xunwei.som.pojo.permissions.User;
-import com.xunwei.som.service.CustomerManageService;
-import com.xunwei.som.service.ServiceInfoService;
-import com.xunwei.som.service.StaffInfoService;
-import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
-import com.xunwei.som.service.impl.MaintenanceserviceImpl;
-import com.xunwei.som.service.impl.ServiceInfoServiceImpl;
-import com.xunwei.som.service.impl.ServiceManageServiceImpl;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
-import com.xunwei.som.service.impl.UserServiceImpl;
 import com.xunwei.som.util.SOMUtils;
 
 /**
@@ -43,19 +34,23 @@ import com.xunwei.som.util.SOMUtils;
 @Controller
 public class WeChatTechnical extends BaseController {
 
-	private MaintenanceserviceImpl maintenanceserviceImpl = new MaintenanceserviceImpl();
+	@Autowired
+	private Maintenanceservice maintenanceservice;
 
-	private CustomerManageService customerManageService = new CustomerManageServiceImpl();
+	@Autowired
+	private ServiceManageService serviceManageService;
 
-	private ServiceManageServiceImpl serviceManageServiceImpl = new ServiceManageServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
 
-	private StaffInfoService staffInfoService = new StaffInfoServiceImpl();
+	@Autowired
+	private CustomerManageService customerManageService;
 
-	private CustomerManageServiceImpl customerManage = new CustomerManageServiceImpl();
+	@Autowired
+	private ServiceInfoService serviceInfoService;
 
-	private ServiceInfoService serviceInfoService = new ServiceInfoServiceImpl();
-
-	private UserService userService = new UserServiceImpl();
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 技术主管接口：查看技术主管负责保养的合同
@@ -92,11 +87,11 @@ public class WeChatTechnical extends BaseController {
 		List<Maintenance> maintenances = new ArrayList<>();
 		if (user2.getCustName().equals("广州乐派数码科技有限公司") || user2.getCustName().equals("行业客户部")
 				|| user2.getCustName().equals("系统推进部")) {
-			maintenances = maintenanceserviceImpl.selectByCycle(null, null, "广州乐派数码科技有限公司", null);
-			maintenances.addAll(maintenanceserviceImpl.selectByCycle(null, null, "行业客户部", null));
-			maintenances.addAll(maintenanceserviceImpl.selectByCycle(null, null, "系统推进部", null));
+			maintenances = maintenanceservice.selectByCycle(null, null, "广州乐派数码科技有限公司", null);
+			maintenances.addAll(maintenanceservice.selectByCycle(null, null, "行业客户部", null));
+			maintenances.addAll(maintenanceservice.selectByCycle(null, null, "系统推进部", null));
 		} else {
-			maintenances = maintenanceserviceImpl.selectByCycle(null, null, user2.getCustName(), null);
+			maintenances = maintenanceservice.selectByCycle(null, null, user2.getCustName(), null);
 		}
 		List<MaintenanceContract> maintenanceContracts = new ArrayList<>();
 		List<String> contractCode = new ArrayList<>();
@@ -143,7 +138,7 @@ public class WeChatTechnical extends BaseController {
 			json.put("msg", param + "不能为空");
 			return json;
 		}
-		List<Maintenance> maintenances = maintenanceserviceImpl.selectByCycle(Cycle, null, null, contractNo);
+		List<Maintenance> maintenances = maintenanceservice.selectByCycle(Cycle, null, null, contractNo);
 		List<Maintenance> needMaintenances = new ArrayList<>();
 		// 遍历保养执行
 		for (Maintenance maintenance : maintenances) {
@@ -341,9 +336,9 @@ public class WeChatTechnical extends BaseController {
 		List<OrderManage> orderManages = new ArrayList<>();
 		Integer a1 = null;
 		for (ServiceInfo serviceInfo2 : serviceInfo) {
-			serviceInfo2.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(serviceInfo2.getWoNumber()));
+			serviceInfo2.setOrderInfo(serviceManageService.selectOrderByOrderNum(serviceInfo2.getWoNumber()));
 			if (serviceInfo2.getOrderInfo().getMachCode() != null) {
-				serviceInfo2.setDevice(customerManage.selectDeviceById(serviceInfo2.getOrderInfo().getMachCode()));
+				serviceInfo2.setDevice(customerManageService.selectDeviceById(serviceInfo2.getOrderInfo().getMachCode()));
 				a1 = 1;
 			} else {
 				a1 = 2;
@@ -481,7 +476,7 @@ public class WeChatTechnical extends BaseController {
 			return json;
 		}
 		// 更新工单信息
-		boolean a = serviceManageServiceImpl.updateOrder(orderInfo);
+		boolean a = serviceManageService.updateOrder(orderInfo);
 		if (a) {
 			json.put("code", 0);
 			json.put("msg", "修改成功");
@@ -521,7 +516,7 @@ public class WeChatTechnical extends BaseController {
 			return json;
 		}
 		// 更新工单信息
-		boolean a = serviceManageServiceImpl.updateOrder(orderInfo);
+		boolean a = serviceManageService.updateOrder(orderInfo);
 		if (a) {
 			json.put("code", 0);
 			json.put("msg", "零件通过审核成功");
@@ -566,7 +561,7 @@ public class WeChatTechnical extends BaseController {
 		service.setCustPrai(content);
 		service.setWoNumber(woNumber);
 		// 更新工单信息
-		boolean a = serviceManageServiceImpl.updateOrder(orderInfo);
+		boolean a = serviceManageService.updateOrder(orderInfo);
 		boolean b = serviceInfoService.upDateServiceInfo(service);
 		if (a && b) {
 			json.put("code", 0);

@@ -13,19 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.xunwei.som.pojo.AssetNumber;
-import com.xunwei.som.pojo.Device;
 import com.xunwei.som.pojo.front.AssetManage;
 import com.xunwei.som.service.AsAetNumberService;
-import com.xunwei.som.service.CustInfoService;
-import com.xunwei.som.service.impl.AsAetNumberServiceImpl;
-import com.xunwei.som.service.impl.CustInfoServiceImpl;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
 import com.xunwei.som.util.ExcelUtils;
 import com.xunwei.som.util.SOMUtils;
 
@@ -38,16 +34,11 @@ import com.xunwei.som.util.SOMUtils;
 @Controller
 public class AssetManageController extends BaseController {
 
-	private CustomerManageServiceImpl customerManage = new CustomerManageServiceImpl();
-
-	private AsAetNumberService asSetNumberService = new AsAetNumberServiceImpl();
-
-	private CustInfoService custInfoService = new CustInfoServiceImpl();
+	@Autowired
+	private AsAetNumberService asSetNumberService;
 
 	// 用来保存每次查询的资产属性结果集
 	private List<AssetNumber> assetNumbers;
-
-	private List<Device> devices;
 
 	// 用于保存每个用户的查询记录
 	private Map<String, Object> export = new HashMap<>();

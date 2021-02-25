@@ -5,7 +5,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Date;
@@ -15,6 +14,8 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.ServletOutputStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,8 +27,6 @@ import com.xunwei.som.pojo.permissions.User;
 import com.xunwei.som.pojo.permissions.UserRole;
 import com.xunwei.som.service.CustInfoService;
 import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.CustInfoServiceImpl;
-import com.xunwei.som.service.impl.UserServiceImpl;
 import com.xunwei.som.util.CodeUtil;
 import com.xunwei.som.util.SOMUtils;
 import com.xunwei.som.util.WeChatUtils;
@@ -43,9 +42,11 @@ import net.sf.json.JSONObject;
 @Controller
 public class WeChatController extends BaseController {
 
-	private UserService userService = new UserServiceImpl();
+	@Autowired
+	private UserService userService;
 
-	private CustInfoService custInfoService = new CustInfoServiceImpl();
+	@Autowired
+	private CustInfoService custInfoService;
 
 	private Map<String, Object> codeList = new HashMap<>();
 	

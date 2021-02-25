@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,12 +19,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.xunwei.som.pojo.StaffInfo;
 import com.xunwei.som.service.StaffInfoService;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
 import com.xunwei.som.util.ExcelUtils;
 import com.xunwei.som.util.SOMUtils;
-import com.xunwei.som.util.ZXingUtils;
-
-import sun.misc.BASE64Decoder;
 
 /**
  * 工作状态
@@ -34,7 +31,8 @@ import sun.misc.BASE64Decoder;
 @Controller
 public class WorkingStatusController extends BaseController {
 
-	private StaffInfoService staffInfo = new StaffInfoServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
 	
 	//用于保存每个用户的查询记录
 	private Map<String,Object> export=new HashMap<>();
@@ -94,8 +92,8 @@ public class WorkingStatusController extends BaseController {
 				identifier = "1";
 			}
 		}
-		engineers = staffInfo.getStaffByDynamic(name, serviceArea, post, "", null, null, null, identifier);
-		List<StaffInfo> engineer = staffInfo.getStaffByDynamic(name, serviceArea, post, "", page, limit, null, identifier);
+		engineers = staffInfoService.getStaffByDynamic(name, serviceArea, post, "", null, null, null, identifier);
+		List<StaffInfo> engineer = staffInfoService.getStaffByDynamic(name, serviceArea, post, "", page, limit, null, identifier);
 		for (StaffInfo staff : engineer) {
 			if (staff.getPost().equals("技术主管")) {
 				persons[0] = ++p0;
@@ -124,7 +122,7 @@ public class WorkingStatusController extends BaseController {
 	@RequestMapping("/updateEngineer")
 	public ModelAndView updateEngineer(ModelAndView modelAndView) {
 		String id = request.getParameter("id");
-		StaffInfo updateStaff = staffInfo.selectStaffByNum(id);
+		StaffInfo updateStaff = staffInfoService.selectStaffByNum(id);
 		modelAndView.addObject("updateStaff", updateStaff);
 		modelAndView.setViewName("/workingState/html/updateEngineer");
 		return modelAndView;
@@ -154,7 +152,7 @@ public class WorkingStatusController extends BaseController {
 		updateStaff.setStaffId(id);
 		updateStaff.setWorkCond(workStatus);
 		updateStaff.setRemark(remark);
-		staffInfo.updateStaff(updateStaff);
+		staffInfoService.updateStaff(updateStaff);
 		json.put("code", 0);
 		json.put("msg", "修改成功");
 		return json;
@@ -176,7 +174,7 @@ public class WorkingStatusController extends BaseController {
 		StaffInfo updateStaff = new StaffInfo();
 		updateStaff.setStaffId(id);
 		updateStaff.setDisplay(0);
-		staffInfo.updateStaff(updateStaff);
+		staffInfoService.updateStaff(updateStaff);
 		json.put("code", 0);
 		json.put("msg", "删除成功");
 		return json;
@@ -192,7 +190,7 @@ public class WorkingStatusController extends BaseController {
 	public Map<String, Object> selectAll(ModelAndView modelAndView) {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		Map<String, Object> json = new HashMap<>();
-		engineers = staffInfo.getStaffByDynamic("", "", "", "", null, null, null, null);
+		engineers = staffInfoService.getStaffByDynamic("", "", "", "", null, null, null, null);
 		json.put("code", 0);
 		json.put("data", engineers);
 		json.put("msg", "查询成功");

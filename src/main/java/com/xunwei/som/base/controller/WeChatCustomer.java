@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.xunwei.som.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,16 +19,6 @@ import com.xunwei.som.pojo.ServiceInfo;
 import com.xunwei.som.pojo.StaffInfo;
 import com.xunwei.som.pojo.front.OrderManage;
 import com.xunwei.som.pojo.permissions.User;
-import com.xunwei.som.service.CustomerFeedbackService;
-import com.xunwei.som.service.ServiceInfoService;
-import com.xunwei.som.service.StaffInfoService;
-import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.CustomerFeedbackServiceImpl;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
-import com.xunwei.som.service.impl.ServiceInfoServiceImpl;
-import com.xunwei.som.service.impl.ServiceManageServiceImpl;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
-import com.xunwei.som.service.impl.UserServiceImpl;
 import com.xunwei.som.util.SOMUtils;
 
 
@@ -40,17 +32,23 @@ import com.xunwei.som.util.SOMUtils;
 @Controller
 public class WeChatCustomer extends BaseController {
 
-	private ServiceManageServiceImpl serviceManageServiceImpl = new ServiceManageServiceImpl();
+	@Autowired
+	private ServiceManageService serviceManageService;
 
-	private ServiceInfoService serviceInfoService = new ServiceInfoServiceImpl();
+	@Autowired
+	private ServiceInfoService serviceInfoService;
 
-	private CustomerManageServiceImpl customerManage = new CustomerManageServiceImpl();
+	@Autowired
+	private CustomerManageService customerManageService;
 
-	private CustomerFeedbackService customerFeedbackService = new CustomerFeedbackServiceImpl();
-	
-	private StaffInfoService staffInfo=new StaffInfoServiceImpl();
+	@Autowired
+	private CustomerFeedbackService customerFeedbackService;
 
-	private UserService userService = new UserServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
+
+	@Autowired
+	private UserService userService;
 
 	/**
 	 * 客户查找工单
@@ -94,9 +92,9 @@ public class WeChatCustomer extends BaseController {
 		Integer a1 = null;
 		for (ServiceInfo serviceInfo2 : serviceInfo) {
 			List<String> process = new ArrayList<>();
-			serviceInfo2.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(serviceInfo2.getWoNumber()));
+			serviceInfo2.setOrderInfo(serviceManageService.selectOrderByOrderNum(serviceInfo2.getWoNumber()));
 			if (serviceInfo2.getOrderInfo().getMachCode() != null) {
-				serviceInfo2.setDevice(customerManage.selectDeviceById(serviceInfo2.getOrderInfo().getMachCode()));
+				serviceInfo2.setDevice(customerManageService.selectDeviceById(serviceInfo2.getOrderInfo().getMachCode()));
 				a1 = 1;
 			} else {
 				a1 = 2;
@@ -150,7 +148,7 @@ public class WeChatCustomer extends BaseController {
 			default:
 				break;
 			}
-			StaffInfo staff=staffInfo.selectStaffByNum(serviceInfo2.getStaffId()==null?null:serviceInfo2.getStaffId());
+			StaffInfo staff=staffInfoService.selectStaffByNum(serviceInfo2.getStaffId()==null?null:serviceInfo2.getStaffId());
 			if (a1 == 1) {
 				orderManage.setCustName(serviceInfo2.getOrderInfo().getCustName());
 				orderManage.setWoNumber(serviceInfo2.getWoNumber());

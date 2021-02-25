@@ -1,7 +1,10 @@
 package com.xunwei.som.calendar;
 
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 
+@Service
 public interface CalendarService {
 
 	/**

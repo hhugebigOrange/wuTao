@@ -9,17 +9,7 @@ import com.xunwei.som.pojo.ServiceInfo;
 import com.xunwei.som.pojo.StaffInfo;
 import com.xunwei.som.pojo.front.CustomerSatisfaction;
 import com.xunwei.som.pojo.permissions.User;
-import com.xunwei.som.service.CustInfoService;
-import com.xunwei.som.service.CustomerFeedbackService;
-import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.CustInfoServiceImpl;
-import com.xunwei.som.service.impl.CustomerFeedbackServiceImpl;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
-import com.xunwei.som.service.impl.MachineServiceImpl;
-import com.xunwei.som.service.impl.ServiceInfoServiceImpl;
-import com.xunwei.som.service.impl.ServiceManageServiceImpl;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
-import com.xunwei.som.service.impl.UserServiceImpl;
+import com.xunwei.som.service.*;
 import com.xunwei.som.util.ExcelUtils;
 import com.xunwei.som.util.SOMUtils;
 
@@ -36,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -51,21 +42,26 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ServiceBoardController extends BaseController {
 
-	private MachineServiceImpl machineServiceImpl = new MachineServiceImpl();
+	@Autowired
+	private MachineService machineService;
 
-	private ServiceManageServiceImpl serviceManageServiceImpl = new ServiceManageServiceImpl();
+	@Autowired
+	private ServiceManageService serviceManageService;
 
-	private CustomerManageServiceImpl customerManage = new CustomerManageServiceImpl();
+	@Autowired
+	private CustomerManageService customerManageService;
 
-	private StaffInfoServiceImpl staffInfoServiceImplnew = new StaffInfoServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
 
-	private ServiceInfoServiceImpl serviceInfoService = new ServiceInfoServiceImpl();
+	@Autowired
+	private ServiceInfoService serviceInfoService;
 
-	private CustInfoService custInfoService = new CustInfoServiceImpl();
+	@Autowired
+	private UserService userService;
 
-	private UserService userService = new UserServiceImpl();
-
-	private CustomerFeedbackService customerFeedbackService = new CustomerFeedbackServiceImpl();
+	@Autowired
+	private CustomerFeedbackService customerFeedbackService;
 
 	private List<OrderInfo> orderss;
 
@@ -138,17 +134,17 @@ public class ServiceBoardController extends BaseController {
 				|| SOMUtils.getCompName(request).get("role").equals("总部客服"))) {
 			serviceArea = (String) SOMUtils.getCompName(request).get("compname");
 		}
-		List<OrderInfo> orders = serviceManageServiceImpl.selectOrderByOrder(custName,
+		List<OrderInfo> orders = serviceManageService.selectOrderByOrder(custName,
 				serviceArea == null ? null : SOMUtils.orderNumToComp(serviceArea), startDate, endDate, workState,
 				faultType, conver, null, null);
 		for (OrderInfo OrderInfo : orders) {
 			OrderInfo.setServiceArea(SOMUtils.CompToOrderNumTo(OrderInfo.getWoNumber().substring(0, 2)));
 			ServiceInfo service = serviceInfoService.selectServiceInfByDyWoNumber(OrderInfo.getWoNumber());
 			if (service.getStaffId() != null) {
-				OrderInfo.setEnginner(staffInfoServiceImplnew.selectStaffByNum(service.getStaffId()).getName());
+				OrderInfo.setEnginner(staffInfoService.selectStaffByNum(service.getStaffId()).getName());
 			}
 			if (OrderInfo.getMachCode() != null) {
-				OrderInfo.setUnitType(customerManage.selectByCode(OrderInfo.getMachCode()).getUnitType());
+				OrderInfo.setUnitType(customerManageService.selectByCode(OrderInfo.getMachCode()).getUnitType());
 			}
 		}
 		// 分页
@@ -262,7 +258,7 @@ public class ServiceBoardController extends BaseController {
 			serviceArea = (String) SOMUtils.getCompName(request).get("compname");
 		}
 		// 用来存放每次查询的设备结果集
-		List<Device> devices = customerManage.selectByDevice(custName, serviceArea, unitType, assetAttr, null, null);
+		List<Device> devices = customerManageService.selectByDevice(custName, serviceArea, unitType, assetAttr, null, null);
 		// 分页
 		Integer page = null; // 页数
 		Integer limit = null; // 每页显示的条目数
@@ -367,11 +363,11 @@ public class ServiceBoardController extends BaseController {
 			childService = (String) SOMUtils.getCompName(request).get("compname");
 		}
 		// 用来存放每次查询的合同结果集
-		List<Contract> contracts = customerManage.selectByCust(custName, childService, null, null, null, null,null,null,null,null);
+		List<Contract> contracts = customerManageService.selectByCust(custName, childService, null, null, null, null,null,null,null,null);
 		// 查找到期合同
-		List<Contract> timeContracts = customerManage.selectByCust(custName, childService, "1", "", null, null,null,null,null,null);
+		List<Contract> timeContracts = customerManageService.selectByCust(custName, childService, "1", "", null, null,null,null,null,null);
 		// 查找一年内到期合同
-		List<Contract> dueToContracts = customerManage.selectByCust(custName, childService, "", "1", null, null,null,null,null,null);
+		List<Contract> dueToContracts = customerManageService.selectByCust(custName, childService, "", "1", null, null,null,null,null,null);
 		for (Contract contract : contracts) {
 			// 合同期限
 			long a = contract.getEndDate().getTime() - contract.getStartDate().getTime();
@@ -500,7 +496,7 @@ public class ServiceBoardController extends BaseController {
 		}
 		// 根据条件找出所有
 		// 用来存放每次查询的岗位结果集
-		List<StaffInfo> staffs = staffInfoServiceImplnew.getStaffByDynamic("", serviceArea, role, "", null, null, null,null);
+		List<StaffInfo> staffs = staffInfoService.getStaffByDynamic("", serviceArea, role, "", null, null, null,null);
 		// 根据传入的参数，设定page和Limit的值
 		Integer[] para = SOMUtils.pageAndLimit(request, staffs, page, limit);
 		if (para[0] == null) {
@@ -640,8 +636,8 @@ public class ServiceBoardController extends BaseController {
 				continue;
 			}
 			CustomerSatisfaction CustomerSatisfaction = new CustomerSatisfaction();
-			service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(service.getWoNumber()));
-			service.setStaffInfo(staffInfoServiceImplnew.selectStaffByNum(service.getStaffId()));
+			service.setOrderInfo(serviceManageService.selectOrderByOrderNum(service.getWoNumber()));
+			service.setStaffInfo(staffInfoService.selectStaffByNum(service.getStaffId()));
 			CustomerSatisfaction.setCustName(service.getOrderInfo().getCustName());
 			CustomerSatisfaction.setServiceArea(SOMUtils.CompToOrderNumTo(service.getWoNumber().substring(0, 2)));
 			CustomerSatisfaction.setWoNumber(service.getWoNumber());
@@ -752,7 +748,7 @@ public class ServiceBoardController extends BaseController {
 			return modelAndView;
 		}
 		try {
-			List<Machine> Machines = this.machineServiceImpl.selectMachineByDynamic(customerName);
+			List<Machine> Machines = this.machineService.selectMachineByDynamic(customerName);
 			for (Machine machine : Machines) {
 				System.out.println(machine);
 			}
@@ -770,7 +766,7 @@ public class ServiceBoardController extends BaseController {
 	 */
 	@RequestMapping("/floatingWindow")
 	public ModelAndView goToFloatingWindow(ModelAndView modelAndView) {
-		List<OrderInfo> orderInfos = serviceManageServiceImpl.getOrderByProcessed("未处理");
+		List<OrderInfo> orderInfos = serviceManageService.getOrderByProcessed("未处理");
 		modelAndView.addObject("orderNumber", orderInfos.size());
 		modelAndView.addObject("orderInfos", orderInfos);
 		modelAndView.setViewName("/serviceboard/html/floatingWindow");
@@ -789,7 +785,7 @@ public class ServiceBoardController extends BaseController {
 	 * @RequestMapping("/sendOrder") public ModelAndView sendOrder(ModelAndView
 	 * modelAndView, HttpServletRequest request) { String woNumber =
 	 * request.getParameter("woNumber");
-	 * serviceManageServiceImpl.updateWoStatus(woNumber, "处理中");
+	 * serviceManageService.updateWoStatus(woNumber, "处理中");
 	 * modelAndView.setViewName("redirect:/floatingWindow"); return
 	 * modelAndView; }
 	 */

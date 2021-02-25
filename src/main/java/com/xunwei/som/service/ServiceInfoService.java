@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import com.xunwei.som.pojo.OrderInfo;
 import com.xunwei.som.pojo.ServiceInfo;
 import com.xunwei.som.pojo.StaffInfo;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface ServiceInfoService {
 
 	/**

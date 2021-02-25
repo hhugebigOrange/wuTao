@@ -7,12 +7,15 @@ import com.xunwei.som.pojo.OpenId;
 import com.xunwei.som.pojo.permissions.RolePermission;
 import com.xunwei.som.pojo.permissions.User;
 import com.xunwei.som.pojo.permissions.UserRole;
+import org.springframework.stereotype.Service;
 
 /**
  * 用户接口
  * @author Administrator
  *
  */
+
+@Service
 public interface UserService {
 
 	/**

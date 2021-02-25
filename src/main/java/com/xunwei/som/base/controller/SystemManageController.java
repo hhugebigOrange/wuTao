@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.xunwei.som.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,18 +20,6 @@ import com.xunwei.som.pojo.permissions.ParameterSetting;
 import com.xunwei.som.pojo.permissions.RolePermission;
 import com.xunwei.som.pojo.permissions.User;
 import com.xunwei.som.pojo.permissions.UserRole;
-import com.xunwei.som.service.CompInfoService;
-import com.xunwei.som.service.CustInfoService;
-import com.xunwei.som.service.ParameterSettingService;
-import com.xunwei.som.service.SloganService;
-import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.CompInfoServiceImpl;
-import com.xunwei.som.service.impl.CustInfoServiceImpl;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
-import com.xunwei.som.service.impl.ParameterSettingServiceImpl;
-import com.xunwei.som.service.impl.SloganServiceImpl;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
-import com.xunwei.som.service.impl.UserServiceImpl;
 import com.xunwei.som.util.SOMUtils;
 
 /**
@@ -42,21 +32,27 @@ import com.xunwei.som.util.SOMUtils;
 @Controller
 public class SystemManageController extends BaseController {
 
-	private SloganService sloganService = new SloganServiceImpl();
+	@Autowired
+	private SloganService sloganService;
 
-	private CompInfoService compInfoService = new CompInfoServiceImpl();
+	@Autowired
+	private CompInfoService compInfoService;
 
-	private ParameterSettingService parameterSettingService = new ParameterSettingServiceImpl();
+	@Autowired
+	private ParameterSettingService parameterSettingService;
 
-	private UserService userService = new UserServiceImpl();
+	@Autowired
+	private UserService userService;
 
-	private CustInfoService custInfoService = new CustInfoServiceImpl();
+	@Autowired
+	private CustInfoService custInfoService;
 
-	private StaffInfoServiceImpl staffInfoServiceImplnew = new StaffInfoServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
 
-	private CustomerManageServiceImpl customerManage = new CustomerManageServiceImpl();
+	@Autowired
+	private CustomerManageService customerManageService;
 
-	public List<CompInfo> compInfos;
 
 	/**
 	 * 账户管理
@@ -306,7 +302,7 @@ public class SystemManageController extends BaseController {
 			json.put("msg", param + "不能为空");
 			return json;
 		}
-		StaffInfo staff = staffInfoServiceImplnew.selectStaffByNum(staffId);
+		StaffInfo staff = staffInfoService.selectStaffByNum(staffId);
 		// 判断该员工编码是否存在
 		if (staff == null) {
 			json.put("code", 1);
@@ -524,7 +520,7 @@ public class SystemManageController extends BaseController {
 			return json;
 		}
 		// 创建分公司对象
-		StaffInfo staffInfo = staffInfoServiceImplnew.selectStaffByNum(staffId);
+		StaffInfo staffInfo = staffInfoService.selectStaffByNum(staffId);
 		if (staffInfo == null) {
 			json.put("code", 1);
 			json.put("msg", "员工编码不存在，请重新输入");
@@ -589,7 +585,7 @@ public class SystemManageController extends BaseController {
 		int result = compInfoService.updateByPrimaryKeySelective(compInfo);
 		if (result > 0) {
 			if (!serviceArea.equals(compInfo1.getCompName())) {
-				customerManage.updateDeviceServiceArea(compInfo1.getCompName(), serviceArea);
+				customerManageService.updateDeviceServiceArea(compInfo1.getCompName(), serviceArea);
 			}
 			json.put("code", 0);
 			json.put("msg", "修改成功");

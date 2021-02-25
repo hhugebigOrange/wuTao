@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Param;
 
 import com.xunwei.som.pojo.MaintenancePerform;
 import com.xunwei.som.pojo.Maintenance;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface Maintenanceservice {
 	/**
 	 * 

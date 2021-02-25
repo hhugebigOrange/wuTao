@@ -3,12 +3,14 @@ package com.xunwei.som.service;
 import java.util.List;
 
 import com.xunwei.som.pojo.permissions.ParameterSetting;
+import org.springframework.stereotype.Service;
 
 /**
  * 参数接口
  * @author Administrator
  *
  */
+@Service
 public interface ParameterSettingService {
 
 	 /**

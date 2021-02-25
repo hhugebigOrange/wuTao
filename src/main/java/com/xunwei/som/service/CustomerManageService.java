@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import com.xunwei.som.pojo.Contract;
 import com.xunwei.som.pojo.Device;
 import com.xunwei.som.pojo.DeviceChange;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface CustomerManageService {
 
 	/**

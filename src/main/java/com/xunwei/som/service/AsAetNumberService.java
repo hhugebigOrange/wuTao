@@ -5,12 +5,14 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.xunwei.som.pojo.AssetNumber;
+import org.springframework.stereotype.Service;
 
 /**
  * 资产管理接口
  * @author Administrator
  *
  */
+@Service
 public interface AsAetNumberService {
 
 	/**

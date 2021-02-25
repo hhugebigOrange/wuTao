@@ -3,12 +3,14 @@ package com.xunwei.som.service;
 import java.util.List;
 
 import com.xunwei.som.pojo.CompInfo;
+import org.springframework.stereotype.Service;
 
 /**
  * 分公司服务接口
  * @author Administrator
  *
  */
+@Service
 public interface CompInfoService {
 
 	/**

@@ -10,9 +10,11 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.xunwei.som.service.StaffInfoService;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +30,6 @@ import com.xunwei.som.pojo.permissions.UserRole;
 import com.xunwei.som.service.CustInfoService;
 import com.xunwei.som.service.CustomerManageService;
 import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.CustInfoServiceImpl;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
 import com.xunwei.som.service.impl.UserServiceImpl;
 import com.xunwei.som.util.ExcelUtils;
 import com.xunwei.som.util.SOMUtils;
@@ -50,11 +49,14 @@ public class BaseInfoController extends BaseController {
 	 */
 	private List<StaffInfo> staffInfos;
 
-	private StaffInfoServiceImpl staffInfoServiceImplnew = new StaffInfoServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
 
-	private CustomerManageService customerManageService = new CustomerManageServiceImpl();
+	@Autowired
+	private CustomerManageService customerManageService;
 
-	private CustInfoService custInfoService = new CustInfoServiceImpl();
+	@Autowired
+	private CustInfoService custInfoService;
 	// 用于每次查询后，保存查询后的客户信息
 	private List<CustInfo> custInfos;
 	// 用于保存每个用户的查询记录
@@ -423,9 +425,9 @@ public class BaseInfoController extends BaseController {
 				identifier = "1";
 			}
 		}
-		List<StaffInfo> staffInfo = staffInfoServiceImplnew.getStaffByDynamic(name, branceName, role, "", page, limit,
+		List<StaffInfo> staffInfo = staffInfoService.getStaffByDynamic(name, branceName, role, "", page, limit,
 				null, identifier);
-		staffInfos = staffInfoServiceImplnew.getStaffByDynamic(name, branceName, role, "", null, null, null,
+		staffInfos = staffInfoService.getStaffByDynamic(name, branceName, role, "", null, null, null,
 				identifier);
 		export.put(request.getParameter("username") + "userManageInfo", staffInfos);
 		json.put("code", 0);
@@ -472,7 +474,7 @@ public class BaseInfoController extends BaseController {
 		}
 		String staffId = staffId1.toUpperCase();
 		// 判断员工编号和手机号是否重复
-		for (StaffInfo staff : staffInfoServiceImplnew.selectAllStaff()) {
+		for (StaffInfo staff : staffInfoService.selectAllStaff()) {
 			if (staff.getName().equals(staffName)) {
 				json.put("code", 1);
 				json.put("msg", "对不起，该员工姓名已经存在");
@@ -515,7 +517,7 @@ public class BaseInfoController extends BaseController {
 		} else if (secret.equals("否")) {
 			secretLevel = "";
 		}
-		if (staffInfoServiceImplnew.selectCompIdByName(serviceArea) == 0) {
+		if (staffInfoService.selectCompIdByName(serviceArea) == 0) {
 			json.put("code", 1);
 			json.put("msg", "对不起，分公司名称不存在，请重新输入");
 			return json;
@@ -524,7 +526,7 @@ public class BaseInfoController extends BaseController {
 			staffName = staffName + "(待审批)";
 		}
 		// 获得传递过来公司名对应的公司ID
-		int comperNumber = staffInfoServiceImplnew.selectCompIdByName(serviceArea);
+		int comperNumber = staffInfoService.selectCompIdByName(serviceArea);
 		Date createDate = new Date();
 		StaffInfo staff = new StaffInfo(staffName, phoneNumber, comperNumber, serviceArea, post, createDate);
 		staff.setSecret(secret);
@@ -533,7 +535,7 @@ public class BaseInfoController extends BaseController {
 		staff.setStaffId(staffId);
 		staff.setRemark(remark);
 		// 如果参数不为空，则调用增加方法
-		boolean result = staffInfoServiceImplnew.insertStaff(staff);
+		boolean result = staffInfoService.insertStaff(staff);
 		if (result) {
 			// 判断该账号是否已经注册过
 			if (userService.selectByUserId(phoneNumber) != null) {
@@ -593,7 +595,7 @@ public class BaseInfoController extends BaseController {
 			limit = para[1];
 		}
 		json.put("code", 0);
-		json.put("data", staffInfoServiceImplnew.getStaffByDynamic("待审批", null, null, null, page, limit, null, null));
+		json.put("data", staffInfoService.getStaffByDynamic("待审批", null, null, null, page, limit, null, null));
 		return json;
 	}
 
@@ -614,7 +616,7 @@ public class BaseInfoController extends BaseController {
 			json.put("msg", "请输入要审批员工的员工编码");
 			return json;
 		}
-		StaffInfo staff = staffInfoServiceImplnew.selectStaffByNum(staffId);
+		StaffInfo staff = staffInfoService.selectStaffByNum(staffId);
 		if (staff == null) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该员工不存在");
@@ -627,7 +629,7 @@ public class BaseInfoController extends BaseController {
 		}
 		staff.setName(staff.getName().split("\\(")[0]);
 		System.out.println(staff.getName());
-		staffInfoServiceImplnew.updateStaff(staff);
+		staffInfoService.updateStaff(staff);
 		User user = new User();
 		user.setUserId(staff.getPhone());
 		user.setUserName(staff.getName());
@@ -647,7 +649,7 @@ public class BaseInfoController extends BaseController {
 		Map<String, Object> json = new HashMap<>();
 		// 从前端接收参数
 		String staffId = request.getParameter("staffId");
-		StaffInfo staffInfo = staffInfoServiceImplnew.selectStaffByNum(staffId);
+		StaffInfo staffInfo = staffInfoService.selectStaffByNum(staffId);
 		json.put("code", 0);
 		json.put("msg", "查询成功");
 		json.put("data", staffInfo);
@@ -672,7 +674,7 @@ public class BaseInfoController extends BaseController {
 		String secretLevel = request.getParameter("secretLevel");
 		String remark = request.getParameter("secretLevel");
 		// 获得传递过来公司名对应的公司ID
-		Integer comperNumber = staffInfoServiceImplnew.selectCompIdByName(serviceArea);
+		Integer comperNumber = staffInfoService.selectCompIdByName(serviceArea);
 		String post = request.getParameter("role");
 		String phoneNumber = request.getParameter("phoneNumber");
 		// 判断是否存在空值
@@ -714,9 +716,9 @@ public class BaseInfoController extends BaseController {
 		} else {
 			secretLevel = null;
 		}
-		StaffInfo oldStaff = staffInfoServiceImplnew.selectStaffByNum(staffId); // 原员工信息
+		StaffInfo oldStaff = staffInfoService.selectStaffByNum(staffId); // 原员工信息
 		// 判断电话是否注册过
-		for (StaffInfo staff : staffInfoServiceImplnew.selectAllStaff()) {
+		for (StaffInfo staff : staffInfoService.selectAllStaff()) {
 			if (staff.getStaffId().equals(staffId)) {
 				if (!staffId.equals(oldStaff.getStaffId())) {
 					json.put("code", 1);
@@ -761,7 +763,7 @@ public class BaseInfoController extends BaseController {
 			staff.setSecretLevel(secretLevel);
 			staff.setRemark(remark);
 		}
-		int result = staffInfoServiceImplnew.updateStaff(staff); // 修改基本信息
+		int result = staffInfoService.updateStaff(staff); // 修改基本信息
 		userService.updateByPrimaryKeySelective(user); // 修改对应用户信息
 		userService.updateByPrimaryKeySelective(userRole); // 修改对应角色信息
 		if (result > 0) {
@@ -786,9 +788,9 @@ public class BaseInfoController extends BaseController {
 		Map<String, Object> json = new HashMap<>();
 		// 从前端接收参数
 		String staffId = request.getParameter("staffId");
-		String userId = staffInfoServiceImplnew.selectStaffByNum(staffId).getPhone();
+		String userId = staffInfoService.selectStaffByNum(staffId).getPhone();
 		// 先删除用户
-		staffInfoServiceImplnew.deleteStaffById(staffId);
+		staffInfoService.deleteStaffById(staffId);
 		// 在删除账户
 		userService.deleteByPrimaryKey(userId);
 		// 在删除账户-角色，对应关系
@@ -956,14 +958,14 @@ public class BaseInfoController extends BaseController {
 			compName = (String) SOMUtils.getCompName(request).get("compname");
 		}
 		// 根据前端传递的条件筛选对应用户,此处岗位限定为工程师
-		List<StaffInfo> staffInfos = staffInfoServiceImplnew.getStaffByDynamic(name, compName, "工程师", "", null, null,
+		List<StaffInfo> staffInfos = staffInfoService.getStaffByDynamic(name, compName, "工程师", "", null, null,
 				null, null);
 		// 循环遍历工程师的结束时间是否到期，若到期，则将开始时间，结束时间，事由原因清空
 		Date date = new Date();// 获取当前时间
 		for (StaffInfo staffInfo : staffInfos) {
 			if (staffInfo.getEndDate() != null) {
 				if (date.after(staffInfo.getEndDate())) {
-					staffInfoServiceImplnew.updateDateByStaffId(staffInfo.getStaffId());
+					staffInfoService.updateDateByStaffId(staffInfo.getStaffId());
 				}
 			}
 		}
@@ -1024,7 +1026,7 @@ public class BaseInfoController extends BaseController {
 			return json;
 		}
 		// 在判断填写的员工编号是否存在
-		StaffInfo staff = staffInfoServiceImplnew.selectStaffByNum(staffCode);
+		StaffInfo staff = staffInfoService.selectStaffByNum(staffCode);
 		if (staff == null) {
 			json.put("code", 1);
 			json.put("msg", "对不起，员工编号不存在");
@@ -1053,7 +1055,7 @@ public class BaseInfoController extends BaseController {
 			staffInfo.setStartDate(ExcelUtils.fmt.parse(startDate));
 			staffInfo.setEndDate(ExcelUtils.fmt.parse(endDate));
 			staffInfo.setReson(reson);
-			staffInfoServiceImplnew.updateStaff(staffInfo);
+			staffInfoService.updateStaff(staffInfo);
 			json.put("code", 0);
 			json.put("msg", "新增行程成功");
 			return json;

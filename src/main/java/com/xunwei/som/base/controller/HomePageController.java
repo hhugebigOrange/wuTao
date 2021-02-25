@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.xunwei.som.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,15 +23,6 @@ import com.xunwei.som.pojo.ServiceInfo;
 import com.xunwei.som.pojo.StaffInfo;
 import com.xunwei.som.pojo.permissions.ParameterSetting;
 import com.xunwei.som.pojo.permissions.User;
-import com.xunwei.som.service.CustInfoService;
-import com.xunwei.som.service.ServiceInfoService;
-import com.xunwei.som.service.UserService;
-import com.xunwei.som.service.impl.CustInfoServiceImpl;
-import com.xunwei.som.service.impl.CustomerManageServiceImpl;
-import com.xunwei.som.service.impl.ServiceInfoServiceImpl;
-import com.xunwei.som.service.impl.ServiceManageServiceImpl;
-import com.xunwei.som.service.impl.StaffInfoServiceImpl;
-import com.xunwei.som.service.impl.UserServiceImpl;
 import com.xunwei.som.util.ExcelUtils;
 import com.xunwei.som.util.SMS;
 import com.xunwei.som.util.SOMUtils;
@@ -37,24 +30,30 @@ import com.xunwei.som.util.SOMUtils;
 @Controller
 public class HomePageController extends BaseController {
 
-	private ServiceManageServiceImpl serviceManageServiceImpl = new ServiceManageServiceImpl();
+	@Autowired
+	private ServiceManageService serviceManageService;
 
-	private ServiceInfoService serviceInfoService = new ServiceInfoServiceImpl();
+	@Autowired
+	private ServiceInfoService serviceInfoService;
 
-	private StaffInfoServiceImpl staffInfoServiceImplnew = new StaffInfoServiceImpl();
+	@Autowired
+	private StaffInfoService staffInfoService;
 
-	private CustInfoService custInfoService = new CustInfoServiceImpl();
+	@Autowired
+	private CustInfoService custInfoService;
 
-	private UserService userService = new UserServiceImpl();
-	
-	private CustomerManageServiceImpl customerManage = new CustomerManageServiceImpl();
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private CustomerManageService customerManageService;
 
 	/**
 	 * 匹配首页,浮动窗显示待处理工单个数
 	 */
 	@RequestMapping("/home")
 	public ModelAndView homePage(ModelAndView modelAndView) {
-		int orderNumber = serviceManageServiceImpl.getOrderByWoStatus("未处理");
+		int orderNumber = serviceManageService.getOrderByWoStatus("未处理");
 		modelAndView.addObject("orderNumber", orderNumber);
 		modelAndView.setViewName("/homePage/html/home");
 		return modelAndView;
@@ -102,7 +101,7 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，您要转单的工单号不存在");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		/*
 		 * if (!service.getOrderInfo().getWoStatus().equals("已受理")) {
 		 * json.put("code", 1); json.put("msg", "对不起，此工单已经被转单过一次，不能再次转单");
@@ -113,20 +112,20 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，该工单已经被转单过一次，不能再次转单");
 			return json;
 		}
-		if (serviceManageServiceImpl.selectOrderByOrderNum(woNumber + "-1") != null) {
+		if (serviceManageService.selectOrderByOrderNum(woNumber + "-1") != null) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该工单已经转单，转单后的工单号为" + woNumber + "-1");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		// 当前工单完结，显示为已转单
-		serviceManageServiceImpl.updateWoStatus(woNumber, "已转单");
+		serviceManageService.updateWoStatus(woNumber, "已转单");
 		OrderInfo oldOrderinfo = new OrderInfo();
 		oldOrderinfo.setWoNumber(woNumber);
 		oldOrderinfo.setTurnOrderReson(turnOrderReson);
 		oldOrderinfo.setWoStatus("已转单");
 		oldOrderinfo.setWoProgress("已转单");
-		serviceManageServiceImpl.updateOrder(oldOrderinfo);
+		serviceManageService.updateOrder(oldOrderinfo);
 		// 生成新的工单
 		// 如果没有机器编码，则新生成的为没有机器编码的工单
 		if (service.getOrderInfo().getMachCode() == null || service.getOrderInfo().getMachCode().equals("")) {
@@ -148,7 +147,7 @@ public class HomePageController extends BaseController {
 			orderinfo.setTurnOrderReson(turnOrderReson);
 			orderinfo.setDistributeMan(service.getOrderInfo().getDistributeMan());
 			orderinfo.setOrderAccount(service.getOrderInfo().getOrderAccount());
-			boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+			boolean result = serviceManageService.insertOrder(orderinfo);
 			if (result) {
 				// 如果工单增加成功，则在增加服务评价
 				ServiceInfo serviceInfo = new ServiceInfo();
@@ -179,14 +178,14 @@ public class HomePageController extends BaseController {
 			orderinfo.setTurnOrderReson(turnOrderReson);
 			orderinfo.setDistributeMan(service.getOrderInfo().getDistributeMan());
 			orderinfo.setOrderAccount(service.getOrderInfo().getOrderAccount());
-			service.setDevice(customerManage.selectByCode(orderinfo.getMachCode()));
-			boolean result = serviceManageServiceImpl.insertOrder(orderinfo);
+			service.setDevice(customerManageService.selectByCode(orderinfo.getMachCode()));
+			boolean result = serviceManageService.insertOrder(orderinfo);
 			if (result) {
 				// 如果工单增加成功，则在增加服务评价
 				ServiceInfo serviceInfo = new ServiceInfo();
 				serviceInfo.setWoNumber(orderinfo.getWoNumber());
 				serviceInfo.setStaffId(service.getDevice().getResponsibleEngineerID());
-				serviceManageServiceImpl.insertSelective(serviceInfo);
+				serviceManageService.insertSelective(serviceInfo);
 				json.put("code", 0);
 				json.put("msg", "转单成功");
 				return json;
@@ -226,7 +225,7 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，该工单号不存在");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		// 判断该工单的状态
 		if (service.getState() != null && !service.getState().equals("")) {
 			json.put("code", 1);
@@ -234,13 +233,13 @@ public class HomePageController extends BaseController {
 			return json;
 		}
 		// 更新工程师的接单时间
-		int a = serviceManageServiceImpl.updateWoStatus(woNumber, woStatus);
+		int a = serviceManageService.updateWoStatus(woNumber, woStatus);
 		if (a > 0) {
 			// 接单成功，更新工单的流程状态，并发送短信到报修人联系电话里
 			OrderInfo order = new OrderInfo();
 			order.setWoNumber(woNumber);
 			order.setWoProgress(woStatus);
-			serviceManageServiceImpl.updateOrder(order);
+			serviceManageService.updateOrder(order);
 			service.setState("1,true");
 			serviceInfoService.upDateServiceInfo(service);
 			//如果是事故单，则发送短信
@@ -285,7 +284,7 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，该工单号不存在");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		// 判断是否接单
 		if (service.getState() == null || !service.getState().contains("1")) {
 			json.put("code", 1);
@@ -308,7 +307,7 @@ public class HomePageController extends BaseController {
 			order.setWoNumber(woNumber);
 			order.setWoStatus("处理中");
 			order.setWoProgress("已致电，请选择是否解决");
-			serviceManageServiceImpl.updateOrder(order);
+			serviceManageService.updateOrder(order);
 			json.put("code", 0);
 			json.put("msg", "致电客户成功");
 			return json;
@@ -349,7 +348,7 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，该工单号不存在");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		// 判断是否进行上一个流程
 		if (service.getState() == null || !service.getState().contains("2")) {
 			json.put("code", 1);
@@ -378,7 +377,7 @@ public class HomePageController extends BaseController {
 				order.setWoNumber(woNumber);
 				order.setWoStatus("处理中");
 				order.setWoProgress("电话已解决，请填写反馈");
-				serviceManageServiceImpl.updateOrder(order);
+				serviceManageService.updateOrder(order);
 				json.put("code", 0);
 				json.put("msg", "电话解决了问题");
 				json.put("show", false);
@@ -392,7 +391,7 @@ public class HomePageController extends BaseController {
 				order.setWoNumber(woNumber);
 				order.setWoStatus("处理中");
 				order.setWoProgress("电话未解决，请到达现场");
-				serviceManageServiceImpl.updateOrder(order);
+				serviceManageService.updateOrder(order);
 				json.put("code", 0);
 				json.put("msg", "电话未能解决问题，准备到达现场");
 				json.put("show", false);
@@ -435,7 +434,7 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，该工单号不存在");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		// 判断工单是否需要扫码
 		if (!service.getOrderInfo().getFaultType().equals("事故类")) {
 			json.put("code", 1);
@@ -471,7 +470,7 @@ public class HomePageController extends BaseController {
 				order.setWoNumber(woNumber);
 				order.setWoStatus("处理中");
 				order.setWoProgress("已到达现场");
-				serviceManageServiceImpl.updateOrder(order);
+				serviceManageService.updateOrder(order);
 				json.put("code", 0);
 				json.put("msg", "扫码到达现场成功");
 				return json;
@@ -487,7 +486,7 @@ public class HomePageController extends BaseController {
 				order.setWoNumber(woNumber);
 				order.setWoStatus("处理中");
 				order.setWoProgress("已到达现场");
-				serviceManageServiceImpl.updateOrder(order);
+				serviceManageService.updateOrder(order);
 				json.put("code", 0);
 				json.put("msg", "扫码到达现场成功");
 				return json;
@@ -527,7 +526,7 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，该工单号不存在");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		// 判断工单是否需要扫码
 		if (service.getOrderInfo().getFaultType().equals("事故类")) {
 			json.put("code", 1);
@@ -557,7 +556,7 @@ public class HomePageController extends BaseController {
 				order.setWoNumber(woNumber);
 				order.setWoStatus("处理中");
 				order.setWoProgress("已到达现场，未反馈");
-				serviceManageServiceImpl.updateOrder(order);
+				serviceManageService.updateOrder(order);
 				json.put("code", 0);
 				json.put("msg", "到达现场成功");
 				return json;
@@ -573,7 +572,7 @@ public class HomePageController extends BaseController {
 				order.setWoNumber(woNumber);
 				order.setWoStatus("处理中");
 				order.setWoProgress("已到达现场，未反馈");
-				serviceManageServiceImpl.updateOrder(order);
+				serviceManageService.updateOrder(order);
 				json.put("code", 0);
 				json.put("msg", "到达现场成功");
 				return json;
@@ -615,7 +614,7 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，该工单号不存在");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		if (woNumber.length() > 14) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该工单已经被转单过一次，不能再次转单");
@@ -627,7 +626,7 @@ public class HomePageController extends BaseController {
 		 * return json; }
 		 */
 		// 过来肯定是14位
-		if (serviceManageServiceImpl.selectOrderByOrderNum(woNumber + "-1") != null) {
+		if (serviceManageService.selectOrderByOrderNum(woNumber + "-1") != null) {
 			json.put("code", 1);
 			json.put("msg", "对不起，该工单已经转单，转单后的工单号为" + woNumber + "-1");
 			return json;
@@ -654,14 +653,14 @@ public class HomePageController extends BaseController {
 		service.setState(service.getState() + ",5,true");
 		serviceInfoService.upDateServiceInfo(service);
 		// 更新工单转单时间
-		serviceManageServiceImpl.updateWoStatus(woNumber, "已转单");
+		serviceManageService.updateWoStatus(woNumber, "已转单");
 		// 转单成功，更新工单的流程状态
 		OrderInfo order = new OrderInfo();
 		order.setWoNumber(woNumber);
 		order.setTurnOrderReson(turnOrderReson);
 		order.setWoStatus("已转单");
 		order.setWoProgress("已转单");
-		serviceManageServiceImpl.updateOrder(order);
+		serviceManageService.updateOrder(order);
 		// 生成新订单，并指派给技术主管
 		OrderInfo orderinfo = new OrderInfo();
 		orderinfo.setWoNumber(woNumber + "-1");
@@ -685,12 +684,12 @@ public class HomePageController extends BaseController {
 		orderinfo.setWoStatus("已接单");
 		orderinfo.setWoProgress("已接单");
 		orderinfo.setOrderAccount(service.getOrderInfo().getOrderAccount());
-		serviceManageServiceImpl.insertOrder(orderinfo);
+		serviceManageService.insertOrder(orderinfo);
 		// 生成相应的服务评价
 		ServiceInfo serviceInfo = new ServiceInfo();
 		serviceInfo.setWoNumber(woNumber + "-1");
 		serviceInfo.setState("1,true");
-		List<StaffInfo> StaffInfo = staffInfoServiceImplnew.selectAllStaff();
+		List<StaffInfo> StaffInfo = staffInfoService.selectAllStaff();
 		String compName = SOMUtils.CompToOrderNumTo(woNumber.substring(0, 2));
 		for (StaffInfo staffInfo : StaffInfo) {
 			if (staffInfo.getPost().equals("技术主管") && staffInfo.getCompName().equals(compName)) {
@@ -699,7 +698,7 @@ public class HomePageController extends BaseController {
 			}
 		}
 		// 更新服务评价
-		if (serviceManageServiceImpl.insertSelective(serviceInfo) > 0) {
+		if (serviceManageService.insertSelective(serviceInfo) > 0) {
 			json.put("code", 0);
 			json.put("msg", "转单成功");
 			return json;
@@ -754,7 +753,7 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，该工单号不存在");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		// 判断工单是否需要扫码
 		if (!service.getOrderInfo().getFaultType().equals("事故类")) {
 			json.put("code", 1);
@@ -789,7 +788,7 @@ public class HomePageController extends BaseController {
 		orderInfo.setPartsTypeNumber(sb.toString());
 		orderInfo.setWoStatus("待订件，等待二次上门");
 		orderInfo.setWoProgress("待审批");
-		if (serviceManageServiceImpl.updateOrder(orderInfo)) {
+		if (serviceManageService.updateOrder(orderInfo)) {
 			service.setState(service.getState() + ",6,true");
 			serviceInfoService.upDateServiceInfo(service);
 			json.put("code", 0);
@@ -839,7 +838,7 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，该工单号不存在");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		if (service.getState() != null && service.getState().contains("7")) {
 			json.put("code", 1);
 			json.put("msg", "对不起，此工单已经解决");
@@ -887,12 +886,12 @@ public class HomePageController extends BaseController {
 			orderInfo.setMaintenanceFeedback(maintenanceFeedback);
 			orderInfo.setWoStatus("已完成");
 			orderInfo.setWoProgress("已完成");
-			serviceManageServiceImpl.updateOrder(orderInfo);
+			serviceManageService.updateOrder(orderInfo);
 			Device device=new Device();
 			device.setMachCode(service.getOrderInfo().getMachCode());
 			device.setBwReader(bwReader);
 			device.setColorReader(coReader);
-			customerManage.updateByPrimaryKeySelective(device);
+			customerManageService.updateByPrimaryKeySelective(device);
 			// 更新服务信息
 			service.setProbSolve(new Date());
 			service.setState(service.getState() + ",7,true");
@@ -913,12 +912,12 @@ public class HomePageController extends BaseController {
 			orderInfo.setMaintenanceFeedback(maintenanceFeedback);
 			orderInfo.setWoStatus("已关单");
 			orderInfo.setWoProgress("已关单");
-			serviceManageServiceImpl.updateOrder(orderInfo);
+			serviceManageService.updateOrder(orderInfo);
 			Device device=new Device();
 			device.setMachCode(service.getOrderInfo().getMachCode());
 			device.setBwReader(bwReader);
 			device.setColorReader(coReader);
-			customerManage.updateByPrimaryKeySelective(device);
+			customerManageService.updateByPrimaryKeySelective(device);
 			// 更新服务信息
 			service.setProbSolve(new Date());
 			service.setState(service.getState() + ",7,true");
@@ -965,7 +964,7 @@ public class HomePageController extends BaseController {
 			json.put("msg", "对不起，该工单号不存在");
 			return json;
 		}
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		// 判断是否进行上一个流程
 		/*
 		 * if (service.getState() == null || !service.getState().contains("4"))
@@ -984,7 +983,7 @@ public class HomePageController extends BaseController {
 		orderInfo.setTreatmentMeasure(treatmentMeasure);
 		orderInfo.setWoStatus("已完成");
 		orderInfo.setWoProgress("已完成");
-		serviceManageServiceImpl.updateOrder(orderInfo);
+		serviceManageService.updateOrder(orderInfo);
 		// 更新服务信息
 		service.setProbSolve(new Date());
 		service.setState(service.getState() + ",7,true");
@@ -1016,7 +1015,7 @@ public class HomePageController extends BaseController {
 		// 从前端接收参数
 		String woNumber = request.getParameter("woNumber"); // 工单号
 		ServiceInfo service = serviceInfoService.selectServiceInfByDyWoNumber(woNumber);
-		service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(woNumber));
+		service.setOrderInfo(serviceManageService.selectOrderByOrderNum(woNumber));
 		// 如果步骤为空，跳转接单页面
 		if (service.getState() == null || service.getState().equals("")) {
 			json.put("code", 0);
@@ -1072,7 +1071,7 @@ public class HomePageController extends BaseController {
 		orderInfo.setFaultClass(faultClass);
 		orderInfo.setFalutNo(falutNo);
 		// 调用修改工单状态的方法
-		boolean result = serviceManageServiceImpl.updateOrder(orderInfo);
+		boolean result = serviceManageService.updateOrder(orderInfo);
 		if (result) {
 			json.put("code", 0);
 			json.put("data", "修改成功");
@@ -1104,7 +1103,7 @@ public class HomePageController extends BaseController {
 		OrderInfo orderInfo = new OrderInfo();
 		orderInfo.setCustName(custName);
 		// 调用修改工单状态的方法
-		List<OrderInfo> result = serviceManageServiceImpl.selectOrderByParts(orderInfo);
+		List<OrderInfo> result = serviceManageService.selectOrderByParts(orderInfo);
 		json.put("code", 0);
 		json.put("data", result);
 		json.put("msg", "修改成功");
@@ -1144,8 +1143,8 @@ public class HomePageController extends BaseController {
 		List<OrderInfo> orderInfos = new ArrayList<OrderInfo>();
 		// 循环给orderInfo和staffInfo赋值
 		for (ServiceInfo service : serviceInfos) {
-			service.setOrderInfo(serviceManageServiceImpl.selectOrderByOrderNum(service.getWoNumber()));
-			service.setStaffInfo(staffInfoServiceImplnew.selectStaffByNum(service.getStaffId()));
+			service.setOrderInfo(serviceManageService.selectOrderByOrderNum(service.getWoNumber()));
+			service.setStaffInfo(staffInfoService.selectStaffByNum(service.getStaffId()));
 		}
 		for (ServiceInfo serviceInfo : serviceInfos) {
 			if (serviceInfo.getProbSolve() == null || "".equals(serviceInfo.getProbSolve())) {
