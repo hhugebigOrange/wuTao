@@ -42,7 +42,7 @@
 		<netty_version>3.7.0.Final</netty_version>
 		<mina_version>1.1.7</mina_version>
 		<grizzly_version>2.1.4</grizzly_version>
-		<xstream_version>1.4.1</xstream_version>
+		<xstream_version>1.4.16</xstream_version>
 		<fastjson_version>1.1.39</fastjson_version>
 		<bsf_version>3.1</bsf_version>
 		<sorcerer_version>0.8</sorcerer_version>
