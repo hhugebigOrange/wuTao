@@ -22,7 +22,7 @@
 		<servlet-api_version>2.5</servlet-api_version>
 		<jstl_version>1.2</jstl_version>
 		<!--shiro -->
-		<shiro_version>1.4.0</shiro_version>
+		<shiro_version>1.6.0</shiro_version>
 		<!-- cxf -->
 		<cxf_version>3.1.9</cxf_version>
 		<!-- log -->
