@@ -17,7 +17,7 @@
 		<jaxws-rt_version>2.2.10</jaxws-rt_version>
 		<axis_version>1.4</axis_version>
 		<!-- spring -->
-		<spring_version>4.3.4.RELEASE</spring_version>
+		<spring_version>5.2.22.RELEASE</spring_version>
 		<!--servlet -->
 		<servlet-api_version>2.5</servlet-api_version>
 		<jstl_version>1.2</jstl_version>
