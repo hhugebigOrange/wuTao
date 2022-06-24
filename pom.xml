@@ -63,7 +63,7 @@
 		<webx_version>3.0.8</webx_version>
 		<commons_pool_version>1.6</commons_pool_version>
 		<tomcat_embed_version>8.0.11</tomcat_embed_version>
-		<resteasy_version>3.0.7.Final</resteasy_version>
+		<resteasy_version>3.14.0.Final</resteasy_version>
 		<swagger2_version>2.4.0</swagger2_version>
 		<commons_logging_version>1.2</commons_logging_version>
 		<jcl_version>1.1</jcl_version>
