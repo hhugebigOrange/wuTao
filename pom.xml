@@ -24,7 +24,7 @@
 		<!--shiro -->
 		<shiro_version>1.4.0</shiro_version>
 		<!-- cxf -->
-		<cxf_version>3.1.9</cxf_version>
+		<cxf_version>3.1.14</cxf_version>
 		<!-- log -->
 		<log4j_version>1.2.16</log4j_version>
 		<!--文件上传 -->
